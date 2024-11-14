@@ -1,3 +1,10 @@
+//
+//  MapView.swift
+//  AnshinNavi
+//
+//  Created by YoungJune Kang on 2024/11/14.
+//
+
 import SwiftUI
 import MapKit
 
@@ -9,21 +16,30 @@ struct MapView: UIViewRepresentable {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
         mapView.showsUserLocation = true
+        
+        // Add compass (shows up in top-right corner)
+        mapView.showsCompass = true
+        
+        // Set map type to standard with points of interest and labels
+        mapView.mapType = .standard
+        mapView.pointOfInterestFilter = .includingAll
+        
         return mapView
     }
 
     // update the map view
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        mapView.removeAnnotations(mapView.annotations)
+        // Clear existing annotations
+        uiView.removeAnnotations(uiView.annotations)
         
-        let annotations = viewModel.shelters.map { shelter -> MKPointAnnotation in
+        // Add new annotations based on shelters
+        let annotations = shelterViewModel.shelters.map { shelter -> MKPointAnnotation in
             let annotation = MKPointAnnotation()
             annotation.title = shelter.name
-            annotation.subtitle = "Capacity: \(shelter.capacity)"
-            annotation.coordinate = shelter.location
+            annotation.coordinate = CLLocationCoordinate2D(latitude: shelter.latitude, longitude: shelter.longitude)
             return annotation
         }
-        mapView.addAnnotations(annotations)
+        uiView.addAnnotations(annotations)
     }
 
     // create the coordinator
@@ -40,9 +56,12 @@ struct MapView: UIViewRepresentable {
         }
 
         func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-            if let annotation = view.annotation, let shelter = parent.viewModel.shelters.first(where: { $0.name == annotation.title }) {
-                parent.viewModel.selectedShelter = shelter
+            if let annotation = view.annotation,
+               let shelter = parent.shelterViewModel.shelters.first(where: { $0.name == annotation.title }) {
+                parent.shelterViewModel.selectedShelter = shelter
             }
         }
     }
 }
+
+

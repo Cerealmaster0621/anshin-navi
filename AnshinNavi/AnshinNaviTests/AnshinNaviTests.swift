@@ -1,14 +1,14 @@
 //
-//  anshin_naviTests.swift
-//  anshin-naviTests
+//  AnshinNaviTests.swift
+//  AnshinNaviTests
 //
 //  Created by YoungJune Kang on 2024/11/14.
 //
 
 import XCTest
-@testable import anshin_navi
+@testable import AnshinNavi
 
-final class anshin_naviTests: XCTestCase {
+final class AnshinNaviTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

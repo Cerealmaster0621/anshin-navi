@@ -1,13 +1,13 @@
 //
-//  anshin_naviUITestsLaunchTests.swift
-//  anshin-naviUITests
+//  AnshinNaviUITestsLaunchTests.swift
+//  AnshinNaviUITests
 //
 //  Created by YoungJune Kang on 2024/11/14.
 //
 
 import XCTest
 
-final class anshin_naviUITestsLaunchTests: XCTestCase {
+final class AnshinNaviUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

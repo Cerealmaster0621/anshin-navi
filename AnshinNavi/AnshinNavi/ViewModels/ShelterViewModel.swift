@@ -1,8 +1,14 @@
+//
+//  ShelterViewModel.swift
+//  AnshinNavi
+//
+//  Created by YoungJune Kang on 2024/11/14.
+//
+
 import Foundation
 import MapKit
 import SwiftUI
 import SwiftData
-import Constants
 
 enum ShelterError: Error {
     case fileNotFound(String)
@@ -69,13 +75,12 @@ class ShelterViewModel: ObservableObject {
 
         let searchQuery = query.lowercased()
         return shelters.filter {
-            $0.name.lowercased().contains(searchQuery) ||
-            $0.address.lowercased().contains(searchQuery)
+            $0.name.lowercased().contains(searchQuery)
         }
     }
 
     // sort shelters by distance from a given location(user's current location)
-    func sortByDistance(from location: CLLocation) -> [Shelter] {
+    func sortByDistance(from location: CLLocation) {
         shelters.sort { shelter1, shelter2 in
             let location1 = CLLocation(latitude: shelter1.latitude, longitude: shelter1.longitude)
             let location2 = CLLocation(latitude: shelter2.latitude, longitude: shelter2.longitude)
