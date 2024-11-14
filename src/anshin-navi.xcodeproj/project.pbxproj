@@ -1,0 +1,623 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B3BA797E2CE6229E00012B98 /* anshin_naviApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BA797D2CE6229E00012B98 /* anshin_naviApp.swift */; };
+		B3BA79802CE6229E00012B98 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BA797F2CE6229E00012B98 /* ContentView.swift */; };
+		B3BA79822CE6229E00012B98 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BA79812CE6229E00012B98 /* Item.swift */; };
+		B3BA79842CE6229F00012B98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3BA79832CE6229F00012B98 /* Assets.xcassets */; };
+		B3BA79872CE6229F00012B98 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3BA79862CE6229F00012B98 /* Preview Assets.xcassets */; };
+		B3BA79912CE6229F00012B98 /* anshin_naviTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BA79902CE6229F00012B98 /* anshin_naviTests.swift */; };
+		B3BA799B2CE6229F00012B98 /* anshin_naviUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BA799A2CE6229F00012B98 /* anshin_naviUITests.swift */; };
+		B3BA799D2CE6229F00012B98 /* anshin_naviUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BA799C2CE6229F00012B98 /* anshin_naviUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B3BA798D2CE6229F00012B98 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3BA79722CE6229E00012B98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B3BA79792CE6229E00012B98;
+			remoteInfo = "anshin-navi";
+		};
+		B3BA79972CE6229F00012B98 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3BA79722CE6229E00012B98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B3BA79792CE6229E00012B98;
+			remoteInfo = "anshin-navi";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B3BA797A2CE6229E00012B98 /* anshin-navi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "anshin-navi.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3BA797D2CE6229E00012B98 /* anshin_naviApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = anshin_naviApp.swift; sourceTree = "<group>"; };
+		B3BA797F2CE6229E00012B98 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B3BA79812CE6229E00012B98 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		B3BA79832CE6229F00012B98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B3BA79862CE6229F00012B98 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B3BA798C2CE6229F00012B98 /* anshin-naviTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "anshin-naviTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3BA79902CE6229F00012B98 /* anshin_naviTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = anshin_naviTests.swift; sourceTree = "<group>"; };
+		B3BA79962CE6229F00012B98 /* anshin-naviUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "anshin-naviUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3BA799A2CE6229F00012B98 /* anshin_naviUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = anshin_naviUITests.swift; sourceTree = "<group>"; };
+		B3BA799C2CE6229F00012B98 /* anshin_naviUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = anshin_naviUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B3BA79772CE6229E00012B98 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3BA79892CE6229F00012B98 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3BA79932CE6229F00012B98 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B3BA79712CE6229E00012B98 = {
+			isa = PBXGroup;
+			children = (
+				B3BA797C2CE6229E00012B98 /* src */,
+				B3BA798F2CE6229F00012B98 /* anshin-naviTests */,
+				B3BA79992CE6229F00012B98 /* anshin-naviUITests */,
+				B3BA797B2CE6229E00012B98 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B3BA797B2CE6229E00012B98 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B3BA797A2CE6229E00012B98 /* anshin-navi.app */,
+				B3BA798C2CE6229F00012B98 /* anshin-naviTests.xctest */,
+				B3BA79962CE6229F00012B98 /* anshin-naviUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B3BA797C2CE6229E00012B98 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				B3BA79AA2CE6234100012B98 /* app */,
+				B3BA79A92CE6233000012B98 /* core */,
+				B3BA797D2CE6229E00012B98 /* anshin_naviApp.swift */,
+				B3BA797F2CE6229E00012B98 /* ContentView.swift */,
+				B3BA79812CE6229E00012B98 /* Item.swift */,
+				B3BA79832CE6229F00012B98 /* Assets.xcassets */,
+				B3BA79852CE6229F00012B98 /* Preview Content */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		B3BA79852CE6229F00012B98 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				B3BA79862CE6229F00012B98 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B3BA798F2CE6229F00012B98 /* anshin-naviTests */ = {
+			isa = PBXGroup;
+			children = (
+				B3BA79902CE6229F00012B98 /* anshin_naviTests.swift */,
+			);
+			path = "anshin-naviTests";
+			sourceTree = "<group>";
+		};
+		B3BA79992CE6229F00012B98 /* anshin-naviUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B3BA799A2CE6229F00012B98 /* anshin_naviUITests.swift */,
+				B3BA799C2CE6229F00012B98 /* anshin_naviUITestsLaunchTests.swift */,
+			);
+			path = "anshin-naviUITests";
+			sourceTree = "<group>";
+		};
+		B3BA79A92CE6233000012B98 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				B3BA79AC2CE623AF00012B98 /* listings */,
+				B3BA79AB2CE6234900012B98 /* mapView */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
+		B3BA79AA2CE6234100012B98 /* app */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = app;
+			sourceTree = "<group>";
+		};
+		B3BA79AB2CE6234900012B98 /* mapView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = mapView;
+			sourceTree = "<group>";
+		};
+		B3BA79AC2CE623AF00012B98 /* listings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = listings;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B3BA79792CE6229E00012B98 /* anshin-navi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3BA79A02CE6229F00012B98 /* Build configuration list for PBXNativeTarget "anshin-navi" */;
+			buildPhases = (
+				B3BA79762CE6229E00012B98 /* Sources */,
+				B3BA79772CE6229E00012B98 /* Frameworks */,
+				B3BA79782CE6229E00012B98 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "anshin-navi";
+			productName = "anshin-navi";
+			productReference = B3BA797A2CE6229E00012B98 /* anshin-navi.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B3BA798B2CE6229F00012B98 /* anshin-naviTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3BA79A32CE6229F00012B98 /* Build configuration list for PBXNativeTarget "anshin-naviTests" */;
+			buildPhases = (
+				B3BA79882CE6229F00012B98 /* Sources */,
+				B3BA79892CE6229F00012B98 /* Frameworks */,
+				B3BA798A2CE6229F00012B98 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B3BA798E2CE6229F00012B98 /* PBXTargetDependency */,
+			);
+			name = "anshin-naviTests";
+			productName = "anshin-naviTests";
+			productReference = B3BA798C2CE6229F00012B98 /* anshin-naviTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B3BA79952CE6229F00012B98 /* anshin-naviUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3BA79A62CE6229F00012B98 /* Build configuration list for PBXNativeTarget "anshin-naviUITests" */;
+			buildPhases = (
+				B3BA79922CE6229F00012B98 /* Sources */,
+				B3BA79932CE6229F00012B98 /* Frameworks */,
+				B3BA79942CE6229F00012B98 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B3BA79982CE6229F00012B98 /* PBXTargetDependency */,
+			);
+			name = "anshin-naviUITests";
+			productName = "anshin-naviUITests";
+			productReference = B3BA79962CE6229F00012B98 /* anshin-naviUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B3BA79722CE6229E00012B98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					B3BA79792CE6229E00012B98 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					B3BA798B2CE6229F00012B98 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = B3BA79792CE6229E00012B98;
+					};
+					B3BA79952CE6229F00012B98 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = B3BA79792CE6229E00012B98;
+					};
+				};
+			};
+			buildConfigurationList = B3BA79752CE6229E00012B98 /* Build configuration list for PBXProject "anshin-navi" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B3BA79712CE6229E00012B98;
+			productRefGroup = B3BA797B2CE6229E00012B98 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B3BA79792CE6229E00012B98 /* anshin-navi */,
+				B3BA798B2CE6229F00012B98 /* anshin-naviTests */,
+				B3BA79952CE6229F00012B98 /* anshin-naviUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B3BA79782CE6229E00012B98 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3BA79872CE6229F00012B98 /* Preview Assets.xcassets in Resources */,
+				B3BA79842CE6229F00012B98 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3BA798A2CE6229F00012B98 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3BA79942CE6229F00012B98 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B3BA79762CE6229E00012B98 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3BA79802CE6229E00012B98 /* ContentView.swift in Sources */,
+				B3BA79822CE6229E00012B98 /* Item.swift in Sources */,
+				B3BA797E2CE6229E00012B98 /* anshin_naviApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3BA79882CE6229F00012B98 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3BA79912CE6229F00012B98 /* anshin_naviTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3BA79922CE6229F00012B98 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3BA799B2CE6229F00012B98 /* anshin_naviUITests.swift in Sources */,
+				B3BA799D2CE6229F00012B98 /* anshin_naviUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B3BA798E2CE6229F00012B98 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B3BA79792CE6229E00012B98 /* anshin-navi */;
+			targetProxy = B3BA798D2CE6229F00012B98 /* PBXContainerItemProxy */;
+		};
+		B3BA79982CE6229F00012B98 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B3BA79792CE6229E00012B98 /* anshin-navi */;
+			targetProxy = B3BA79972CE6229F00012B98 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		B3BA799E2CE6229F00012B98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B3BA799F2CE6229F00012B98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B3BA79A12CE6229F00012B98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"anshin-navi/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.youngjune-kang.anshin-navi";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B3BA79A22CE6229F00012B98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"anshin-navi/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.youngjune-kang.anshin-navi";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B3BA79A42CE6229F00012B98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.youngjune-kang.anshin-naviTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/anshin-navi.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/anshin-navi";
+			};
+			name = Debug;
+		};
+		B3BA79A52CE6229F00012B98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.youngjune-kang.anshin-naviTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/anshin-navi.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/anshin-navi";
+			};
+			name = Release;
+		};
+		B3BA79A72CE6229F00012B98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.youngjune-kang.anshin-naviUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "anshin-navi";
+			};
+			name = Debug;
+		};
+		B3BA79A82CE6229F00012B98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.youngjune-kang.anshin-naviUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "anshin-navi";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B3BA79752CE6229E00012B98 /* Build configuration list for PBXProject "anshin-navi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B3BA799E2CE6229F00012B98 /* Debug */,
+				B3BA799F2CE6229F00012B98 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B3BA79A02CE6229F00012B98 /* Build configuration list for PBXNativeTarget "anshin-navi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B3BA79A12CE6229F00012B98 /* Debug */,
+				B3BA79A22CE6229F00012B98 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B3BA79A32CE6229F00012B98 /* Build configuration list for PBXNativeTarget "anshin-naviTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B3BA79A42CE6229F00012B98 /* Debug */,
+				B3BA79A52CE6229F00012B98 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B3BA79A62CE6229F00012B98 /* Build configuration list for PBXNativeTarget "anshin-naviUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B3BA79A72CE6229F00012B98 /* Debug */,
+				B3BA79A82CE6229F00012B98 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B3BA79722CE6229E00012B98 /* Project object */;
+}
