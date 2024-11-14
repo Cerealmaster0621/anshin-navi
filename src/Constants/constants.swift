@@ -1,0 +1,1 @@
+var sheltersJsonFileName = "shelters"
