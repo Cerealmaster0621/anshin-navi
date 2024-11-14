@@ -91,22 +91,28 @@ class ShelterViewModel: ObservableObject {
 
     // load shelters from JSON file
     private func loadShelters() {
-        do {
-            guard let url = Bundle.main.url(forResource: jsonFileName, withExtension: "json") else {
-                throw ShelterError.fileNotFound("Could not find \(jsonFileName).json")
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            do {
+                guard let url = Bundle.main.url(forResource: self?.jsonFileName, withExtension: "json") else {
+                    throw ShelterError.fileNotFound("Could not find \(self?.jsonFileName ?? "unknown").json")
+                }
+                
+                let data = try Data(contentsOf: url)
+                let decodedShelters = try JSONDecoder().decode([Shelter].self, from: data)
+                
+                DispatchQueue.main.async {
+                    self?.shelters = decodedShelters
+                    self?.errorMessage = nil
+                }
+            } catch let error as ShelterError {
+                DispatchQueue.main.async {
+                    self?.handleError(error)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self?.handleError(ShelterError.decodingError(error.localizedDescription))
+                }
             }
-            
-            let data = try Data(contentsOf: url)
-            let decodedShelters = try JSONDecoder().decode([Shelter].self, from: data)
-            
-            DispatchQueue.main.async {
-                self.shelters = decodedShelters
-                self.errorMessage = nil
-            }
-        } catch let error as ShelterError {
-            handleError(error)
-        } catch {
-            handleError(ShelterError.decodingError(error.localizedDescription))
         }
     }
 

@@ -1,38 +1,43 @@
-//
-//  MapView.swift
-//  AnshinNavi
-//
-//  Created by YoungJune Kang on 2024/11/14.
-//
-
 import SwiftUI
 import MapKit
+import CoreLocation
 
 struct MapView: UIViewRepresentable {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
 
-    // create the map view
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
+
         mapView.delegate = context.coordinator
         mapView.showsUserLocation = true
+        mapView.userTrackingMode = .follow
+
+        // Configure the map using MKStandardMapConfiguration
+        let configuration = MKStandardMapConfiguration(elevationStyle: .flat, emphasisStyle: .muted)
+        mapView.preferredConfiguration = configuration
+
+        mapView.showsScale = true
+        mapView.isRotateEnabled = true
+        mapView.isPitchEnabled = true
+        mapView.showsCompass = false
         
-        // Add compass (shows up in top-right corner)
-        mapView.showsCompass = true
-        
-        // Set map type to standard with points of interest and labels
-        mapView.mapType = .standard
-        mapView.pointOfInterestFilter = .includingAll
-        
+        // Add custom compass button and position it in the top-right corner
+        let compassButton = MKCompassButton(mapView: mapView)
+        compassButton.compassVisibility = .visible
+        compassButton.translatesAutoresizingMaskIntoConstraints = false
+        mapView.addSubview(compassButton)
+        NSLayoutConstraint.activate([
+            compassButton.topAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.topAnchor, constant: 10),
+            compassButton.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10)
+        ])
+
         return mapView
     }
 
-    // update the map view
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        // Clear existing annotations
-        uiView.removeAnnotations(uiView.annotations)
-        
-        // Add new annotations based on shelters
+        let nonUserAnnotations = uiView.annotations.filter { !($0 is MKUserLocation) }
+        uiView.removeAnnotations(nonUserAnnotations)
+
         let annotations = shelterViewModel.shelters.map { shelter -> MKPointAnnotation in
             let annotation = MKPointAnnotation()
             annotation.title = shelter.name
@@ -42,17 +47,22 @@ struct MapView: UIViewRepresentable {
         uiView.addAnnotations(annotations)
     }
 
-    // create the coordinator
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
-    // coordinator
-    class Coordinator: NSObject, MKMapViewDelegate {
+    class Coordinator: NSObject, MKMapViewDelegate, CLLocationManagerDelegate {
         var parent: MapView
+        var locationManager: CLLocationManager?
 
         init(_ parent: MapView) {
             self.parent = parent
+            super.init()
+            self.locationManager = CLLocationManager()
+            self.locationManager?.delegate = self
+            self.locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+            self.locationManager?.requestWhenInUseAuthorization()
+            self.locationManager?.startUpdatingLocation()
         }
 
         func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -61,7 +71,21 @@ struct MapView: UIViewRepresentable {
                 parent.shelterViewModel.selectedShelter = shelter
             }
         }
+
+        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            if annotation is MKUserLocation {
+                return nil // Use default user location view
+            } else {
+                let identifier = "ShelterAnnotation"
+                var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
+                if annotationView == nil {
+                    annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                    annotationView?.canShowCallout = true
+                } else {
+                    annotationView?.annotation = annotation
+                }
+                return annotationView
+            }
+        }
     }
 }
-
-

@@ -11,27 +11,19 @@ import MapKit
 
 @main
 struct AnshinNaviApp: App {
-    // Initialize shelter view model as a state object
     @StateObject private var shelterViewModel = ShelterViewModel()
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                TabView {
-                    // Map View Tab
-                    MapView()
-                        .tabItem {
-                            Label("マップ", systemImage: "map")
-                        }
-                    
-                    // List View Tab (if you want to add a list view later)
-                    // ListSheltersView()
-                    //     .tabItem {
-                    //         Label("一覧", systemImage: "list.bullet")
-                    //     }
-                }
+            // Main content: MapView displayed directly
+            MapView()
+                .ignoresSafeArea()
                 .environmentObject(shelterViewModel)
-            }
+            
+            // Uncomment to display ListSheltersView instead of MapView
+            // ListSheltersView()
+            //     .environmentObject(shelterViewModel)
         }
     }
 }
+
