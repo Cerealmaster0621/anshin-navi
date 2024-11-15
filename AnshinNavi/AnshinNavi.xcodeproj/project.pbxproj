@@ -14,7 +14,7 @@
 		B33F83492CE63DA300D33A0D /* AnshinNaviUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33F83482CE63DA300D33A0D /* AnshinNaviUITests.swift */; };
 		B33F834B2CE63DA300D33A0D /* AnshinNaviUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33F834A2CE63DA300D33A0D /* AnshinNaviUITestsLaunchTests.swift */; };
 		B33F83592CE63DD300D33A0D /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33F83582CE63DD300D33A0D /* MapView.swift */; };
-		B33F835C2CE63E1500D33A0D /* ShelterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33F835B2CE63E1500D33A0D /* ShelterViewModel.swift */; };
+		B33F835C2CE63E1500D33A0D /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33F835B2CE63E1500D33A0D /* MapViewModel.swift */; };
 		B33F835F2CE63E4A00D33A0D /* Shelter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33F835E2CE63E4A00D33A0D /* Shelter.swift */; };
 		B33F83622CE63E6B00D33A0D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33F83612CE63E6B00D33A0D /* Constants.swift */; };
 /* End PBXBuildFile section */
@@ -47,7 +47,7 @@
 		B33F83482CE63DA300D33A0D /* AnshinNaviUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnshinNaviUITests.swift; sourceTree = "<group>"; };
 		B33F834A2CE63DA300D33A0D /* AnshinNaviUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnshinNaviUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B33F83582CE63DD300D33A0D /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
-		B33F835B2CE63E1500D33A0D /* ShelterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelterViewModel.swift; sourceTree = "<group>"; };
+		B33F835B2CE63E1500D33A0D /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		B33F835E2CE63E4A00D33A0D /* Shelter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shelter.swift; sourceTree = "<group>"; };
 		B33F83612CE63E6B00D33A0D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B33F83632CE6434C00D33A0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -150,7 +150,7 @@
 		B33F835A2CE63E0000D33A0D /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				B33F835B2CE63E1500D33A0D /* ShelterViewModel.swift */,
+				B33F835B2CE63E1500D33A0D /* MapViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -309,7 +309,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B33F835F2CE63E4A00D33A0D /* Shelter.swift in Sources */,
-				B33F835C2CE63E1500D33A0D /* ShelterViewModel.swift in Sources */,
+				B33F835C2CE63E1500D33A0D /* MapViewModel.swift in Sources */,
 				B33F83592CE63DD300D33A0D /* MapView.swift in Sources */,
 				B33F83622CE63E6B00D33A0D /* Constants.swift in Sources */,
 				B33F832C2CE63DA200D33A0D /* AnshinNaviApp.swift in Sources */,

@@ -6,11 +6,10 @@
 //
 
 import Foundation
-import SwiftData
 import CoreLocation
 
 struct Shelter: Codable, Identifiable {
-    @Attribute(.unique) var id: UUID = UUID()
+    let id: UUID
     var regionCode: String
     var regionName: String
     var number: String
@@ -18,46 +17,54 @@ struct Shelter: Codable, Identifiable {
     var address: String
     var generalFlooding: Bool
     var landslide: Bool
+    var highTide: Bool
     var earthquake: Bool
     var tsunami: Bool
     var fire: Bool
     var internalFlooding: Bool
-    var isSameAsRegion: Bool
+    var volcano: Bool
+    var isSameAsEvacuationCenter: Bool
     var latitude: Double
     var longitude: Double
     var additionalInfo: String
     
-      init(
-          regionCode: String,
-          regionName: String,
-          number: String,
-          name: String,
-          address: String,
-          generalFlooding: Bool,
-          landslide: Bool,
-          earthquake: Bool,
-          tsunami: Bool,
-          fire: Bool,
-          internalFlooding: Bool,
-          isSameAsRegion: Bool,
-          latitude: Double,
-          longitude: Double,
-          additionalInfo: String = ""
-      ) {
-          self.regionCode = regionCode
-          self.regionName = regionName
-          self.number = number
-          self.name = name
-          self.address = address
-          self.generalFlooding = generalFlooding
-          self.landslide = landslide
-          self.earthquake = earthquake
-          self.tsunami = tsunami
-          self.fire = fire
-          self.internalFlooding = internalFlooding
-          self.isSameAsRegion = isSameAsRegion
-          self.latitude = latitude
-          self.longitude = longitude
-          self.additionalInfo = additionalInfo
-      }
-  }
+    init(
+        id: UUID = UUID(),
+        regionCode: String,
+        regionName: String,
+        number: String,
+        name: String,
+        address: String,
+        generalFlooding: Bool,
+        landslide: Bool,
+        highTide: Bool,
+        earthquake: Bool,
+        tsunami: Bool,
+        fire: Bool,
+        internalFlooding: Bool,
+        volcano: Bool,
+        isSameAsEvacuationCenter: Bool,
+        latitude: Double,
+        longitude: Double,
+        additionalInfo: String = ""
+    ) {
+        self.id = id
+        self.regionCode = regionCode
+        self.regionName = regionName
+        self.number = number
+        self.name = name
+        self.address = address
+        self.generalFlooding = generalFlooding
+        self.landslide = landslide
+        self.highTide = highTide
+        self.earthquake = earthquake
+        self.tsunami = tsunami
+        self.fire = fire
+        self.internalFlooding = internalFlooding
+        self.volcano = volcano
+        self.isSameAsEvacuationCenter = isSameAsEvacuationCenter
+        self.latitude = latitude
+        self.longitude = longitude
+        self.additionalInfo = additionalInfo
+    }
+}
