@@ -10,7 +10,7 @@ import MapKit
 import SwiftUI
 import SwiftData
 
-enum ShelterError: Error {
+enum DataError: Error {
     case fileNotFound(String)
     case decodingError(String)
     case invalidData
@@ -27,6 +27,55 @@ enum DisasterType {
 
 // managing shelter data and actions
 class ShelterViewModel: ObservableObject {
+    @Environment(\.modelContext) private var modelContext
+
+       func importCSVData() {
+           guard let fileURL = Bundle.main.url(forResource: "全国指定緊急避難場所データ", withExtension: "csv") else {
+               print("CSV-Datei nicht gefunden.")
+               return
+           }
+
+           do {
+               let data = try String(contentsOf: fileURL, encoding: .utf8)
+               let rows = data.components(separatedBy: "\n")
+               
+               // Überspringe die Kopfzeile und parsiere jede Zeile in ein Shelter-Objekt
+               for (index, row) in rows.enumerated() {
+                   guard index > 0 else { continue }  // Überspringt die Kopfzeile
+                   
+                   let columns = row.components(separatedBy: ",")
+                   guard columns.count >= 15 else { continue } // Sicherstellen, dass genügend Spalten vorhanden sind
+                   
+                   // Mapping der CSV-Spalten zu Shelter-Objekten
+                   let shelter = Shelter(
+                       regionCode: columns[0],
+                       regionName: columns[1],
+                       number: columns[2],
+                       name: columns[3],
+                       generalFlooding: columns[5] == "1",
+                       landslide: columns[6] == "1",
+                       earthquake: columns[8] == "1",
+                       tsunami: columns[9] == "1",
+                       fire: columns[10] == "1",
+                       internalFlooding: columns[11] == "1",
+                       isSameAsRegion: columns[13] == "1",
+                       latitude: Double(columns[14]) ?? 0.0,
+                       longitude: Double(columns[15]) ?? 0.0,
+                       additionalInfo: columns.count > 16 ? columns[16] : ""
+                   )
+                   
+                   // Speichern in Swift Data
+                   modelContext.insert(shelter)
+               }
+               
+               // Speichern der Änderungen im Modellkontext
+               try modelContext.save()
+               print("Daten erfolgreich importiert und gespeichert.")
+               
+           } catch {
+               print("Fehler beim Importieren der CSV-Daten: \(error)")
+           }
+       }
     // properties
     @Published var shelters: [Shelter] = []
     @Published var selectedShelter: Shelter?
@@ -35,7 +84,7 @@ class ShelterViewModel: ObservableObject {
     private let jsonFileName: String
 
     // initializer
-    init(jsonFileName: String = sheltersJsonFileName) {
+    init(jsonFileName: String = SHELTERS_CSV_FILE_NAME) {
         self.jsonFileName = jsonFileName
         loadShelters()
     }
@@ -94,7 +143,7 @@ class ShelterViewModel: ObservableObject {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             do {
                 guard let url = Bundle.main.url(forResource: self?.jsonFileName, withExtension: "json") else {
-                    throw ShelterError.fileNotFound("Could not find \(self?.jsonFileName ?? "unknown").json")
+                    throw DataError.fileNotFound("Could not find \(self?.jsonFileName ?? "unknown").json")
                 }
                 
                 let data = try Data(contentsOf: url)
@@ -104,20 +153,20 @@ class ShelterViewModel: ObservableObject {
                     self?.shelters = decodedShelters
                     self?.errorMessage = nil
                 }
-            } catch let error as ShelterError {
+            } catch let error as DataError {
                 DispatchQueue.main.async {
                     self?.handleError(error)
                 }
             } catch {
                 DispatchQueue.main.async {
-                    self?.handleError(ShelterError.decodingError(error.localizedDescription))
+                    self?.handleError(DataError.decodingError(error.localizedDescription))
                 }
             }
         }
     }
 
     /// Handle and display errors
-    private func handleError(_ error: ShelterError) {
+    private func handleError(_ error: DataError) {
         DispatchQueue.main.async {
             switch error {
             case .fileNotFound(let message):

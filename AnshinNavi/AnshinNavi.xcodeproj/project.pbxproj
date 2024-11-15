@@ -101,6 +101,7 @@
 		B33F832A2CE63DA200D33A0D /* AnshinNavi */ = {
 			isa = PBXGroup;
 			children = (
+				B3B569452CE756180073C38A /* Datas */,
 				B33F83632CE6434C00D33A0D /* Info.plist */,
 				B33F83602CE63E5B00D33A0D /* Constants */,
 				B33F835D2CE63E3A00D33A0D /* Models */,
@@ -168,6 +169,13 @@
 				B33F83612CE63E6B00D33A0D /* Constants.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		B3B569452CE756180073C38A /* Datas */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Datas;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

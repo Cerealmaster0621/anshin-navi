@@ -12,15 +12,26 @@ struct MapView: UIViewRepresentable {
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
 
-        // Configure the map using MKStandardMapConfiguration
+        // map configuration
         let configuration = MKStandardMapConfiguration(elevationStyle: .flat, emphasisStyle: .muted)
         mapView.preferredConfiguration = configuration
-
-        mapView.showsScale = true
-        mapView.isRotateEnabled = true
-        mapView.isPitchEnabled = true
-        mapView.showsCompass = false
         
+        mapView.isZoomEnabled = true
+        mapView.isScrollEnabled = true
+        mapView.isPitchEnabled = true
+        mapView.showsScale = true
+        mapView.showsUserLocation = true
+        mapView.isRotateEnabled = true
+        
+        mapView.showsUserLocation = true
+        // Todo - show user locations
+        mapView.userLocation.location
+        mapView.userLocation.coordinate
+        mapView.userLocation.isUpdating
+        mapView.setUserTrackingMode(.follow, animated: true)
+        mapView.setUserTrackingMode(.followWithHeading, animated: true)
+        
+        mapView.showsCompass = false
         // Add custom compass button and position it in the top-right corner
         let compassButton = MKCompassButton(mapView: mapView)
         compassButton.compassVisibility = .visible
