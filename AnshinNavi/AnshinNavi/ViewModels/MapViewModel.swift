@@ -166,6 +166,31 @@ extension ShelterViewModel {
             return centerLocation.distance(from: shelterLocation) <= radius
         }
     }
+
+    // Get shelters visible in the current map view
+    func getSheltersInMapRegion(_ region: MKCoordinateRegion) -> [Shelter] {
+        let span = region.span
+        let centerLocation = CLLocation(latitude: region.center.latitude, 
+                                      longitude: region.center.longitude)
+        
+        // Calculate approximate radius based on the map's visible region
+        let distanceLatitude = span.latitudeDelta * 111000 / 2 // Convert to meters
+        let distanceLongitude = span.longitudeDelta * 111000 / 2
+        let radius = max(distanceLatitude, distanceLongitude)
+        
+        return shelters.filter { shelter in
+            let shelterLocation = CLLocation(
+                latitude: shelter.latitude,
+                longitude: shelter.longitude
+            )
+            return centerLocation.distance(from: shelterLocation) <= radius
+        }
+    }
+    
+    // Get shelters near user location with custom radius
+    func getSheltersNearUserLocation(_ location: CLLocation) -> [Shelter] {
+        return getSheltersNearLocation(location, radius: 2000) // 2km radius
+    }
 }
 
 

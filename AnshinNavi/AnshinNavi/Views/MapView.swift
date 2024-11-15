@@ -4,98 +4,141 @@ import CoreLocation
 
 struct MapView: UIViewRepresentable {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
-    @State private var isUserLocationVisible: Bool = true
-
+    
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
-
+        
+        // Basic setup
         mapView.delegate = context.coordinator
         mapView.showsUserLocation = true
-        mapView.userTrackingMode = .follow
-
-        // map configuration
-        let configuration = MKStandardMapConfiguration(elevationStyle: .flat, emphasisStyle: .muted)
+        
+        // Map configuration
+        let configuration = MKStandardMapConfiguration()
+        configuration.elevationStyle = .flat
+        configuration.emphasisStyle = .default
         mapView.preferredConfiguration = configuration
         
-        mapView.isZoomEnabled = true
-        mapView.isScrollEnabled = true
-        mapView.isPitchEnabled = true
-        mapView.showsScale = true
-        mapView.showsUserLocation = true
-        mapView.isRotateEnabled = true
-        
-        
-        mapView.showsUserLocation = true
-        // Todo - show user locations
-        mapView.userLocation.location
-        mapView.userLocation.coordinate
-        mapView.userLocation.isUpdating
-        mapView.setUserTrackingMode(.follow, animated: true)
-        mapView.setUserTrackingMode(.followWithHeading, animated: true)
-        
+        // Setup compass
         mapView.showsCompass = false
-        // Add custom compass button and position it in the top-right corner
         let compassButton = MKCompassButton(mapView: mapView)
         compassButton.compassVisibility = .visible
-        compassButton.translatesAutoresizingMaskIntoConstraints = false
         mapView.addSubview(compassButton)
-        NSLayoutConstraint.activate([
-            compassButton.topAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.topAnchor, constant: 10),
-            compassButton.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10)
-        ])
-
-        // Add recenter button with native iOS style
-        let recenterButton = UIButton(configuration: .filled())
-        recenterButton.configuration?.baseBackgroundColor = .systemBackground
-        recenterButton.configuration?.baseForegroundColor = .label
-        recenterButton.configuration?.cornerStyle = .medium
         
-        // Create button title with icon
-        let buttonText = "この地域で検索"
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 12, weight: .medium)
-        let searchImage = UIImage(systemName: "magnifyingglass", withConfiguration: imageConfig)
-        
-        recenterButton.configuration?.image = searchImage
-        recenterButton.configuration?.imagePlacement = .leading
-        recenterButton.configuration?.imagePadding = 6
-        recenterButton.configuration?.title = buttonText
-        
-        // Add shadow for depth
-        recenterButton.layer.shadowColor = UIColor.black.cgColor
-        recenterButton.layer.shadowOffset = CGSize(width: 0, height: 2)
-        recenterButton.layer.shadowRadius = 4
-        recenterButton.layer.shadowOpacity = 0.15
-        
-        recenterButton.translatesAutoresizingMaskIntoConstraints = false
-        recenterButton.addTarget(context.coordinator, 
-                               action: #selector(Coordinator.searchCurrentRegionButtonTapped), 
+        // Setup location button
+        let locationButton = createLocationButton()
+        locationButton.addTarget(context.coordinator, 
+                               action: #selector(Coordinator.locationButtonTapped),
                                for: .touchUpInside)
-        recenterButton.isHidden = true
+        mapView.addSubview(locationButton)
         
-        mapView.addSubview(recenterButton)
+        // Setup search region button
+        let searchButton = createSearchButton()
+        searchButton.addTarget(context.coordinator,
+                             action: #selector(Coordinator.searchRegionButtonTapped),
+                             for: .touchUpInside)
+        searchButton.isHidden = true
+        mapView.addSubview(searchButton)
         
-        NSLayoutConstraint.activate([
-            recenterButton.centerXAnchor.constraint(equalTo: mapView.centerXAnchor),
-            recenterButton.topAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.topAnchor, constant: 16),
-            recenterButton.heightAnchor.constraint(equalToConstant: 36)
-        ])
+        // Setup constraints
+        setupConstraints(mapView, compassButton, locationButton, searchButton)
         
-        context.coordinator.recenterButton = recenterButton
+        // Store references
+        context.coordinator.locationButton = locationButton
+        context.coordinator.searchButton = searchButton
         
         return mapView
     }
-
+    
+    private func createLocationButton() -> UIButton {
+        let button = UIButton(frame: .zero)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Style
+        button.backgroundColor = .systemBackground
+        button.layer.cornerRadius = 8
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 2)
+        button.layer.shadowRadius = 4
+        button.layer.shadowOpacity = 0.15
+        
+        // Icon
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .medium)
+        let image = UIImage(systemName: "location.fill", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        button.tintColor = .systemBlue
+        
+        return button
+    }
+    
+    private func createSearchButton() -> UIButton {
+        let button = UIButton(configuration: .filled())
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Style
+        button.configuration?.baseBackgroundColor = .systemBackground
+        button.configuration?.baseForegroundColor = .label
+        button.configuration?.cornerStyle = .medium
+        
+        // Icon and text
+        let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .medium)
+        let image = UIImage(systemName: "magnifyingglass", withConfiguration: config)
+        button.configuration?.image = image
+        button.configuration?.imagePlacement = .leading
+        button.configuration?.imagePadding = 6
+        button.configuration?.title = "この地域で検索"
+        
+        // Shadow
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 2)
+        button.layer.shadowRadius = 4
+        button.layer.shadowOpacity = 0.15
+        
+        return button
+    }
+    
+    private func setupConstraints(_ mapView: MKMapView, _ compass: MKCompassButton, _ location: UIButton, _ search: UIButton) {
+        NSLayoutConstraint.activate([
+            // Compass
+            compass.topAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.topAnchor, constant: 10),
+            compass.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            
+            // Location button
+            location.topAnchor.constraint(equalTo: compass.bottomAnchor, constant: 20),
+            location.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            location.widthAnchor.constraint(equalToConstant: 40),
+            location.heightAnchor.constraint(equalToConstant: 40),
+            
+            // Search button
+            search.centerXAnchor.constraint(equalTo: mapView.centerXAnchor),
+            search.bottomAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            search.heightAnchor.constraint(equalToConstant: 36),
+            search.widthAnchor.constraint(lessThanOrEqualTo: mapView.widthAnchor, multiplier: 0.7)
+        ])
+    }
+    
     func updateUIView(_ uiView: MKMapView, context: Context) {
+        // Remove existing annotations
         let nonUserAnnotations = uiView.annotations.filter { !($0 is MKUserLocation) }
         uiView.removeAnnotations(nonUserAnnotations)
-
+        
+        // Debug print to verify data
+        print("Number of shelters: \(shelterViewModel.shelters.count)")
+        
+        // Create annotations for all shelters
         let annotations = shelterViewModel.shelters.map { shelter -> MKPointAnnotation in
             let annotation = MKPointAnnotation()
             annotation.title = shelter.name
-            annotation.coordinate = CLLocationCoordinate2D(latitude: shelter.latitude, longitude: shelter.longitude)
+            annotation.subtitle = shelter.address
+            annotation.coordinate = CLLocationCoordinate2D(
+                latitude: shelter.latitude,
+                longitude: shelter.longitude
+            )
             return annotation
         }
+        
+        // Add annotations to map
         uiView.addAnnotations(annotations)
+        print("Added \(annotations.count) annotations")
     }
 
     func makeCoordinator() -> Coordinator {
@@ -105,7 +148,8 @@ struct MapView: UIViewRepresentable {
     class Coordinator: NSObject, MKMapViewDelegate, CLLocationManagerDelegate {
         var parent: MapView
         var locationManager: CLLocationManager?
-        weak var recenterButton: UIButton?
+        weak var locationButton: UIButton?
+        weak var searchButton: UIButton?
 
         init(_ parent: MapView) {
             self.parent = parent
@@ -125,66 +169,93 @@ struct MapView: UIViewRepresentable {
         }
 
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            // Return nil for user location to use default blue dot
             if annotation is MKUserLocation {
-                return nil // Use default user location view
-            } else {
-                let identifier = "ShelterAnnotation"
-                var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
-                if annotationView == nil {
-                    annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                    annotationView?.canShowCallout = true
-                } else {
-                    annotationView?.annotation = annotation
-                }
-                return annotationView
+                return nil
             }
+            
+            // Setup shelter annotation view
+            let identifier = "ShelterAnnotation"
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
+            
+            if annotationView == nil {
+                annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView?.canShowCallout = true
+                
+                // Customize the marker
+                annotationView?.markerTintColor = .systemGreen
+                annotationView?.glyphImage = UIImage(systemName: "house.fill")
+                
+                // Add a right callout accessory
+                let button = UIButton(type: .detailDisclosure)
+                annotationView?.rightCalloutAccessoryView = button
+            } else {
+                annotationView?.annotation = annotation
+            }
+            
+            return annotationView
         }
 
-        @objc func searchCurrentRegionButtonTapped() {
-            guard let mapView = recenterButton?.superview as? MKMapView else { return }
+        @objc func searchRegionButtonTapped() {
+            guard let mapView = searchButton?.superview as? MKMapView else { return }
             
-            // Get shelters near the current map center
-            let centerCoordinate = mapView.centerCoordinate
-            let nearbyShelters = parent.shelterViewModel.getSheltersInVisibleRegion(
-                center: centerCoordinate,
-                radius: 2000 // 2km radius, adjust as needed
-            )
+            // Get visible region
+            let visibleRegion = mapView.region
+            let nearbyShelters = parent.shelterViewModel.getSheltersInMapRegion(visibleRegion)
+            print("Found \(nearbyShelters.count) shelters in visible region")
             
             // Update annotations
             updateAnnotations(on: mapView, with: nearbyShelters)
-            
-            // Hide the button after search
-            recenterButton?.isHidden = true
+            searchButton?.isHidden = true
         }
         
         private func updateAnnotations(on mapView: MKMapView, with shelters: [Shelter]) {
+            // Remove existing annotations
             let nonUserAnnotations = mapView.annotations.filter { !($0 is MKUserLocation) }
             mapView.removeAnnotations(nonUserAnnotations)
             
+            // Create new annotations
             let annotations = shelters.map { shelter -> MKPointAnnotation in
                 let annotation = MKPointAnnotation()
                 annotation.title = shelter.name
+                annotation.subtitle = shelter.address
                 annotation.coordinate = CLLocationCoordinate2D(
                     latitude: shelter.latitude,
                     longitude: shelter.longitude
                 )
                 return annotation
             }
+            
+            // Add new annotations
             mapView.addAnnotations(annotations)
+            print("Updated map with \(annotations.count) annotations")
         }
         
         // Update the regionDidChangeAnimated method
         func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
             if !animated {
                 // Show button when user manually moves the map
-                recenterButton?.isHidden = false
+                searchButton?.isHidden = false
             }
         }
         
         // Optional: Add this method to handle user tracking mode changes
         func mapView(_ mapView: MKMapView, didChange mode: MKUserTrackingMode, animated: Bool) {
             // Hide button when user location tracking is active
-            recenterButton?.isHidden = mode != .none
+            searchButton?.isHidden = mode != .none
+        }
+
+        @objc func locationButtonTapped() {
+            guard let mapView = locationButton?.superview as? MKMapView,
+                  let userLocation = locationManager?.location else { return }
+            
+            // Animate to user location
+            let region = MKCoordinateRegion(
+                center: userLocation.coordinate,
+                latitudinalMeters: 1000,
+                longitudinalMeters: 1000
+            )
+            mapView.setRegion(region, animated: true)
         }
     }
 }
