@@ -4,32 +4,36 @@ import CoreLocation
 
 struct MapView: UIViewRepresentable {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
-    private static let maxAnnotations = 100
-    
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self, shelterViewModel: shelterViewModel)
     }
     
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
-        
-        configureMapView(mapView, with: context)
+
+        configureMapView(mapView)
         setupLocationServices(context)
         setupMapControls(mapView, with: context)
-
-        mapView.showsUserLocation = true
-        mapView.userTrackingMode = .followWithHeading
         
         return mapView
     }
     
-    private func configureMapView(_ mapView: MKMapView, with context: Context) {
+    // MARK: - Configuration Methods
+    
+    /// Configures the initial map view settings
+    /// - Parameter mapView: The map view to configure
+    /// Sets up basic map properties like showing user location and tracking mode
+    private func configureMapView(_ mapView: MKMapView) {
         mapView.preferredConfiguration = MKStandardMapConfiguration(elevationStyle: .flat, emphasisStyle: .default)
         mapView.showsUserLocation = true
         mapView.showsCompass = false
+        mapView.userTrackingMode = .followWithHeading
     }
     
+    /// Sets up location services for the map
+    /// - Parameter context: The context containing the coordinator
+    /// Configures location manager with appropriate accuracy and permissions
     private func setupLocationServices(_ context: Context) {
         let locationManager = CLLocationManager()
         locationManager.delegate = context.coordinator
@@ -123,52 +127,36 @@ struct MapView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        // Debug print
-        print("📍 Updating map with \(shelterViewModel.shelters.count) shelters")
-        
-        // Remove existing annotations
-        let existingAnnotations = uiView.annotations.filter { !($0 is MKUserLocation) }
-        uiView.removeAnnotations(existingAnnotations)
-        
-        // Add new annotations
-        let annotations = shelterViewModel.shelters.map { shelter -> MKAnnotation in
-            let annotation = ShelterAnnotation(shelter: shelter)
-            print("📌 Adding shelter: \(shelter.name) at \(shelter.latitude), \(shelter.longitude)")
-            return annotation
-        }
-        
-        uiView.addAnnotations(annotations)
-    }
-    
-    // Custom annotation class to store shelter data
-    class ShelterAnnotation: MKPointAnnotation {
-        let shelter: Shelter
-        
-        init(shelter: Shelter) {
-            self.shelter = shelter
-            super.init()
-            self.title = shelter.name
-            self.subtitle = shelter.address
-            self.coordinate = CLLocationCoordinate2D(
-                latitude: shelter.latitude,
-                longitude: shelter.longitude
-            )
-        }
+        // No updates needed here since annotations are handled elsewhere
     }
     
     class Coordinator: NSObject, MKMapViewDelegate, CLLocationManagerDelegate {
         private let parent: MapView
+        var shelterViewModel: ShelterViewModel
         var locationManager: CLLocationManager?
         weak var locationButton: UIButton?
         weak var searchButton: UIButton?
         weak var compassButton: MKCompassButton?
         private var isInitialLocationSet = false
+        var shelterHandler: ShelterHandler!
         
-        init(_ parent: MapView) {
+        init(_ parent: MapView, shelterViewModel: ShelterViewModel) {
             self.parent = parent
+            self.shelterViewModel = shelterViewModel
             super.init()
+            self.shelterHandler = ShelterHandler(coordinator: self, shelterViewModel: shelterViewModel)
+        }
+        
+        // Forward delegate methods
+        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            return shelterHandler.mapView(mapView, viewFor: annotation)
         }
 
+        func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+            shelterHandler.mapView(mapView, annotationView: view, calloutAccessoryControlTapped: control)
+        }
+
+        
         func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
             guard let mapView = locationButton?.superview as? MKMapView else { return }
             
@@ -186,6 +174,13 @@ struct MapView: UIViewRepresentable {
             }
         }
         
+        // MARK: - Location Updates
+        
+        /// Handles user location updates
+        /// - Parameters:
+        ///   - manager: The location manager
+        ///   - locations: Array of new locations
+        /// Only updates map region on initial location set
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
             guard let location = locations.first,
                   let mapView = locationButton?.superview as? MKMapView,
@@ -193,7 +188,7 @@ struct MapView: UIViewRepresentable {
             
             isInitialLocationSet = true
             updateMapRegion(mapView, coordinate: location.coordinate)
-            updateAnnotations(on: mapView, near: location)
+            shelterHandler.updateAnnotations(on: mapView, near: location)
             manager.stopUpdatingLocation()
         }
         
@@ -201,14 +196,21 @@ struct MapView: UIViewRepresentable {
             searchButton?.isHidden = animated
         }
         
+        /// Handles location button tap
+        /// Centers map on user location and updates tracking mode
         @objc func locationButtonTapped() {
-            guard let mapView = locationButton?.superview as? MKMapView,
-                  let location = locationManager?.location else { return }
-            
-            // Update tracking mode to show heading
+            guard let mapView = locationButton?.superview as? MKMapView else { return }
+
             mapView.setUserTrackingMode(.followWithHeading, animated: true)
-            updateAnnotations(on: mapView, near: location)
             searchButton?.isHidden = true
+
+            guard let location = locationManager?.location else {
+                print("User location is not available.")
+                return
+            }
+
+            // Call updateAnnotations
+            shelterHandler.updateAnnotations(on: mapView, near: location)
         }
         
         @objc func searchRegionButtonTapped() {
@@ -220,7 +222,7 @@ struct MapView: UIViewRepresentable {
                 longitude: region.center.longitude
             )
             
-            updateAnnotations(on: mapView, near: centerLocation)
+            shelterHandler.updateAnnotations(on: mapView, near: centerLocation)
             searchButton?.isHidden = true
         }
         
@@ -231,57 +233,6 @@ struct MapView: UIViewRepresentable {
                 longitudinalMeters: 1000
             )
             mapView.setRegion(region, animated: true)
-        }
-        
-        private func updateAnnotations(on mapView: MKMapView, near location: CLLocation) {
-            let existingAnnotations = mapView.annotations.filter { !($0 is MKUserLocation) }
-            mapView.removeAnnotations(existingAnnotations)
-            
-            let radius = calculateSearchRadius(from: mapView.region)
-            let shelters = parent.shelterViewModel.getSheltersNearLocation(location, radius: radius)
-            
-            let centerLocation = location
-            let sortedShelters = shelters
-                .sorted { shelter1, shelter2 in
-                    let location1 = CLLocation(latitude: shelter1.latitude, longitude: shelter1.longitude)
-                    let location2 = CLLocation(latitude: shelter2.latitude, longitude: shelter2.longitude)
-                    return location1.distance(from: centerLocation) < location2.distance(from: centerLocation)
-                }
-                .prefix(MapView.maxAnnotations)
-            
-            let annotations = sortedShelters.map { ShelterAnnotation(shelter: $0) }
-            mapView.addAnnotations(annotations)
-        }
-        
-        private func calculateSearchRadius(from region: MKCoordinateRegion) -> CLLocationDistance {
-            let span = region.span
-            let distanceLatitude = span.latitudeDelta * 111000 / 2  // Convert to meters
-            let distanceLongitude = span.longitudeDelta * 111000 / 2
-            return max(distanceLatitude, distanceLongitude)
-        }
-        
-        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-            if annotation is MKUserLocation {
-                // Use the default system user location view
-                return nil
-            }
-            
-            // Handle shelter annotations
-            let identifier = "ShelterPin"
-            let view = (mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView)
-                ?? MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            
-            view.canShowCallout = true
-            view.markerTintColor = .systemGreen
-            view.glyphImage = UIImage(systemName: "house.fill")
-            view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-            
-            return view
-        }
-        
-        func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-            guard let annotation = view.annotation as? ShelterAnnotation else { return }
-            parent.shelterViewModel.selectedShelter = annotation.shelter
         }
     }
 }

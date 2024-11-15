@@ -18,6 +18,8 @@
 		B33F835F2CE63E4A00D33A0D /* Shelter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33F835E2CE63E4A00D33A0D /* Shelter.swift */; };
 		B33F83622CE63E6B00D33A0D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33F83612CE63E6B00D33A0D /* Constants.swift */; };
 		B34A2C9F2CE7678800F6ABF0 /* shelters.json in Resources */ = {isa = PBXBuildFile; fileRef = B34A2C9E2CE7678800F6ABF0 /* shelters.json */; };
+		B366C1E82CE7B3A80063E659 /* ShelterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B366C1E72CE7B3A80063E659 /* ShelterViewModel.swift */; };
+		B366C1EA2CE7B3B50063E659 /* ShelterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B366C1E92CE7B3B50063E659 /* ShelterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		B33F83612CE63E6B00D33A0D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B33F83632CE6434C00D33A0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B34A2C9E2CE7678800F6ABF0 /* shelters.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = shelters.json; sourceTree = "<group>"; };
+		B366C1E72CE7B3A80063E659 /* ShelterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelterViewModel.swift; sourceTree = "<group>"; };
+		B366C1E92CE7B3B50063E659 /* ShelterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				B33F83582CE63DD300D33A0D /* MapView.swift */,
+				B366C1E92CE7B3B50063E659 /* ShelterView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -153,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				B33F835B2CE63E1500D33A0D /* MapViewModel.swift */,
+				B366C1E72CE7B3A80063E659 /* ShelterViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -312,11 +318,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B366C1E82CE7B3A80063E659 /* ShelterViewModel.swift in Sources */,
 				B33F835F2CE63E4A00D33A0D /* Shelter.swift in Sources */,
 				B33F835C2CE63E1500D33A0D /* MapViewModel.swift in Sources */,
 				B33F83592CE63DD300D33A0D /* MapView.swift in Sources */,
 				B33F83622CE63E6B00D33A0D /* Constants.swift in Sources */,
 				B33F832C2CE63DA200D33A0D /* AnshinNaviApp.swift in Sources */,
+				B366C1EA2CE7B3B50063E659 /* ShelterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

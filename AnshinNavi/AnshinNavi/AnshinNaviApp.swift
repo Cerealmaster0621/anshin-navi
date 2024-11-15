@@ -39,7 +39,7 @@ struct AnshinNaviApp: App {
     var body: some Scene {
         WindowGroup {
             MapView()
-                .ignoresSafeArea()
+                .ignoresSafeArea(.all)
                 .environmentObject(shelterViewModel)
         }
     }
