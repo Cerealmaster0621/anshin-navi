@@ -8,7 +8,6 @@
 import Foundation
 import MapKit
 import SwiftUI
-import SwiftData
 
 enum DataError: Error {
     case fileNotFound(String)
@@ -16,181 +15,137 @@ enum DataError: Error {
     case invalidData
 }
 
-enum DisasterType {
+enum DisasterType: CaseIterable {
     case generalFlooding
     case landslide
+    case highTide
     case earthquake
     case tsunami
     case fire
     case internalFlooding
+    case volcano
 }
 
-// managing shelter data and actions
-class ShelterViewModel: ObservableObject {
-    // properties
-    @Published var shelters: [Shelter] = []
+final class ShelterViewModel: ObservableObject {
+    @Published private(set) var shelters: [Shelter] = []
     @Published var selectedShelter: Shelter?
-    @Published var errorMessage: String?
-
-    private let jsonFileName: String
-
-    // initializer
-    init(jsonFileName: String = SHELTERS_CSV_FILE_NAME) {
-        self.jsonFileName = jsonFileName
+    
+    private let jsonFileName = "shelters"
+    private let jsonFileExtension = "json"
+    private let defaultRadius: CLLocationDistance = 2000 // 2km
+    
+    init() {
         loadShelters()
     }
-
-    // ACTIONS
-
-    // filter shelters by region code
-    func filterSheltersByRegion(regionCode: String) -> [Shelter] {
-        return shelters.filter { $0.regionCode == regionCode }
+    
+    // MARK: - Public Methods
+    
+    func getSheltersNearLocation(_ location: CLLocation, radius: CLLocationDistance = 2000) -> [Shelter] {
+        let shelterLocations = shelters.map { shelter in
+            (
+                shelter: shelter,
+                distance: location.distance(from: CLLocation(
+                    latitude: shelter.latitude,
+                    longitude: shelter.longitude
+                ))
+            )
+        }
+        
+        return shelterLocations
+            .filter { $0.distance <= radius }
+            .map { $0.shelter }
     }
-
-    // filter shelters by disaster type
+    
+    func getSheltersInMapRegion(_ region: MKCoordinateRegion) -> [Shelter] {
+        let centerLocation = CLLocation(
+            latitude: region.center.latitude,
+            longitude: region.center.longitude
+        )
+        let radius = calculateRadius(from: region)
+        return getSheltersNearLocation(centerLocation, radius: radius)
+    }
+    
+    func filterSheltersByRegion(regionCode: String) -> [Shelter] {
+        shelters.filter { $0.regionCode == regionCode }
+    }
+    
     func filterShelterByDisasterType(_ disasterType: DisasterType) -> [Shelter] {
-        return shelters.filter { shelter in
+        shelters.filter { shelter in
             switch disasterType {
-            case .generalFlooding:
-                return shelter.generalFlooding
-            case .landslide:
-                return shelter.landslide
-            case .earthquake:
-                return shelter.earthquake
-            case .tsunami:
-                return shelter.tsunami
-            case .fire:
-                return shelter.fire
-            case .internalFlooding:
-                return shelter.internalFlooding
+            case .generalFlooding: return shelter.generalFlooding
+            case .landslide: return shelter.landslide
+            case .highTide: return shelter.highTide
+            case .earthquake: return shelter.earthquake
+            case .tsunami: return shelter.tsunami
+            case .fire: return shelter.fire
+            case .internalFlooding: return shelter.internalFlooding
+            case .volcano: return shelter.volcano
             }
         }
     }
-
-    // search shelters by name or address
+    
     func searchShelters(query: String) -> [Shelter] {
-        guard !query.isEmpty else {
-            return shelters
-        }
-
+        guard !query.isEmpty else { return shelters }
+        
         let searchQuery = query.lowercased()
         return shelters.filter {
-            $0.name.lowercased().contains(searchQuery)
+            $0.name.lowercased().contains(searchQuery) ||
+            $0.address.lowercased().contains(searchQuery)
         }
     }
-
-    // sort shelters by distance from a given location(user's current location)
-    func sortByDistance(from location: CLLocation) {
-        shelters.sort { shelter1, shelter2 in
-            let location1 = CLLocation(latitude: shelter1.latitude, longitude: shelter1.longitude)
-            let location2 = CLLocation(latitude: shelter2.latitude, longitude: shelter2.longitude)
-
-            return location1.distance(from: location) < location2.distance(from: location)
-        }
-    }
-
-    // load shelters from JSON file
+    
+    // MARK: - Private Methods
+    
     private func loadShelters() {
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            do {
-                guard let url = Bundle.main.url(forResource: self?.jsonFileName, withExtension: "json") else {
-                    throw DataError.fileNotFound("Could not find \(self?.jsonFileName ?? "unknown").json")
-                }
-                
-                let data = try Data(contentsOf: url)
-                let decodedShelters = try JSONDecoder().decode([Shelter].self, from: data)
-                
-                DispatchQueue.main.async {
-                    self?.shelters = decodedShelters
-                    self?.errorMessage = nil
-                }
-            } catch let error as DataError {
-                DispatchQueue.main.async {
-                    self?.handleError(error)
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    self?.handleError(DataError.decodingError(error.localizedDescription))
-                }
+        guard let url = Bundle.main.url(forResource: jsonFileName, withExtension: jsonFileExtension) else {
+            handleError(.fileNotFound("Shelter data file not found"))
+            return
+        }
+        
+        do {
+            let data = try Data(contentsOf: url)
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            
+            let response = try decoder.decode(ShelterResponse.self, from: data)
+            DispatchQueue.main.async {
+                self.shelters = response.shelters
             }
+        } catch {
+            handleError(.decodingError(error.localizedDescription))
         }
     }
-
-    /// Handle and display errors
+    
+    private func calculateRadius(from region: MKCoordinateRegion) -> CLLocationDistance {
+        let metersPerDegree = 111_000.0
+        return max(
+            region.span.latitudeDelta * metersPerDegree / 2,
+            region.span.longitudeDelta * metersPerDegree / 2
+        )
+    }
+    
     private func handleError(_ error: DataError) {
         DispatchQueue.main.async {
-            switch error {
-            case .fileNotFound(let message):
-                self.errorMessage = "File Error: \(message)"
-            case .decodingError(let message):
-                self.errorMessage = "Decoding Error: \(message)"
-            case .invalidData:
-                self.errorMessage = "Invalid Data Error"
-            }
             self.shelters = []
+            self.selectedShelter = nil
         }
     }
 }
 
-// Helper Methods
+// MARK: - Helper Methods
 extension ShelterViewModel {
-    /// Get shelters grouped by region
     var sheltersByRegion: [String: [Shelter]] {
         Dictionary(grouping: shelters) { $0.regionCode }
     }
     
-    /// Get all unique region codes
     var availableRegions: [String] {
-        Array(Set(shelters.map { $0.regionCode })).sorted()
+        Array(Set(shelters.map(\.regionCode))).sorted()
     }
+}
 
-    // Get shelters within specified radius (in meters) from a location
-    func getSheltersNearLocation(_ location: CLLocation, radius: Double = 5000) -> [Shelter] {
-        return shelters.filter { shelter in
-            let shelterLocation = CLLocation(
-                latitude: shelter.latitude,
-                longitude: shelter.longitude
-            )
-            return location.distance(from: shelterLocation) <= radius
-        }
-    }
-
-    // Get shelters within specified radius from a map center location
-    func getSheltersInVisibleRegion(center: CLLocationCoordinate2D, radius: Double = 2000) -> [Shelter] {
-        let centerLocation = CLLocation(latitude: center.latitude, longitude: center.longitude)
-        return shelters.filter { shelter in
-            let shelterLocation = CLLocation(
-                latitude: shelter.latitude,
-                longitude: shelter.longitude
-            )
-            return centerLocation.distance(from: shelterLocation) <= radius
-        }
-    }
-
-    // Get shelters visible in the current map view
-    func getSheltersInMapRegion(_ region: MKCoordinateRegion) -> [Shelter] {
-        let span = region.span
-        let centerLocation = CLLocation(latitude: region.center.latitude, 
-                                      longitude: region.center.longitude)
-        
-        // Calculate approximate radius based on the map's visible region
-        let distanceLatitude = span.latitudeDelta * 111000 / 2 // Convert to meters
-        let distanceLongitude = span.longitudeDelta * 111000 / 2
-        let radius = max(distanceLatitude, distanceLongitude)
-        
-        return shelters.filter { shelter in
-            let shelterLocation = CLLocation(
-                latitude: shelter.latitude,
-                longitude: shelter.longitude
-            )
-            return centerLocation.distance(from: shelterLocation) <= radius
-        }
-    }
-    
-    // Get shelters near user location with custom radius
-    func getSheltersNearUserLocation(_ location: CLLocation) -> [Shelter] {
-        return getSheltersNearLocation(location, radius: 2000) // 2km radius
-    }
+// MARK: - Private Types
+private struct ShelterResponse: Codable {
+    let shelters: [Shelter]
 }
 
 
