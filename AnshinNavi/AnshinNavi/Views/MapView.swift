@@ -11,6 +11,7 @@ import CoreLocation
 
 struct MapView: UIViewRepresentable {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
+    var selectedDetent: PresentationDetent
     
     func makeCoordinator() -> Coordinator {
         Coordinator(self, shelterViewModel: shelterViewModel)
@@ -28,6 +29,7 @@ struct MapView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
+        context.coordinator.updateSearchButtonPosition(uiView,for: selectedDetent)
     }
     
     // MARK: - Configuration Methods
@@ -57,18 +59,27 @@ struct MapView: UIViewRepresentable {
         
         // Search button
         let searchButton = createSearchButton(target: context.coordinator)
-        searchButton.isHidden = true
         mapView.addSubview(searchButton)
         
-        // Setup search button constraints only
+        // Calculate initial padding based on drawer height
+        let initialDrawerHeight = MainBottomDrawerView.getCurrentHeight(for: selectedDetent)
+        let initialSearchButtonPadding: CGFloat = -(initialDrawerHeight + MAIN_DRAWER_SEARCH_BOX_PADDING)
+        
+        // Create bottom constraint and store it in coordinator
+        let bottomConstraint = searchButton.bottomAnchor.constraint(
+            equalTo: mapView.safeAreaLayoutGuide.bottomAnchor,
+            constant: initialSearchButtonPadding
+        )
+        
         NSLayoutConstraint.activate([
             searchButton.centerXAnchor.constraint(equalTo: mapView.centerXAnchor),
-            searchButton.bottomAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            bottomConstraint,
             searchButton.heightAnchor.constraint(equalToConstant: 36),
             searchButton.widthAnchor.constraint(lessThanOrEqualTo: mapView.widthAnchor, multiplier: 0.7)
         ])
         
         context.coordinator.searchButton = searchButton
+        context.coordinator.searchButtonBottomConstraint = bottomConstraint
     }
     
     private func createSearchButton(target: Coordinator) -> UIButton {
@@ -101,6 +112,10 @@ struct MapView: UIViewRepresentable {
         weak var compassButton: MKCompassButton?
         private var isInitialLocationSet = false
         var shelterHandler: ShelterHandler!
+        weak var searchButtonBottomConstraint: NSLayoutConstraint?
+        private var searchButtonTimer: Timer?
+        private var isMapScrolling = false
+        private let searchButtonAnimationDuration: TimeInterval = 0.3
         
         init(_ parent: MapView, shelterViewModel: ShelterViewModel) {
             self.parent = parent
@@ -120,7 +135,44 @@ struct MapView: UIViewRepresentable {
         }
         
         func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
-            searchButton?.isHidden = animated
+            isMapScrolling = true
+            searchButtonTimer?.invalidate()
+            
+            UIView.animate(withDuration: searchButtonAnimationDuration, 
+                          delay: 0,
+                          options: [.curveEaseOut]) {
+                self.searchButton?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                self.searchButton?.alpha = 0
+            } completion: { _ in
+                self.searchButton?.isHidden = true
+                self.searchButton?.transform = .identity
+            }
+        }
+        
+        func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+            isMapScrolling = false
+            searchButtonTimer?.invalidate()
+            
+            searchButtonTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
+                guard let self = self, !self.isMapScrolling else { return }
+                
+                if case .large = self.parent.selectedDetent {
+                    return
+                }
+                
+                self.searchButton?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                self.searchButton?.alpha = 0
+                self.searchButton?.isHidden = false
+                
+                UIView.animate(withDuration: self.searchButtonAnimationDuration,
+                             delay: 0,
+                             usingSpringWithDamping: 0.8,
+                             initialSpringVelocity: 0.5,
+                             options: [.curveEaseOut]) {
+                    self.searchButton?.transform = .identity
+                    self.searchButton?.alpha = 1
+                }
+            }
         }
         
         // MARK: - CLLocationManagerDelegate Methods
@@ -158,7 +210,18 @@ struct MapView: UIViewRepresentable {
             guard let mapView = locationButton?.superview as? MKMapView else { return }
             
             mapView.setUserTrackingMode(.followWithHeading, animated: true)
-            searchButton?.isHidden = true
+            
+            UIView.animate(withDuration: searchButtonAnimationDuration,
+                          delay: 0,
+                          options: [.curveEaseOut]) {
+                self.searchButton?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                self.searchButton?.alpha = 0
+            } completion: { _ in
+                self.searchButton?.isHidden = true
+                self.searchButton?.transform = .identity
+            }
+            
+            searchButtonTimer?.invalidate()
             
             guard let location = locationManager?.location else {
                 print("User location is not available.")
@@ -171,6 +234,18 @@ struct MapView: UIViewRepresentable {
         @objc func searchRegionButtonTapped() {
             guard let mapView = searchButton?.superview as? MKMapView else { return }
             
+            UIView.animate(withDuration: searchButtonAnimationDuration,
+                          delay: 0,
+                          options: [.curveEaseOut]) {
+                self.searchButton?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                self.searchButton?.alpha = 0
+            } completion: { _ in
+                self.searchButton?.isHidden = true
+                self.searchButton?.transform = .identity
+            }
+            
+            searchButtonTimer?.invalidate()
+            
             let region = mapView.region
             let centerLocation = CLLocation(
                 latitude: region.center.latitude,
@@ -178,7 +253,6 @@ struct MapView: UIViewRepresentable {
             )
             
             shelterHandler.updateAnnotations(on: mapView, near: centerLocation)
-            searchButton?.isHidden = true
         }
         
         // MARK: - Helper Methods
@@ -190,6 +264,52 @@ struct MapView: UIViewRepresentable {
                 longitudinalMeters: 1000
             )
             mapView.setRegion(region, animated: true)
+        }
+        
+        func updateSearchButtonPosition(_ mapView: MKMapView, for detent: PresentationDetent) {
+            let drawerHeight = MainBottomDrawerView.getCurrentHeight(for: detent)
+            let newSearchButtonPadding: CGFloat = -(drawerHeight + MAIN_DRAWER_SEARCH_BOX_PADDING)
+            let shouldHide = detent == .large || isMapScrolling
+            
+            // Update the existing constraint's constant
+            searchButtonBottomConstraint?.constant = newSearchButtonPadding
+            
+            if shouldHide && !searchButton!.isHidden {
+                UIView.animate(withDuration: searchButtonAnimationDuration,
+                             delay: 0,
+                             options: [.curveEaseOut]) {
+                    self.searchButton?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                    self.searchButton?.alpha = 0
+                    self.searchButton?.superview?.layoutIfNeeded() // Animate constraint change
+                } completion: { _ in
+                    self.searchButton?.isHidden = true
+                    self.searchButton?.transform = .identity
+                }
+            } else if !shouldHide && searchButton!.isHidden {
+                self.searchButton?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                self.searchButton?.alpha = 0
+                self.searchButton?.isHidden = false
+                
+                UIView.animate(withDuration: self.searchButtonAnimationDuration,
+                             delay: 0,
+                             usingSpringWithDamping: 0.8,
+                             initialSpringVelocity: 0.5,
+                             options: [.curveEaseOut]) {
+                    self.searchButton?.transform = .identity
+                    self.searchButton?.alpha = 1
+                    self.searchButton?.superview?.layoutIfNeeded() // Animate constraint change
+                }
+            } else {
+                // If button is visible and staying visible, just animate the position change
+                UIView.animate(withDuration: 0.3) {
+                    self.searchButton?.superview?.layoutIfNeeded()
+                }
+            }
+        }
+        
+        // Clean up timer when coordinator is deallocated
+        deinit {
+            searchButtonTimer?.invalidate()
         }
     }
 }

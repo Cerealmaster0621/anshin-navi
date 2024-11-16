@@ -67,7 +67,7 @@ struct DetailedShelterView: View {
                                     Text(shelter.address)
                                         .font(.system(size: 17))
                                     Spacer()
-                                    Image(systemName: "doc.on.doc.circle.fill")
+                                    Image(systemName: "doc.on.clipboard")
                                         .font(.system(size: 20))
                                         .foregroundColor(.blue)
                                 }
@@ -93,7 +93,7 @@ struct DetailedShelterView: View {
                                             .font(.system(size: 17))
                                     }
                                     Spacer()
-                                    Image(systemName: "doc.on.doc.circle.fill")
+                                    Image(systemName: "doc.on.clipboard")
                                         .font(.system(size: 20))
                                         .foregroundColor(.blue)
                                 }
@@ -210,7 +210,7 @@ extension Shelter {
             SafetyFeature(iconName: "drop.fill", description: "洪水"),
             SafetyFeature(iconName: "triangle.fill", description: "土砂崩れ"),
             SafetyFeature(iconName: "waveform.path.ecg", description: "高潮"),
-            SafetyFeature(iconName: "earthquake.fill", description: "地震"),
+            SafetyFeature(iconName: "waveform.path.ecg.rectangle", description: "地震"),
             SafetyFeature(iconName: "tornado", description: "津波"),
             SafetyFeature(iconName: "flame.fill", description: "火事"),
             SafetyFeature(iconName: "drop.triangle.fill", description: "内水氾濫"),
