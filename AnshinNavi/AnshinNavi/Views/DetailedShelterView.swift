@@ -4,6 +4,7 @@ struct DetailedShelterView: View {
     let shelter: Shelter
     @Binding var isPresented: Bool
     @State private var showingCoordinatesCopied = false
+    @State private var showingAddressCopied = false
     
     private var shareText: String {
         """
@@ -55,28 +56,29 @@ struct DetailedShelterView: View {
                     Group {
                         // Address with Copy Button
                         informationCard(title: "住所", icon: "mappin.circle.fill") {
-                            HStack {
-                                Text(shelter.address)
-                                    .font(.system(size: 17))
-                                Spacer()
-                                Button(action: {
-                                    UIPasteboard.general.string = shelter.address
-                                    showingCoordinatesCopied = true
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                        showingCoordinatesCopied = false
-                                    }
-                                }) {
+                            Button(action: {
+                                UIPasteboard.general.string = shelter.address
+                                showingAddressCopied = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    showingAddressCopied = false
+                                }
+                            }) {
+                                HStack {
+                                    Text(shelter.address)
+                                        .font(.system(size: 17))
+                                    Spacer()
                                     Image(systemName: "doc.on.doc.circle.fill")
                                         .font(.system(size: 20))
                                         .foregroundColor(.blue)
                                 }
                             }
+                            .foregroundColor(.primary)
                         }
                         
                         // Coordinates with Integrated Copy
                         informationCard(title: "位置座標", icon: "location.circle.fill") {
                             Button(action: {
-                                let coordinates = "緯度: \(String(format: "%.6f", shelter.latitude)), 経度: \(String(format: "%.6f", shelter.longitude))"
+                                let coordinates = "緯度: \(String(format: "%.6f", shelter.latitude)), 軽度: \(String(format: "%.6f", shelter.longitude))"
                                 UIPasteboard.general.string = coordinates
                                 showingCoordinatesCopied = true
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -87,7 +89,7 @@ struct DetailedShelterView: View {
                                     VStack(alignment: .leading, spacing: 8) {
                                         Text("緯度: \(String(format: "%.6f", shelter.latitude))")
                                             .font(.system(size: 17))
-                                        Text("経度: \(String(format: "%.6f", shelter.longitude))")
+                                        Text("軽度: \(String(format: "%.6f", shelter.longitude))")
                                             .font(.system(size: 17))
                                     }
                                     Spacer()
@@ -145,7 +147,10 @@ struct DetailedShelterView: View {
         }
         .background(Color(.systemGroupedBackground))
         .overlay(
-            ToastView(message: "コピーしました", isShowing: $showingCoordinatesCopied)
+            Group {
+                ToastView(message: "位置座標をコピーしました", isShowing: $showingCoordinatesCopied)
+                ToastView(message: "住所をコピーしました", isShowing: $showingAddressCopied)
+            }
         )
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
@@ -205,7 +210,7 @@ extension Shelter {
             SafetyFeature(iconName: "drop.fill", description: "洪水"),
             SafetyFeature(iconName: "triangle.fill", description: "土砂崩れ"),
             SafetyFeature(iconName: "waveform.path.ecg", description: "高潮"),
-            SafetyFeature(iconName: "bolt.fill", description: "地震"),
+            SafetyFeature(iconName: "earthquake.fill", description: "地震"),
             SafetyFeature(iconName: "tornado", description: "津波"),
             SafetyFeature(iconName: "flame.fill", description: "火事"),
             SafetyFeature(iconName: "drop.triangle.fill", description: "内水氾濫"),
