@@ -45,44 +45,25 @@ struct MapView: UIViewRepresentable {
     }
     
     private func setupMapControls(_ mapView: MKMapView, with context: Context) {
-        // Compass
-        let compass = MKCompassButton(mapView: mapView)
-        compass.compassVisibility = .visible
-        compass.translatesAutoresizingMaskIntoConstraints = false
-        mapView.addSubview(compass)
-        context.coordinator.compassButton = compass
-        
-        // Location button
-        let locationButton = createLocationButton(target: context.coordinator)
-        mapView.addSubview(locationButton)
+        // Create right side controls
+        let rightSideView = MapRightSideView(mapView: mapView, coordinator: context.coordinator)
+        context.coordinator.compassButton = rightSideView.compassButton
+        context.coordinator.locationButton = rightSideView.locationButton
         
         // Search button
         let searchButton = createSearchButton(target: context.coordinator)
         searchButton.isHidden = true
         mapView.addSubview(searchButton)
         
-        setupConstraints(mapView, compass: compass, location: locationButton, search: searchButton)
+        // Setup search button constraints only
+        NSLayoutConstraint.activate([
+            searchButton.centerXAnchor.constraint(equalTo: mapView.centerXAnchor),
+            searchButton.bottomAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            searchButton.heightAnchor.constraint(equalToConstant: 36),
+            searchButton.widthAnchor.constraint(lessThanOrEqualTo: mapView.widthAnchor, multiplier: 0.7)
+        ])
         
-        context.coordinator.locationButton = locationButton
         context.coordinator.searchButton = searchButton
-    }
-    
-    private func createLocationButton(target: Coordinator) -> UIButton {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .systemBackground
-        button.layer.cornerRadius = 8
-        button.layer.shadowOffset = CGSize(width: 0, height: 2)
-        button.layer.shadowRadius = 4
-        button.layer.shadowOpacity = 0.15
-        
-        let image = UIImage(systemName: "location.fill")?
-            .withConfiguration(UIImage.SymbolConfiguration(pointSize: 18, weight: .medium))
-        button.setImage(image, for: .normal)
-        button.tintColor = .systemBlue
-        button.addTarget(target, action: #selector(Coordinator.locationButtonTapped), for: .touchUpInside)
-        
-        return button
     }
     
     private func createSearchButton(target: Coordinator) -> UIButton {
@@ -103,27 +84,6 @@ struct MapView: UIViewRepresentable {
         button.addTarget(target, action: #selector(Coordinator.searchRegionButtonTapped), for: .touchUpInside)
         
         return button
-    }
-    
-    private func setupConstraints(_ mapView: MKMapView, compass: MKCompassButton?, location: UIButton, search: UIButton) {
-        guard let compass = compass else { return }
-        NSLayoutConstraint.activate([
-            // Compass
-            compass.topAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.topAnchor, constant: 10),
-            compass.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            
-            // Location button
-            location.topAnchor.constraint(equalTo: compass.bottomAnchor, constant: 10),
-            location.trailingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            location.widthAnchor.constraint(equalToConstant: 40),
-            location.heightAnchor.constraint(equalToConstant: 40),
-            
-            // Search button - centered at bottom
-            search.centerXAnchor.constraint(equalTo: mapView.centerXAnchor),
-            search.bottomAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            search.heightAnchor.constraint(equalToConstant: 36),
-            search.widthAnchor.constraint(lessThanOrEqualTo: mapView.widthAnchor, multiplier: 0.7)
-        ])
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
