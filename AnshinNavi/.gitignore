@@ -1,11 +1,11 @@
 # Raw Data files
-RawDatas/*
-!RawDatas/*.py
-!RawDatas/*.md
+/RawDatas/*
+!/RawDatas/*.py
+!/RawDatas/*.md
 
 # Generated Data files
-AnshinNavi/Datas/*
-!AnshinNavi/Datas/.gitkeep
+/AnshinNavi/Datas/*
+!/AnshinNavi/Datas/.gitkeep
 
 # Xcode
 .DS_Store

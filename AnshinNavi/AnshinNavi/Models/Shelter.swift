@@ -8,8 +8,8 @@
 import Foundation
 import CoreLocation
 
-struct Shelter: Codable, Identifiable {
-    let id: UUID
+struct Shelter: Identifiable, Codable, Equatable {
+    let id: String
     var regionCode: String
     var regionName: String
     var number: String
@@ -46,9 +46,9 @@ struct Shelter: Codable, Identifiable {
         isSameAsEvacuationCenter: Bool,
         latitude: Double,
         longitude: Double,
-        additionalInfo: String = ""
+        additionalInfo: String
     ) {
-        self.id = id
+        self.id = id.uuidString
         self.regionCode = regionCode
         self.regionName = regionName
         self.number = number
@@ -66,5 +66,9 @@ struct Shelter: Codable, Identifiable {
         self.latitude = latitude
         self.longitude = longitude
         self.additionalInfo = additionalInfo
+    }
+    
+    static func == (lhs: Shelter, rhs: Shelter) -> Bool {
+        lhs.id == rhs.id
     }
 }

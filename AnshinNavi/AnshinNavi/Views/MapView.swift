@@ -1,9 +1,17 @@
+//
+//  MapView.swift
+//  AnshinNavi
+//
+//  Created by YoungJune Kang on 2024/11/16.
+//
+
 import SwiftUI
 import MapKit
 import CoreLocation
 
 struct MapView: UIViewRepresentable {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(self, shelterViewModel: shelterViewModel)
     }
@@ -11,7 +19,7 @@ struct MapView: UIViewRepresentable {
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
-
+        
         configureMapView(mapView)
         setupLocationServices(context)
         setupMapControls(mapView, with: context)
@@ -19,11 +27,11 @@ struct MapView: UIViewRepresentable {
         return mapView
     }
     
+    func updateUIView(_ uiView: MKMapView, context: Context) {
+    }
+    
     // MARK: - Configuration Methods
     
-    /// Configures the initial map view settings
-    /// - Parameter mapView: The map view to configure
-    /// Sets up basic map properties like showing user location and tracking mode
     private func configureMapView(_ mapView: MKMapView) {
         mapView.preferredConfiguration = MKStandardMapConfiguration(elevationStyle: .flat, emphasisStyle: .default)
         mapView.showsUserLocation = true
@@ -31,9 +39,6 @@ struct MapView: UIViewRepresentable {
         mapView.userTrackingMode = .followWithHeading
     }
     
-    /// Sets up location services for the map
-    /// - Parameter context: The context containing the coordinator
-    /// Configures location manager with appropriate accuracy and permissions
     private func setupLocationServices(_ context: Context) {
         let locationManager = CLLocationManager()
         locationManager.delegate = context.coordinator
@@ -86,10 +91,7 @@ struct MapView: UIViewRepresentable {
         return button
     }
     
-    func updateUIView(_ uiView: MKMapView, context: Context) {
-        // No updates needed here since annotations are handled elsewhere
-    }
-    
+    // MARK: - Coordinator
     class Coordinator: NSObject, MKMapViewDelegate, CLLocationManagerDelegate {
         private let parent: MapView
         var shelterViewModel: ShelterViewModel
@@ -107,40 +109,29 @@ struct MapView: UIViewRepresentable {
             self.shelterHandler = ShelterHandler(coordinator: self, shelterViewModel: shelterViewModel)
         }
         
-        // Forward delegate methods
+        // MARK: - MKMapViewDelegate Methods
+        
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
             return shelterHandler.mapView(mapView, viewFor: annotation)
         }
-
+        
         func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
             shelterHandler.mapView(mapView, annotationView: view, calloutAccessoryControlTapped: control)
         }
-
         
-        func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-            guard let mapView = locationButton?.superview as? MKMapView else { return }
-            
-            if mapView.userTrackingMode == .followWithHeading {
-                // Update the map rotation to match the user's heading
-                let heading = newHeading.magneticHeading
-                mapView.camera.heading = heading
-            }
+        func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+            searchButton?.isHidden = animated
         }
+        
+        // MARK: - CLLocationManagerDelegate Methods
         
         func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
             if manager.authorizationStatus == .authorizedWhenInUse ||
-               manager.authorizationStatus == .authorizedAlways {
+                manager.authorizationStatus == .authorizedAlways {
                 manager.startUpdatingLocation()
             }
         }
         
-        // MARK: - Location Updates
-        
-        /// Handles user location updates
-        /// - Parameters:
-        ///   - manager: The location manager
-        ///   - locations: Array of new locations
-        /// Only updates map region on initial location set
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
             guard let location = locations.first,
                   let mapView = locationButton?.superview as? MKMapView,
@@ -152,24 +143,28 @@ struct MapView: UIViewRepresentable {
             manager.stopUpdatingLocation()
         }
         
-        func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
-            searchButton?.isHidden = animated
+        func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+            guard let mapView = locationButton?.superview as? MKMapView else { return }
+            
+            if mapView.userTrackingMode == .followWithHeading {
+                let heading = newHeading.magneticHeading
+                mapView.camera.heading = heading
+            }
         }
         
-        /// Handles location button tap
-        /// Centers map on user location and updates tracking mode
+        // MARK: - Button Actions
+        
         @objc func locationButtonTapped() {
             guard let mapView = locationButton?.superview as? MKMapView else { return }
-
+            
             mapView.setUserTrackingMode(.followWithHeading, animated: true)
             searchButton?.isHidden = true
-
+            
             guard let location = locationManager?.location else {
                 print("User location is not available.")
                 return
             }
-
-            // Call updateAnnotations
+            
             shelterHandler.updateAnnotations(on: mapView, near: location)
         }
         
@@ -185,6 +180,8 @@ struct MapView: UIViewRepresentable {
             shelterHandler.updateAnnotations(on: mapView, near: centerLocation)
             searchButton?.isHidden = true
         }
+        
+        // MARK: - Helper Methods
         
         private func updateMapRegion(_ mapView: MKMapView, coordinate: CLLocationCoordinate2D) {
             let region = MKCoordinateRegion(
