@@ -103,7 +103,7 @@
 		B33F831F2CE63DA200D33A0D = {
 			isa = PBXGroup;
 			children = (
-				B33F832A2CE63DA200D33A0D /* AnshinNavi */,
+				B33F832A2CE63DA200D33A0D /* Src */,
 				B33F833D2CE63DA300D33A0D /* AnshinNaviTests */,
 				B33F83472CE63DA300D33A0D /* AnshinNaviUITests */,
 				B33F83292CE63DA200D33A0D /* Products */,
@@ -120,7 +120,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B33F832A2CE63DA200D33A0D /* AnshinNavi */ = {
+		B33F832A2CE63DA200D33A0D /* Src */ = {
 			isa = PBXGroup;
 			children = (
 				B3B569452CE756180073C38A /* Datas */,
@@ -133,7 +133,7 @@
 				B33F83312CE63DA300D33A0D /* Assets.xcassets */,
 				B33F83332CE63DA300D33A0D /* Preview Content */,
 			);
-			path = AnshinNavi;
+			path = Src;
 			sourceTree = "<group>";
 		};
 		B33F83332CE63DA300D33A0D /* Preview Content */ = {
