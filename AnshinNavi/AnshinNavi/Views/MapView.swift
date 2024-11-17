@@ -12,7 +12,8 @@ import CoreLocation
 struct MapView: UIViewRepresentable {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
     var selectedDetent: PresentationDetent
-    
+    @Binding var currentAnnotationType: CurrentAnnotationType
+
     func makeCoordinator() -> Coordinator {
         Coordinator(self, shelterViewModel: shelterViewModel)
     }
@@ -53,10 +54,14 @@ struct MapView: UIViewRepresentable {
     
     private func setupMapControls(_ mapView: MKMapView, with context: Context) {
         // Create right side controls
-        let rightSideView = MapRightSideView(mapView: mapView, coordinator: context.coordinator)
+        let rightSideView = MapRightSideView(mapView: mapView, coordinator: context.coordinator, currentAnnotationType: $currentAnnotationType)
         context.coordinator.compassButton = rightSideView.compassButton
         context.coordinator.locationButton = rightSideView.locationButton
-        
+        context.coordinator.settingsButton = rightSideView.settingsButton
+        if currentAnnotationType != .none {
+            context.coordinator.filterButton = rightSideView.filterButton
+        }
+
         // Search button
         let searchButton = createSearchButton(target: context.coordinator)
         mapView.addSubview(searchButton)
@@ -109,6 +114,8 @@ struct MapView: UIViewRepresentable {
         var locationManager: CLLocationManager?
         weak var locationButton: UIButton?
         weak var searchButton: UIButton?
+        weak var settingsButton: UIButton?
+        weak var filterButton: UIButton?
         weak var compassButton: MKCompassButton?
         private var isInitialLocationSet = false
         var shelterHandler: ShelterHandler!
@@ -253,6 +260,18 @@ struct MapView: UIViewRepresentable {
             )
             
             shelterHandler.updateAnnotations(on: mapView, near: centerLocation)
+        }
+
+        @objc func filterButtonTapped() {
+            print("DEBUG: Filter button tapped")
+            guard let mapView = locationButton?.superview as? MKMapView else {
+                print("DEBUG: MapView is nil in filterButtonTapped")
+                return
+            }
+            
+            let filterDrawer = FilterDrawerView(currentAnnotationType: parent.currentAnnotationType)
+            filterDrawer.show(in: mapView)
+            print("DEBUG: Filter drawer shown")
         }
         
         // MARK: - Helper Methods

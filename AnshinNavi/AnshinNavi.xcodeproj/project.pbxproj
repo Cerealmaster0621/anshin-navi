@@ -21,6 +21,7 @@
 		B366C1E82CE7B3A80063E659 /* ShelterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B366C1E72CE7B3A80063E659 /* ShelterViewModel.swift */; };
 		B366C1EA2CE7B3B50063E659 /* ShelterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B366C1E92CE7B3B50063E659 /* ShelterView.swift */; };
 		B3C01EF42CE8E22B00FB6E82 /* MainBottomDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01EF32CE8E22B00FB6E82 /* MainBottomDrawerView.swift */; };
+		B3C01EF62CE984D600FB6E82 /* FilterDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01EF52CE984D600FB6E82 /* FilterDrawerView.swift */; };
 		B3D664F42CE85AC700B549DA /* MapRightSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D664F32CE85AC700B549DA /* MapRightSideView.swift */; };
 		B3D665112CE88C6300B549DA /* DetailedShelterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D665102CE88C6300B549DA /* DetailedShelterView.swift */; };
 		B3D665132CE890B800B549DA /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D665122CE890B800B549DA /* MapView.swift */; };
@@ -62,6 +63,7 @@
 		B366C1E72CE7B3A80063E659 /* ShelterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelterViewModel.swift; sourceTree = "<group>"; };
 		B366C1E92CE7B3B50063E659 /* ShelterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelterView.swift; sourceTree = "<group>"; };
 		B3C01EF32CE8E22B00FB6E82 /* MainBottomDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBottomDrawerView.swift; sourceTree = "<group>"; };
+		B3C01EF52CE984D600FB6E82 /* FilterDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterDrawerView.swift; sourceTree = "<group>"; };
 		B3D664F32CE85AC700B549DA /* MapRightSideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRightSideView.swift; sourceTree = "<group>"; };
 		B3D665102CE88C6300B549DA /* DetailedShelterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedShelterView.swift; sourceTree = "<group>"; };
 		B3D665122CE890B800B549DA /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				B3D664F32CE85AC700B549DA /* MapRightSideView.swift */,
+				B3C01EF52CE984D600FB6E82 /* FilterDrawerView.swift */,
 				B3C01EF32CE8E22B00FB6E82 /* MainBottomDrawerView.swift */,
 				B3D665102CE88C6300B549DA /* DetailedShelterView.swift */,
 				B3D665122CE890B800B549DA /* MapView.swift */,
@@ -337,6 +340,7 @@
 				B33F83622CE63E6B00D33A0D /* Constants.swift in Sources */,
 				B3D664F42CE85AC700B549DA /* MapRightSideView.swift in Sources */,
 				B3D665112CE88C6300B549DA /* DetailedShelterView.swift in Sources */,
+				B3C01EF62CE984D600FB6E82 /* FilterDrawerView.swift in Sources */,
 				B3D665132CE890B800B549DA /* MapView.swift in Sources */,
 				B3C01EF42CE8E22B00FB6E82 /* MainBottomDrawerView.swift in Sources */,
 				B33F832C2CE63DA200D33A0D /* AnshinNaviApp.swift in Sources */,

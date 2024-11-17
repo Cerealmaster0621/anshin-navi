@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MainBottomDrawerView: View {
     @Binding var selectedDetent: PresentationDetent
+    @Binding var currentAnnotationType: CurrentAnnotationType
     
     // Custom detent for 10% height
     struct SmallDetent: CustomPresentationDetent {

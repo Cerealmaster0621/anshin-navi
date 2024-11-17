@@ -38,14 +38,14 @@ struct DetailedShelterView: View {
                     HStack(spacing: 6) {
                         ShareLink(item: shareText) {
                             Image(systemName: "square.and.arrow.up.circle.fill")
-                                .font(.system(size: 28))
+                                .font(.system(size: 32))
                                 .foregroundColor(Color(.systemGray4))
                         }
                         Button(action: {
                             isPresented = false
                         }) {
                             Image(systemName: "xmark.circle.fill")
-                                .font(.system(size: 28))
+                                .font(.system(size: 32))
                                 .foregroundColor(Color(.systemGray4))
                         }
                     }
@@ -78,7 +78,7 @@ struct DetailedShelterView: View {
                         // Coordinates with Integrated Copy
                         informationCard(title: "位置座標", icon: "location.circle.fill") {
                             Button(action: {
-                                let coordinates = "緯度: \(String(format: "%.6f", shelter.latitude)), 軽度: \(String(format: "%.6f", shelter.longitude))"
+                                let coordinates = "緯度: \(String(format: "%.6f", shelter.latitude)), 軽度: \(String(format: "%.6f", shelter.longitude))" // TODO - change copy form depends on setting
                                 UIPasteboard.general.string = coordinates
                                 showingCoordinatesCopied = true
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
