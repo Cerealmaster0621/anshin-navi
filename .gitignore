@@ -17,12 +17,14 @@ DerivedData/
 *.ipa
 *.dSYM.zip
 *.dSYM
+*.xcarchive
 
 # Swift Package Manager
 .build/
 Packages/
 Package.pins
 Package.resolved
+.swiftpm/
 
 # CocoaPods
 Pods/
@@ -37,12 +39,14 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+fastlane/FastlaneRunner
 
 # Code Injection
 injected_container.swift
 
 # Environment variables
 .env
+.env.*
 
 # SwiftUI Preview Content
 Preview Content/
@@ -56,3 +60,17 @@ build/
 # Playgrounds
 timeline.xctimeline
 playground.xcworkspace
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# Raw Data files
+RawDatas/*
+!RawDatas/*.py
+!RawDatas/data_tools.py
+
+# Project specific
+*.generated.swift
+*.xcconfig
