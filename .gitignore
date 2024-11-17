@@ -67,7 +67,7 @@ playground.xcworkspace
 *.swo
 
 # Raw Data files
-AnshinNavi/RawDatas/*
+/AnshinNavi/RawDatas/*
 !AnshinNavi/RawDatas/*.py
 !AnshinNavi/RawDatas/data_tools.py
 
