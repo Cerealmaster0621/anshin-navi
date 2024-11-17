@@ -13,9 +13,14 @@ struct MapView: UIViewRepresentable {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
     var selectedDetent: PresentationDetent
     @Binding var currentAnnotationType: CurrentAnnotationType
+    @Binding var activeSheet: CurrentSheet?
+    @Binding var isTransitioning: Bool
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self, shelterViewModel: shelterViewModel)
+        Coordinator(self, 
+                   shelterViewModel: shelterViewModel,
+                   activeSheet: $activeSheet,
+                   isTransitioning: $isTransitioning)
     }
     
     func makeUIView(context: Context) -> MKMapView {
@@ -123,10 +128,17 @@ struct MapView: UIViewRepresentable {
         private var searchButtonTimer: Timer?
         private var isMapScrolling = false
         private let searchButtonAnimationDuration: TimeInterval = 0.3
+        @Binding var activeSheet: CurrentSheet?
+        @Binding var isTransitioning: Bool
         
-        init(_ parent: MapView, shelterViewModel: ShelterViewModel) {
+        init(_ parent: MapView, 
+             shelterViewModel: ShelterViewModel,
+             activeSheet: Binding<CurrentSheet?>,
+             isTransitioning: Binding<Bool>) {
             self.parent = parent
             self.shelterViewModel = shelterViewModel
+            self._activeSheet = activeSheet
+            self._isTransitioning = isTransitioning
             super.init()
             self.shelterHandler = ShelterHandler(coordinator: self, shelterViewModel: shelterViewModel)
         }
@@ -262,16 +274,50 @@ struct MapView: UIViewRepresentable {
             shelterHandler.updateAnnotations(on: mapView, near: centerLocation)
         }
 
-        @objc func filterButtonTapped() {
-            print("DEBUG: Filter button tapped")
-            guard let mapView = locationButton?.superview as? MKMapView else {
-                print("DEBUG: MapView is nil in filterButtonTapped")
-                return
+        @objc func settingButtonTapped() {
+            guard !isTransitioning else { return }
+            isTransitioning = true
+            
+            // If settings is already showing, close it and show bottom drawer
+            if activeSheet == .settings {
+                withAnimation {
+                    activeSheet = .bottomDrawer
+                }
+            } 
+            // If another sheet is showing, switch to settings
+            else {
+                withAnimation {
+                    activeSheet = .settings
+                }
             }
             
-            let filterDrawer = FilterDrawerView(currentAnnotationType: parent.currentAnnotationType)
-            filterDrawer.show(in: mapView)
-            print("DEBUG: Filter drawer shown")
+            // Reset transition state after animation completes
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.isTransitioning = false
+            }
+        }
+
+        @objc func filterButtonTapped() {
+            guard !isTransitioning else { return }
+            isTransitioning = true
+            
+            // If filter is already showing, close it and show bottom drawer
+            if activeSheet == .filter {
+                withAnimation {
+                    activeSheet = .bottomDrawer
+                }
+            }
+            // If another sheet is showing, switch to filter
+            else {
+                withAnimation {
+                    activeSheet = .filter
+                }
+            }
+            
+            // Reset transition state after animation completes
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.isTransitioning = false
+            }
         }
         
         // MARK: - Helper Methods

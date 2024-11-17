@@ -2,70 +2,79 @@ import SwiftUI
 import MapKit
 import CoreLocation
 
-enum CurrentAnnotationType {
-    case shelter
-    case none
-    // TODO: Add other annotation types
-    // case police
-    // case fire
-    // case ambulance
-}
-
 struct MapContainerView: View {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
     @State private var currentAnnotationType: CurrentAnnotationType = .shelter
-    @State private var showingShelterDetail = false
     @State private var selectedShelter: Shelter?
-    @State private var showingBottomDrawer = true
     @State private var selectedDetent: PresentationDetent = .custom(MainBottomDrawerView.SmallDetent.self)
     @State private var previousDetent: PresentationDetent = .custom(MainBottomDrawerView.SmallDetent.self)
     @State private var isTransitioning = false
-
+    @State private var activeSheet: CurrentSheet? = .bottomDrawer
+    @State private var previousSheet: CurrentSheet? = nil
+    
     var body: some View {
         ZStack {
-            MapView(selectedDetent: selectedDetent, currentAnnotationType: $currentAnnotationType)
+            MapView(selectedDetent: selectedDetent,
+                    currentAnnotationType: $currentAnnotationType,
+                    activeSheet: $activeSheet,
+                    isTransitioning: $isTransitioning)
                 .ignoresSafeArea(.all)
                 .environmentObject(shelterViewModel)
                 .onReceive(shelterViewModel.$selectedShelter) { shelter in
-                    guard !isTransitioning else { return }
-                    
                     if let shelter = shelter {
-                        isTransitioning = true
-                        selectedShelter = shelter
-                        previousDetent = selectedDetent
-                        
-                        // Close bottom drawer first
-                        withAnimation {
-                            showingBottomDrawer = false
-                        }
-                        
-                        // Wait for bottom drawer to close completely
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            showingShelterDetail = true
-                            isTransitioning = false
-                        }
+                        handleShelterSelection(shelter)
                     }
                 }
         }
-        .sheet(isPresented: $showingBottomDrawer) {
-            MainBottomDrawerView(selectedDetent: $selectedDetent, currentAnnotationType: $currentAnnotationType)
-                .presentationBackground(.regularMaterial)
-        }
-        .sheet(isPresented: $showingShelterDetail, onDismiss: {
-            selectedShelter = nil
-            shelterViewModel.selectedShelter = nil
+        .sheet(item: $activeSheet, onDismiss: handleSheetDismissal) { sheet in
+            switch sheet {
+            case .bottomDrawer:
+                MainBottomDrawerView(selectedDetent: $selectedDetent,
+                                   currentAnnotationType: $currentAnnotationType)
+                    .presentationBackground(.regularMaterial)
+                    .interactiveDismissDisabled()
             
-            // Wait a moment before showing bottom drawer
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                selectedDetent = previousDetent
-                withAnimation {
-                    showingBottomDrawer = true
+            case .shelterDetail:
+                if let shelter = selectedShelter {
+                    DetailedShelterView(shelter: shelter, isPresented: $isTransitioning)
+                        .presentationDragIndicator(.visible)
                 }
-            }
-        }) {
-            if let shelter = selectedShelter {
-                DetailedShelterView(shelter: shelter, isPresented: $showingShelterDetail)
+            
+            case .settings:
+                SettingDrawerView()
+                    .presentationDragIndicator(.visible)
+            
+            case .filter:
+                FilterDrawerView(currentAnnotationType: currentAnnotationType)
+                    .presentationDragIndicator(.visible)
             }
         }
+    }
+    
+    private func handleSheetDismissal() {
+        guard !isTransitioning else { return }
+        
+        isTransitioning = true
+        
+        if activeSheet == nil {
+            activeSheet = .bottomDrawer
+        }
+        
+        isTransitioning = false
+    }
+    
+    private func handleShelterSelection(_ shelter: Shelter) {
+        guard !isTransitioning else { return }
+        
+        isTransitioning = true
+        selectedShelter = shelter
+        previousDetent = selectedDetent
+        previousSheet = activeSheet
+        
+        if activeSheet != .shelterDetail {
+            activeSheet = .shelterDetail
+        }
+        
+        isTransitioning = false
     }
 }

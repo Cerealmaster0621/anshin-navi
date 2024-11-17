@@ -1,25 +1,23 @@
 import SwiftUI
 
-struct FilterDrawerView: View {
-    let currentAnnotationType: CurrentAnnotationType
-    
+struct SettingDrawerView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 // Header with Title and Close Button
                 HStack(alignment: .top) {
-                    Text("フィルター")
+                    Text("setting")
                         .font(.system(size: 32, weight: .bold))
                     Spacer()
                 }
                 
-                // Filter Options Section
+                // Setting Options Section
                 VStack(spacing: 20) {
-                    // Example filter options
+                    // Example Setting options
                     ForEach(0..<5) { _ in
-                        filterCard {
+                        SettingCard {
                             HStack {
-                                Text("Filter Option")
+                                Text("Setting Option")
                                     .font(.system(size: 17))
                                 Spacer()
                                 Image(systemName: "chevron.right")
@@ -36,7 +34,7 @@ struct FilterDrawerView: View {
         .presentationDragIndicator(.visible)
     }
     
-    private func filterCard<Content: View>(
+    private func SettingCard<Content: View>(
         @ViewBuilder content: () -> Content
     ) -> some View {
         VStack(alignment: .leading, spacing: 12) {

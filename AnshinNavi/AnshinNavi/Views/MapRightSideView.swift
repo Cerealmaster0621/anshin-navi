@@ -59,6 +59,22 @@ public class MapRightSideView {
         }
         
     }
+    
+    private func createSettingsButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .systemBackground.withAlphaComponent(0.9)
+        button.layer.cornerRadius = 6
+        button.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        
+        let image = UIImage(systemName: "gearshape.fill")?
+            .withConfiguration(UIImage.SymbolConfiguration(pointSize: 16, weight: .medium))
+        button.setImage(image, for: .normal)
+        button.tintColor = .systemBlue
+        button.addTarget(coordinator, action: #selector(MapView.Coordinator.settingButtonTapped), for: .touchUpInside)
+        
+        return button
+    }
 
     private func createLocationButton() -> UIButton {
         let button = UIButton(type: .system)
@@ -72,21 +88,6 @@ public class MapRightSideView {
         button.setImage(image, for: .normal)
         button.tintColor = .systemBlue
         button.addTarget(coordinator, action: #selector(MapView.Coordinator.locationButtonTapped), for: .touchUpInside)
-        
-        return button
-    }
-    
-    private func createSettingsButton() -> UIButton {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .systemBackground.withAlphaComponent(0.9)
-        button.layer.cornerRadius = 6
-        button.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        
-        let image = UIImage(systemName: "gearshape.fill")?
-            .withConfiguration(UIImage.SymbolConfiguration(pointSize: 16, weight: .medium))
-        button.setImage(image, for: .normal)
-        button.tintColor = .systemBlue
         
         return button
     }
