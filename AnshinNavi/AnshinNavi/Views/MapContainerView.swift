@@ -19,7 +19,7 @@ struct MapContainerView: View {
                     currentAnnotationType: $currentAnnotationType,
                     activeSheet: $activeSheet,
                     isTransitioning: $isTransitioning,
-                    selectedShelterFilterTypes: selectedShelterFilterTypes
+                    selectedShelterFilterTypes: $selectedShelterFilterTypes
                     )
                 .ignoresSafeArea(.all)
                 .environmentObject(shelterViewModel)

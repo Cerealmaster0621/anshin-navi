@@ -15,13 +15,14 @@ struct MapView: UIViewRepresentable {
     @Binding var currentAnnotationType: CurrentAnnotationType
     @Binding var activeSheet: CurrentSheet?
     @Binding var isTransitioning: Bool
-    @State var selectedShelterFilterTypes: [ShelterFilterType]
+    @Binding var selectedShelterFilterTypes: [ShelterFilterType]
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self, 
                    shelterViewModel: shelterViewModel,
                    activeSheet: $activeSheet,
-                   isTransitioning: $isTransitioning)
+                   isTransitioning: $isTransitioning,
+                   selectedShelterFilterTypes: $selectedShelterFilterTypes)
     }
     
     func makeUIView(context: Context) -> MKMapView {
@@ -131,17 +132,22 @@ struct MapView: UIViewRepresentable {
         private let searchButtonAnimationDuration: TimeInterval = 0.3
         @Binding var activeSheet: CurrentSheet?
         @Binding var isTransitioning: Bool
+        @Binding var selectedShelterFilterTypes: [ShelterFilterType]
         
         init(_ parent: MapView, 
              shelterViewModel: ShelterViewModel,
              activeSheet: Binding<CurrentSheet?>,
-             isTransitioning: Binding<Bool>) {
+             isTransitioning: Binding<Bool>,
+             selectedShelterFilterTypes: Binding<[ShelterFilterType]>) {
             self.parent = parent
             self.shelterViewModel = shelterViewModel
             self._activeSheet = activeSheet
             self._isTransitioning = isTransitioning
+            self._selectedShelterFilterTypes = selectedShelterFilterTypes
             super.init()
-            self.shelterHandler = ShelterHandler(coordinator: self, shelterViewModel: shelterViewModel)
+            self.shelterHandler = ShelterHandler(coordinator: self, 
+                                               shelterViewModel: shelterViewModel,
+                                               selectedShelterFilterTypes: selectedShelterFilterTypes)
         }
         
         // MARK: - MKMapViewDelegate Methods
@@ -378,4 +384,9 @@ struct MapView: UIViewRepresentable {
             searchButtonTimer?.invalidate()
         }
     }
+}
+
+// extension for new search when closing filter sheet
+extension MapView {
+    static let searchRegionNotification = NotificationCenter.default.publisher(for: Notification.Name("searchRegion"))
 }

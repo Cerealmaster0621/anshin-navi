@@ -5,14 +5,16 @@ import CoreLocation
 // ShelterHandler manages shelter annotations on the MKMapView.
 // It conforms to NSObject and MKMapViewDelegate protocols.
 class ShelterHandler: NSObject, MKMapViewDelegate {
-    @State var selectedShelterFilterTypes: [ShelterFilterType]
     weak var coordinator: MapView.Coordinator?
     var shelterViewModel: ShelterViewModel
+    @Binding var selectedShelterFilterTypes: [ShelterFilterType]
     
-    init(coordinator: MapView.Coordinator, shelterViewModel: ShelterViewModel) {
+    init(coordinator: MapView.Coordinator, 
+         shelterViewModel: ShelterViewModel,
+         selectedShelterFilterTypes: Binding<[ShelterFilterType]>) {
         self.coordinator = coordinator
         self.shelterViewModel = shelterViewModel
-        self.selectedShelterFilterTypes = []
+        self._selectedShelterFilterTypes = selectedShelterFilterTypes
         super.init()
     }
     

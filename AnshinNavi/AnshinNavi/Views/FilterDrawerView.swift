@@ -11,19 +11,13 @@ struct FilterDrawerView: View {
                 if currentAnnotationType == .shelter {
                     Section(header: Text("災害種別")) {
                         ForEach(ShelterFilterType.allCases, id: \.self) { filterType in
-                            Toggle(filterType.rawValue, isOn: Binding(
-                                get: { selectedShelterFilterTypes.contains(filterType) },
-                                set: { isSelected in
-                                    if isSelected {
-                                        if !selectedShelterFilterTypes.contains(filterType) {
-                                            selectedShelterFilterTypes.append(filterType)
-                                        }
-                                    } else {
-                                        selectedShelterFilterTypes.removeAll { $0 == filterType }
-                                    }
-                                    print("Current filters: \(selectedShelterFilterTypes)")
+                            FilterToggleRow(
+                                filterType: filterType,
+                                isSelected: selectedShelterFilterTypes.contains(filterType),
+                                onToggle: { isSelected in
+                                    handleFilterToggle(filterType: filterType, isSelected: isSelected)
                                 }
-                            ))
+                            )
                         }
                     }
                 }
@@ -40,5 +34,29 @@ struct FilterDrawerView: View {
         }
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
+    }
+    
+    private func handleFilterToggle(filterType: ShelterFilterType, isSelected: Bool) {
+        if isSelected {
+            if !selectedShelterFilterTypes.contains(filterType) {
+                selectedShelterFilterTypes.append(filterType)
+            }
+        } else {
+            selectedShelterFilterTypes.removeAll { $0 == filterType }
+        }
+    }
+}
+
+// Extracted toggle row for better reusability and cleaner code
+struct FilterToggleRow: View {
+    let filterType: ShelterFilterType
+    let isSelected: Bool
+    let onToggle: (Bool) -> Void
+    
+    var body: some View {
+        Toggle(filterType.rawValue, isOn: Binding(
+            get: { isSelected },
+            set: { onToggle($0) }
+        ))
     }
 }
