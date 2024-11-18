@@ -39,7 +39,7 @@ struct MapContainerView: View {
             
             case .shelterDetail:
                 if let shelter = selectedShelter {
-                    DetailedShelterView(shelter: shelter, isPresented: $isTransitioning)
+                    DetailedShelterView(shelter: shelter, activeSheet: $activeSheet)
                         .presentationDragIndicator(.visible)
                 }
             

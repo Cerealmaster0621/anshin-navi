@@ -2,7 +2,7 @@ import SwiftUI
 
 struct DetailedShelterView: View {
     let shelter: Shelter
-    @Binding var isPresented: Bool
+    @Binding var activeSheet: CurrentSheet?
     @State private var showingCoordinatesCopied = false
     @State private var showingAddressCopied = false
     
@@ -42,7 +42,7 @@ struct DetailedShelterView: View {
                                 .foregroundColor(Color(.systemGray4))
                         }
                         Button(action: {
-                            isPresented = false
+                            activeSheet = .bottomDrawer
                         }) {
                             Image(systemName: "xmark.circle.fill")
                                 .font(.system(size: 32))

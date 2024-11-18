@@ -249,7 +249,7 @@ struct MapView: UIViewRepresentable {
             
             searchButtonTimer?.invalidate()
             
-            guard let location = locationManager?.location else {
+            guard (locationManager?.location) != nil else {
                 print("User location is not available.")
                 return
             }
@@ -271,13 +271,7 @@ struct MapView: UIViewRepresentable {
             }
             
             searchButtonTimer?.invalidate()
-            
-            let region = mapView.region
-            let centerLocation = CLLocation(
-                latitude: region.center.latitude,
-                longitude: region.center.longitude
-            )
-            
+
             shelterHandler.updateAnnotations(on: mapView)
         }
 
@@ -299,7 +293,7 @@ struct MapView: UIViewRepresentable {
             }
             
             // Reset transition state after animation completes
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.async {
                 self.isTransitioning = false
             }
         }
@@ -322,7 +316,7 @@ struct MapView: UIViewRepresentable {
             }
             
             // Reset transition state after animation completes
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.async {
                 self.isTransitioning = false
             }
         }
