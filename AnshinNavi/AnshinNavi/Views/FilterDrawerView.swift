@@ -54,9 +54,18 @@ struct FilterToggleRow: View {
     let onToggle: (Bool) -> Void
     
     var body: some View {
-        Toggle(filterType.rawValue, isOn: Binding(
+        Toggle(isOn: Binding(
             get: { isSelected },
             set: { onToggle($0) }
-        ))
+        )) {
+            HStack(spacing: 12) {
+                Image(systemName: filterType.iconName)
+                    .foregroundColor(.blue)
+                    .font(.system(size: 16))
+                    .frame(width: 24, alignment: .center)
+                Text(filterType.rawValue)
+                    .font(.system(size: 15))
+            }
+        }
     }
 }

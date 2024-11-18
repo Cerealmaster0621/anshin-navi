@@ -116,12 +116,12 @@ struct DetailedShelterView: View {
                                 GridItem(.flexible()),
                                 GridItem(.flexible())
                             ], spacing: 16) {
-                                ForEach(shelter.trueSafetyFeatures, id: \.description) { feature in
+                                ForEach(shelter.trueSafetyFeatures, id: \.self) { feature in
                                     HStack(spacing: 8) {
                                         Image(systemName: feature.iconName)
                                             .foregroundColor(.blue)
                                             .font(.system(size: 16))
-                                        Text(feature.description)
+                                        Text(feature.rawValue)
                                             .font(.system(size: 15))
                                         Spacer()
                                     }
@@ -195,40 +195,6 @@ struct ToastView: View {
             }
             .transition(.move(edge: .bottom))
             .animation(.spring(), value: isShowing)
-        }
-    }
-}
-
-extension Shelter {
-    struct SafetyFeature: Hashable {
-        let iconName: String
-        let description: String
-    }
-    
-    var trueSafetyFeatures: [SafetyFeature] {
-        return [
-            SafetyFeature(iconName: "drop.fill", description: "洪水"),
-            SafetyFeature(iconName: "triangle.fill", description: "土砂崩れ"),
-            SafetyFeature(iconName: "waveform.path.ecg", description: "高潮"),
-            SafetyFeature(iconName: "waveform.path.ecg.rectangle", description: "地震"),
-            SafetyFeature(iconName: "tornado", description: "津波"),
-            SafetyFeature(iconName: "flame.fill", description: "火事"),
-            SafetyFeature(iconName: "drop.triangle.fill", description: "内水氾濫"),
-            SafetyFeature(iconName: "mountain.2.fill", description: "火山"),
-            SafetyFeature(iconName: "person.3.fill", description: "指定避難所")
-        ].filter { feature in
-            switch feature.description {
-            case "洪水": return generalFlooding
-            case "土砂崩れ": return landslide
-            case "高潮": return highTide
-            case "地震": return earthquake
-            case "津波": return tsunami
-            case "火事": return fire
-            case "内水氾濫": return internalFlooding
-            case "火山": return volcano
-            case "指定避難所": return isSameAsEvacuationCenter
-            default: return false
-            }
         }
     }
 }

@@ -64,6 +64,12 @@ struct Shelter: Identifiable, Codable, Equatable {
     static func == (lhs: Shelter, rhs: Shelter) -> Bool {
         lhs.id == rhs.id
     }
+    
+    var trueSafetyFeatures: [ShelterFilterType] {
+        ShelterFilterType.allCases.filter { filterType in
+            filterType.matches(self)
+        }
+    }
 }
 
 enum ShelterFilterType: String, CaseIterable {
@@ -76,6 +82,20 @@ enum ShelterFilterType: String, CaseIterable {
     case internalFlooding = "内水氾濫"
     case volcano = "火山"
     case isSameAsEvacuationCenter = "指定避難所"
+    
+    var iconName: String {
+        switch self {
+        case .generalFlooding: return "drop.fill"
+        case .landslide: return "triangle.fill"
+        case .highTide: return "water.waves.and.arrow.up"
+        case .earthquake: return "waveform.path.ecg.rectangle"
+        case .tsunami: return "water.waves"
+        case .fire: return "flame.fill"
+        case .internalFlooding: return "drop.triangle.fill"
+        case .volcano: return "mountain.2.fill"
+        case .isSameAsEvacuationCenter: return "person.3.fill"
+        }
+    }
     
     func matches(_ shelter: Shelter) -> Bool {
         switch self {
