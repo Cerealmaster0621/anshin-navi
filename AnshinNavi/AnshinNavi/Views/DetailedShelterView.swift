@@ -29,13 +29,35 @@ struct DetailedShelterView: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(shelter.name)
                             .font(.system(size: 32, weight: .bold))
-                        Text(shelter.regionName)
-                            .font(.system(size: 17))
-                            .foregroundColor(.secondary)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(shelter.regionName)
+                                .font(.system(size: 17))
+                                .foregroundColor(.secondary)
+                            if shelter.isSameAsEvacuationCenter {
+                                Spacer()
+                                    .frame(height: 4)
+                                    HStack(spacing: 4) {
+                                        Button(action: {
+                                            // TODO: Show explanation about evacuation center
+                                        }) {
+                                            Image(systemName: "questionmark.circle")
+                                                .font(.system(size: 14))
+                                                .foregroundColor(.blue)
+                                        }
+                                        Text(shelter.trueSafetyFeatures.last!.rawValue)
+                                            .font(.system(size: 13))
+                                            .foregroundColor(.blue)
+                                    }
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 6)
+                                    .background(Color.blue.opacity(0.1))
+                                    .cornerRadius(6)
+                            }
+                        }
                     }
                     Spacer()
                     // Share and Close buttons with matching style
-                    HStack(spacing: 6) {
+                    HStack(spacing: 4) {
                         ShareLink(item: shareText) {
                             Image(systemName: "square.and.arrow.up.circle.fill")
                                 .font(.system(size: 32))
@@ -118,12 +140,14 @@ struct DetailedShelterView: View {
                             ], spacing: 16) {
                                 ForEach(shelter.trueSafetyFeatures, id: \.self) { feature in
                                     HStack(spacing: 8) {
-                                        Image(systemName: feature.iconName)
-                                            .foregroundColor(.blue)
-                                            .font(.system(size: 16))
-                                        Text(feature.rawValue)
-                                            .font(.system(size: 15))
-                                        Spacer()
+                                        if feature != .isSameAsEvacuationCenter {
+                                            Image(systemName: feature.iconName)
+                                                .foregroundColor(.blue)
+                                                .font(.system(size: 16))
+                                            Text(feature.rawValue)
+                                                .font(.system(size: 15))
+                                            Spacer()
+                                        }
                                     }
                                     .padding(.vertical, 4)
                                     .padding(.horizontal, 8)
@@ -142,7 +166,47 @@ struct DetailedShelterView: View {
                         }
                     }
                 }
-            }
+                VStack(spacing: 8) {  // Space between buttons
+                    Button(action: {
+                        openInAppleMaps()
+                    }) {
+                        Text("Apple マップで開く")
+                            .font(.system(size: 16))
+                            .foregroundColor(.blue)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 50)
+                            .background(Color(.systemGray5))
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color(.systemGray5), lineWidth: 1)
+                            )
+                            .shadow(color: Color.black.opacity(0.03), radius: 8, x: 0, y: 2)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(MapButtonStyle())
+                    
+                    Button(action: {
+                        openInGoogleMaps()
+                    }) {
+                        Text("Google マップで開く")
+                            .font(.system(size: 16))
+                            .foregroundColor(.blue)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 50)
+                            .background(Color(.systemGray5))
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color(.systemGray5), lineWidth: 1)
+                            )
+                            .shadow(color: Color.black.opacity(0.03), radius: 8, x: 0, y: 2)
+                            .contentShape(Rectangle())  // Ensures the entire button is tappable
+                    }
+                    .buttonStyle(MapButtonStyle())  // Custom button style for press animation
+                }
+                .padding(.top, 24)
+                }
             .padding()
         }
         .background(Color(.systemGroupedBackground))
@@ -174,6 +238,23 @@ struct DetailedShelterView: View {
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
     }
+    
+    // Helper functions for opening maps
+    private func openInAppleMaps() {
+        let coordinates = "\(shelter.latitude),\(shelter.longitude)"
+        if let encodedName = shelter.name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+           let url = URL(string: "http://maps.apple.com/?q=\(encodedName)&ll=\(coordinates)") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    private func openInGoogleMaps() {
+        let coordinates = "\(shelter.latitude),\(shelter.longitude)"
+        if let encodedName = shelter.name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+           let url = URL(string: "https://www.google.com/maps/search/?api=1&query=\(encodedName)&ll=\(coordinates)") {
+            UIApplication.shared.open(url)
+        }
+    }
 }
 
 struct ToastView: View {
@@ -196,5 +277,13 @@ struct ToastView: View {
             .transition(.move(edge: .bottom))
             .animation(.spring(), value: isShowing)
         }
+    }
+}
+
+struct MapButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.spring(), value: configuration.isPressed)
     }
 }

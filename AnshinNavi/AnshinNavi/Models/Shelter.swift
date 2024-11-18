@@ -81,7 +81,7 @@ enum ShelterFilterType: String, CaseIterable {
     case fire = "大規模な火事"
     case internalFlooding = "内水氾濫"
     case volcano = "火山"
-    case isSameAsEvacuationCenter = "指定避難所"
+    case isSameAsEvacuationCenter = "指定避難所として利用可能"
     
     var iconName: String {
         switch self {
