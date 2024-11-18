@@ -11,13 +11,16 @@ struct MapContainerView: View {
     @State private var isTransitioning = false
     @State private var activeSheet: CurrentSheet? = .bottomDrawer
     @State private var previousSheet: CurrentSheet? = nil
+    @State private var selectedShelterFilterTypes: [ShelterFilterType] = []
     
     var body: some View {
         ZStack {
             MapView(selectedDetent: selectedDetent,
                     currentAnnotationType: $currentAnnotationType,
                     activeSheet: $activeSheet,
-                    isTransitioning: $isTransitioning)
+                    isTransitioning: $isTransitioning,
+                    selectedShelterFilterTypes: selectedShelterFilterTypes
+                    )
                 .ignoresSafeArea(.all)
                 .environmentObject(shelterViewModel)
                 .onReceive(shelterViewModel.$selectedShelter) { shelter in
@@ -45,7 +48,10 @@ struct MapContainerView: View {
                     .presentationDragIndicator(.visible)
             
             case .filter:
-                FilterDrawerView(currentAnnotationType: currentAnnotationType)
+                FilterDrawerView(
+                    currentAnnotationType: currentAnnotationType,
+                    selectedShelterFilterTypes: $selectedShelterFilterTypes
+                )
                     .presentationDragIndicator(.visible)
             }
         }

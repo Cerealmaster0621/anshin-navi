@@ -15,6 +15,7 @@ struct MapView: UIViewRepresentable {
     @Binding var currentAnnotationType: CurrentAnnotationType
     @Binding var activeSheet: CurrentSheet?
     @Binding var isTransitioning: Bool
+    @State var selectedShelterFilterTypes: [ShelterFilterType]
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self, 
@@ -210,7 +211,7 @@ struct MapView: UIViewRepresentable {
             
             isInitialLocationSet = true
             updateMapRegion(mapView, coordinate: location.coordinate)
-            shelterHandler.updateAnnotations(on: mapView, near: location)
+            shelterHandler.updateAnnotations(on: mapView)
             manager.stopUpdatingLocation()
         }
         
@@ -247,7 +248,7 @@ struct MapView: UIViewRepresentable {
                 return
             }
             
-            shelterHandler.updateAnnotations(on: mapView, near: location)
+            shelterHandler.updateAnnotations(on: mapView)
         }
         
         @objc func searchRegionButtonTapped() {
@@ -271,7 +272,7 @@ struct MapView: UIViewRepresentable {
                 longitude: region.center.longitude
             )
             
-            shelterHandler.updateAnnotations(on: mapView, near: centerLocation)
+            shelterHandler.updateAnnotations(on: mapView)
         }
 
         @objc func settingButtonTapped() {

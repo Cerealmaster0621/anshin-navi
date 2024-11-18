@@ -215,7 +215,7 @@ extension Shelter {
             SafetyFeature(iconName: "flame.fill", description: "火事"),
             SafetyFeature(iconName: "drop.triangle.fill", description: "内水氾濫"),
             SafetyFeature(iconName: "mountain.2.fill", description: "火山"),
-            SafetyFeature(iconName: "person.3.fill", description: "避難所と同じ")
+            SafetyFeature(iconName: "person.3.fill", description: "指定避難所")
         ].filter { feature in
             switch feature.description {
             case "洪水": return generalFlooding
@@ -226,7 +226,7 @@ extension Shelter {
             case "火事": return fire
             case "内水氾濫": return internalFlooding
             case "火山": return volcano
-            case "避難所と同じ": return isSameAsEvacuationCenter
+            case "指定避難所": return isSameAsEvacuationCenter
             default: return false
             }
         }

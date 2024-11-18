@@ -2,54 +2,43 @@ import SwiftUI
 
 struct FilterDrawerView: View {
     let currentAnnotationType: CurrentAnnotationType
+    @Binding var selectedShelterFilterTypes: [ShelterFilterType]
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                // Header with Title and Close Button
-                HStack(alignment: .top) {
-                    Text("フィルター")
-                        .font(.system(size: 32, weight: .bold))
-                    Spacer()
-                }
-                
-                // Filter Options Section
-                VStack(spacing: 20) {
-                    // Example filter options
-                    ForEach(0..<5) { _ in
-                        filterCard {
-                            HStack {
-                                Text("Filter Option")
-                                    .font(.system(size: 17))
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .foregroundColor(.gray)
-                            }
+        NavigationView {
+            List {
+                if currentAnnotationType == .shelter {
+                    Section(header: Text("災害種別")) {
+                        ForEach(ShelterFilterType.allCases, id: \.self) { filterType in
+                            Toggle(filterType.rawValue, isOn: Binding(
+                                get: { selectedShelterFilterTypes.contains(filterType) },
+                                set: { isSelected in
+                                    if isSelected {
+                                        if !selectedShelterFilterTypes.contains(filterType) {
+                                            selectedShelterFilterTypes.append(filterType)
+                                        }
+                                    } else {
+                                        selectedShelterFilterTypes.removeAll { $0 == filterType }
+                                    }
+                                    print("Current filters: \(selectedShelterFilterTypes)")
+                                }
+                            ))
                         }
                     }
                 }
             }
-            .padding()
+            .navigationTitle("フィルター")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("完了") {
+                        dismiss()
+                    }
+                }
+            }
         }
-        .background(Color(.systemGroupedBackground))
-        .presentationDetents([.medium])
+        .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
-    }
-    
-    private func filterCard<Content: View>(
-        @ViewBuilder content: () -> Content
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            content()
-        }
-        .padding()
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(Color(.systemGray5), lineWidth: 1)
-        )
-        .shadow(color: Color.black.opacity(0.03), radius: 8, x: 0, y: 2)
     }
 }

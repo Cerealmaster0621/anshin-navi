@@ -65,3 +65,29 @@ struct Shelter: Identifiable, Codable, Equatable {
         lhs.id == rhs.id
     }
 }
+
+enum ShelterFilterType: String, CaseIterable {
+    case generalFlooding = "洪水"
+    case landslide = "土砂崩れ"
+    case highTide = "高潮"
+    case earthquake = "地震"
+    case tsunami = "津波"
+    case fire = "大規模な火事"
+    case internalFlooding = "内水氾濫"
+    case volcano = "火山"
+    case isSameAsEvacuationCenter = "指定避難所"
+    
+    func matches(_ shelter: Shelter) -> Bool {
+        switch self {
+        case .generalFlooding: return shelter.generalFlooding
+        case .landslide: return shelter.landslide
+        case .highTide: return shelter.highTide
+        case .earthquake: return shelter.earthquake
+        case .tsunami: return shelter.tsunami
+        case .fire: return shelter.fire
+        case .internalFlooding: return shelter.internalFlooding
+        case .volcano: return shelter.volcano
+        case .isSameAsEvacuationCenter: return shelter.isSameAsEvacuationCenter
+        }
+    }
+}

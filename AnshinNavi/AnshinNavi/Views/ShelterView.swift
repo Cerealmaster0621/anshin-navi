@@ -5,44 +5,23 @@ import CoreLocation
 // ShelterHandler manages shelter annotations on the MKMapView.
 // It conforms to NSObject and MKMapViewDelegate protocols.
 class ShelterHandler: NSObject, MKMapViewDelegate {
+    @State var selectedShelterFilterTypes: [ShelterFilterType]
     weak var coordinator: MapView.Coordinator?
     var shelterViewModel: ShelterViewModel
-    private static let maxAnnotations = 200
-
-    // Initializer for ShelterHandler.
+    
     init(coordinator: MapView.Coordinator, shelterViewModel: ShelterViewModel) {
         self.coordinator = coordinator
         self.shelterViewModel = shelterViewModel
+        self.selectedShelterFilterTypes = []
         super.init()
     }
     
-    // Updates the annotations on the map view based on the user's location.
-    func updateAnnotations(on mapView: MKMapView, near location: CLLocation) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            let radius = self.calculateSearchRadius(from: mapView.region)
-
-            let shelters = self.shelterViewModel.getSheltersNearLocation(location, radius: radius)
-
-            let centerLocation = location
-            let sortedShelters = shelters
-                .sorted { shelter1, shelter2 in
-                    let location1 = CLLocation(latitude: shelter1.latitude, longitude: shelter1.longitude)
-                    let location2 = CLLocation(latitude: shelter2.latitude, longitude: shelter2.longitude)
-                    return location1.distance(from: centerLocation) < location2.distance(from: centerLocation)
-                }
-                .prefix(ShelterHandler.maxAnnotations) // Limit the number of annotations.
-
-            let annotations = sortedShelters.map { ShelterAnnotation(shelter: $0) }
-
-            DispatchQueue.main.async {
-                // Remove existing annotations except the user's location.
-                let existingAnnotations = mapView.annotations.filter { !($0 is MKUserLocation) }
-                mapView.removeAnnotations(existingAnnotations)
-
-                // Add new shelter annotations to the map.
-                mapView.addAnnotations(annotations)
-            }
-        }
+    func updateAnnotations(on mapView: MKMapView) {
+        shelterViewModel.mapView = mapView
+        shelterViewModel.updateAnnotations(
+            for: mapView.region,
+            selectedFilters: selectedShelterFilterTypes
+        )
     }
     
     // Calculates the search radius based on the map's visible region.

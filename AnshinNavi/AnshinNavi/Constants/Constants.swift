@@ -11,3 +11,6 @@ let MEDIUM_DENT_WEIGHT = 0.4
 // Padding between searchbox and MainBottonDrawer
 let MAIN_DRAWER_SEARCH_BOX_PADDING:CGFloat = 14
 
+// Maximum number of annotations to show on the map at once
+let MAX_ANNOTATIONS = 200
+
