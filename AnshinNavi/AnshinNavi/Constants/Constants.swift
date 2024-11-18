@@ -19,8 +19,6 @@ let WHAT_IS_SHELTER_FILTER: AttributedString = {
     var text = AttributedString("""
         安心ナビで表示しているのは主に指定緊急避難場所のデータです。フィルターを有効にすることで、指定避難所としても登録されている施設が表示されます。避難所と避難場所の違いについて...
         """)
-    
-    // Bold the specific terms
     let terms = ["指定緊急避難場所", "指定避難所"]
     for term in terms {
         var searchRange = text.startIndex..<text.endIndex
@@ -29,8 +27,6 @@ let WHAT_IS_SHELTER_FILTER: AttributedString = {
             searchRange = range.upperBound..<text.endIndex
         }
     }
-    
-    // Style the link text
     if let linkRange = text.range(of: "避難所と避難場所の違いについて...") {
         text[linkRange].foregroundColor = .blue
         text[linkRange].link = URL(string: "https://www.bousai.go.jp/taisaku/hinanbasyo.html")

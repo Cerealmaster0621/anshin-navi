@@ -29,6 +29,7 @@ enum DisasterType: CaseIterable {
 final class ShelterViewModel: ObservableObject {
     @Published private(set) var shelters: [Shelter] = []
     @Published var selectedShelter: Shelter?
+    @Published var visibleShelterCount: Int = 0
     
     private let jsonFileName = "shelters"
     private let jsonFileExtension = "json"
@@ -137,6 +138,11 @@ final class ShelterViewModel: ObservableObject {
                 visibleShelters = self.getSheltersInMapRegion(region)
             } else {
                 visibleShelters = self.filterVisibleSheltersByTypes(selectedFilters, in: region)
+            }
+            
+            // Update visible shelter count
+            DispatchQueue.main.async {
+                self.visibleShelterCount = min(visibleShelters.count, MAX_ANNOTATIONS)
             }
             
             // Get center location for distance calculation

@@ -26,6 +26,7 @@
 		B3C01EFE2CEA320A00FB6E82 /* SettingDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01EFD2CEA320A00FB6E82 /* SettingDrawerView.swift */; };
 		B3C01F002CEA632400FB6E82 /* CurrentAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01EFF2CEA632400FB6E82 /* CurrentAnnotation.swift */; };
 		B3C01F032CEB36D100FB6E82 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01F022CEB36D100FB6E82 /* NetworkReachability.swift */; };
+		B3C01F052CEB691F00FB6E82 /* DynamicSizeRelated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01F042CEB691F00FB6E82 /* DynamicSizeRelated.swift */; };
 		B3D664F42CE85AC700B549DA /* MapRightSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D664F32CE85AC700B549DA /* MapRightSideView.swift */; };
 		B3D665112CE88C6300B549DA /* DetailedShelterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D665102CE88C6300B549DA /* DetailedShelterView.swift */; };
 		B3D665132CE890B800B549DA /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D665122CE890B800B549DA /* MapView.swift */; };
@@ -72,6 +73,7 @@
 		B3C01EFD2CEA320A00FB6E82 /* SettingDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDrawerView.swift; sourceTree = "<group>"; };
 		B3C01EFF2CEA632400FB6E82 /* CurrentAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentAnnotation.swift; sourceTree = "<group>"; };
 		B3C01F022CEB36D100FB6E82 /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
+		B3C01F042CEB691F00FB6E82 /* DynamicSizeRelated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicSizeRelated.swift; sourceTree = "<group>"; };
 		B3D664F32CE85AC700B549DA /* MapRightSideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRightSideView.swift; sourceTree = "<group>"; };
 		B3D665102CE88C6300B549DA /* DetailedShelterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedShelterView.swift; sourceTree = "<group>"; };
 		B3D665122CE890B800B549DA /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				B3C01F022CEB36D100FB6E82 /* NetworkReachability.swift */,
+				B3C01F042CEB691F00FB6E82 /* DynamicSizeRelated.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -366,6 +369,7 @@
 				B3C01EF62CE984D600FB6E82 /* FilterDrawerView.swift in Sources */,
 				B3D665132CE890B800B549DA /* MapView.swift in Sources */,
 				B3C01EF42CE8E22B00FB6E82 /* MainBottomDrawerView.swift in Sources */,
+				B3C01F052CEB691F00FB6E82 /* DynamicSizeRelated.swift in Sources */,
 				B33F832C2CE63DA200D33A0D /* AnshinNaviApp.swift in Sources */,
 				B366C1EA2CE7B3B50063E659 /* ShelterView.swift in Sources */,
 				B3C01F032CEB36D100FB6E82 /* NetworkReachability.swift in Sources */,

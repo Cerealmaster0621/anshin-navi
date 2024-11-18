@@ -12,7 +12,7 @@ struct MapContainerView: View {
     @State private var activeSheet: CurrentSheet? = .bottomDrawer
     @State private var previousSheet: CurrentSheet? = nil
     @State private var selectedShelterFilterTypes: [ShelterFilterType] = []
-    
+
     var body: some View {
         ZStack {
             MapView(selectedDetent: selectedDetent,
@@ -33,7 +33,8 @@ struct MapContainerView: View {
             switch sheet {
             case .bottomDrawer:
                 MainBottomDrawerView(selectedDetent: $selectedDetent,
-                                   currentAnnotationType: $currentAnnotationType)
+                                     currentAnnotationType: $currentAnnotationType, selectedShelterFilterTypes: $selectedShelterFilterTypes,
+                                     visibleShelterCount: shelterViewModel.visibleShelterCount)
                     .presentationBackground(.regularMaterial)
                     .interactiveDismissDisabled()
             
@@ -56,7 +57,7 @@ struct MapContainerView: View {
             }
         }
         .onChange(of: activeSheet) { oldValue in
-            if oldValue != nil {  // Only update previousSheet when there was an actual sheet
+            if oldValue != nil {
                 previousSheet = oldValue
             }
         }
