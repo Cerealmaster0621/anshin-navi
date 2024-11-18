@@ -25,6 +25,7 @@
 		B3C01EFC2CEA301B00FB6E82 /* CurrentSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01EFB2CEA301B00FB6E82 /* CurrentSheet.swift */; };
 		B3C01EFE2CEA320A00FB6E82 /* SettingDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01EFD2CEA320A00FB6E82 /* SettingDrawerView.swift */; };
 		B3C01F002CEA632400FB6E82 /* CurrentAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01EFF2CEA632400FB6E82 /* CurrentAnnotation.swift */; };
+		B3C01F032CEB36D100FB6E82 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01F022CEB36D100FB6E82 /* NetworkReachability.swift */; };
 		B3D664F42CE85AC700B549DA /* MapRightSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D664F32CE85AC700B549DA /* MapRightSideView.swift */; };
 		B3D665112CE88C6300B549DA /* DetailedShelterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D665102CE88C6300B549DA /* DetailedShelterView.swift */; };
 		B3D665132CE890B800B549DA /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D665122CE890B800B549DA /* MapView.swift */; };
@@ -70,6 +71,7 @@
 		B3C01EFB2CEA301B00FB6E82 /* CurrentSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentSheet.swift; sourceTree = "<group>"; };
 		B3C01EFD2CEA320A00FB6E82 /* SettingDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDrawerView.swift; sourceTree = "<group>"; };
 		B3C01EFF2CEA632400FB6E82 /* CurrentAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentAnnotation.swift; sourceTree = "<group>"; };
+		B3C01F022CEB36D100FB6E82 /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
 		B3D664F32CE85AC700B549DA /* MapRightSideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRightSideView.swift; sourceTree = "<group>"; };
 		B3D665102CE88C6300B549DA /* DetailedShelterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedShelterView.swift; sourceTree = "<group>"; };
 		B3D665122CE890B800B549DA /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 		B33F832A2CE63DA200D33A0D /* AnshinNavi */ = {
 			isa = PBXGroup;
 			children = (
+				B3C01F012CEB36C300FB6E82 /* Tools */,
 				B3B569452CE756180073C38A /* Datas */,
 				B33F83632CE6434C00D33A0D /* Info.plist */,
 				B33F83602CE63E5B00D33A0D /* Constants */,
@@ -209,6 +212,14 @@
 				B34A2C9E2CE7678800F6ABF0 /* shelters.json */,
 			);
 			path = Datas;
+			sourceTree = "<group>";
+		};
+		B3C01F012CEB36C300FB6E82 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				B3C01F022CEB36D100FB6E82 /* NetworkReachability.swift */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -357,6 +368,7 @@
 				B3C01EF42CE8E22B00FB6E82 /* MainBottomDrawerView.swift in Sources */,
 				B33F832C2CE63DA200D33A0D /* AnshinNaviApp.swift in Sources */,
 				B366C1EA2CE7B3B50063E659 /* ShelterView.swift in Sources */,
+				B3C01F032CEB36D100FB6E82 /* NetworkReachability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +536,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AnshinNavi/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "安心ナビを使用するには位置情報を取得する必要があります。";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "安心ナビを使用するには位置情報を取得する必要があります。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -556,6 +570,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AnshinNavi/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "安心ナビを使用するには位置情報を取得する必要があります。";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "安心ナビを使用するには位置情報を取得する必要があります。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -581,6 +597,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -600,6 +617,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;

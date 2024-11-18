@@ -3,6 +3,7 @@ import SwiftUI
 struct DetailedShelterView: View {
     let shelter: Shelter
     @Binding var activeSheet: CurrentSheet?
+    @StateObject private var networkReachability = NetworkReachability()
     @State private var showingCoordinatesCopied = false
     @State private var showingAddressCopied = false
     
@@ -166,46 +167,48 @@ struct DetailedShelterView: View {
                         }
                     }
                 }
-                VStack(spacing: 8) {  // Space between buttons
-                    Button(action: {
-                        openInAppleMaps()
-                    }) {
-                        Text("Apple マップで開く")
-                            .font(.system(size: 16))
-                            .foregroundColor(.blue)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50)
-                            .background(Color(.systemGray5))
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .stroke(Color(.systemGray5), lineWidth: 1)
-                            )
-                            .shadow(color: Color.black.opacity(0.03), radius: 8, x: 0, y: 2)
-                            .contentShape(Rectangle())
+                if networkReachability.isConnected {
+                    VStack(spacing: 12) {
+                        Button(action: {
+                            openInAppleMaps()
+                        }) {
+                            Text("Apple マップで開く")
+                                .font(.system(size: 16))
+                                .foregroundColor(.blue)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(Color(.systemGray5))
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(Color(.systemGray5), lineWidth: 1)
+                                )
+                                .shadow(color: Color.black.opacity(0.03), radius: 8, x: 0, y: 2)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(MapButtonStyle())
+                        
+                        Button(action: {
+                            openInGoogleMaps()
+                        }) {
+                            Text("Google マップで開く")
+                                .font(.system(size: 16))
+                                .foregroundColor(.blue)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(Color(.systemGray5))
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(Color(.systemGray5), lineWidth: 1)
+                                )
+                                .shadow(color: Color.black.opacity(0.03), radius: 8, x: 0, y: 2)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(MapButtonStyle())
                     }
-                    .buttonStyle(MapButtonStyle())
-                    
-                    Button(action: {
-                        openInGoogleMaps()
-                    }) {
-                        Text("Google マップで開く")
-                            .font(.system(size: 16))
-                            .foregroundColor(.blue)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50)
-                            .background(Color(.systemGray5))
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .stroke(Color(.systemGray5), lineWidth: 1)
-                            )
-                            .shadow(color: Color.black.opacity(0.03), radius: 8, x: 0, y: 2)
-                            .contentShape(Rectangle())  // Ensures the entire button is tappable
-                    }
-                    .buttonStyle(MapButtonStyle())  // Custom button style for press animation
+                    .padding(.top, 10)
                 }
-                .padding(.top, 24)
                 }
             .padding()
         }
