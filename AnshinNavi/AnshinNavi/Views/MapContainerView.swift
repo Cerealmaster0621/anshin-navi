@@ -33,8 +33,7 @@ struct MapContainerView: View {
             switch sheet {
             case .bottomDrawer:
                 MainBottomDrawerView(selectedDetent: $selectedDetent,
-                                     currentAnnotationType: $currentAnnotationType, selectedShelterFilterTypes: $selectedShelterFilterTypes,
-                                     visibleShelterCount: shelterViewModel.visibleShelterCount)
+                                     currentAnnotationType: $currentAnnotationType, selectedShelterFilterTypes: $selectedShelterFilterTypes)
                     .presentationBackground(.regularMaterial)
                     .interactiveDismissDisabled()
             

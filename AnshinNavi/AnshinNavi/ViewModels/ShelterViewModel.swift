@@ -1,10 +1,3 @@
-//
-//  ShelterViewModel.swift
-//  AnshinNavi
-//
-//  Created by YoungJune Kang on 2024/11/16.
-//
-
 import Foundation
 import MapKit
 import SwiftUI
@@ -15,30 +8,29 @@ enum DataError: Error {
     case invalidData
 }
 
-enum DisasterType: CaseIterable {
-    case generalFlooding
-    case landslide
-    case highTide
-    case earthquake
-    case tsunami
-    case fire
-    case internalFlooding
-    case volcano
-}
-
-final class ShelterViewModel: ObservableObject {
+final class ShelterViewModel: NSObject, ObservableObject {
     @Published private(set) var shelters: [Shelter] = []
     @Published var selectedShelter: Shelter?
     @Published var visibleShelterCount: Int = 0
+    @Published var userLocation: CLLocation?
     
+    private let locationManager = CLLocationManager()
     private let jsonFileName = "shelters"
     private let jsonFileExtension = "json"
-    private let defaultRadius: CLLocationDistance = 2000 // 2km
     
     weak var mapView: MKMapView?
     
-    init() {
+    override init() {
+        super.init()
         loadShelters()
+        setupLocationManager()
+    }
+    
+    private func setupLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
     }
     
     // MARK: - Public Methods
@@ -74,38 +66,6 @@ final class ShelterViewModel: ObservableObject {
         )
         let radius = calculateRadius(from: region)
         return getSheltersNearLocation(centerLocation, radius: radius)
-    }
-    
-    func filterSheltersByRegion(regionCode: String) -> [Shelter] {
-        shelters.filter { $0.regionCode == regionCode }
-    }
-    
-    /// Filters shelters by disaster type
-    /// - Parameter disasterType: The type of disaster to filter by
-    /// - Returns: Array of shelters suitable for the specified disaster type
-    func filterShelterByDisasterType(_ disasterType: DisasterType) -> [Shelter] {
-        shelters.filter { shelter in
-            switch disasterType {
-            case .generalFlooding: return shelter.generalFlooding
-            case .landslide: return shelter.landslide
-            case .highTide: return shelter.highTide
-            case .earthquake: return shelter.earthquake
-            case .tsunami: return shelter.tsunami
-            case .fire: return shelter.fire
-            case .internalFlooding: return shelter.internalFlooding
-            case .volcano: return shelter.volcano
-            }
-        }
-    }
-    
-    func searchShelters(query: String) -> [Shelter] {
-        guard !query.isEmpty else { return shelters }
-        
-        let searchQuery = query.lowercased()
-        return shelters.filter {
-            $0.name.lowercased().contains(searchQuery) ||
-            $0.address.lowercased().contains(searchQuery)
-        }
     }
     
     /// Filters visible shelters based on multiple disaster types using AND operation
@@ -174,6 +134,27 @@ final class ShelterViewModel: ObservableObject {
             }
         }
     }
+
+    /// Gets the closest shelter with specific safety features
+    /// - Parameters:
+    ///   - userLocation: The user's current location
+    ///   - filterTypes: Array of required safety features
+    /// - Returns: The closest shelter matching the specified criteria
+    func getClosestShelter(to userLocation: CLLocation, matching filterTypes: [ShelterFilterType]) -> Shelter? {
+        // First filter shelters by safety features
+        let filteredShelters = shelters.filter { shelter in
+            filterTypes.allSatisfy { filterType in
+                filterType.matches(shelter)
+            }
+        }
+        
+        // Then find the closest among filtered shelters
+        return filteredShelters.min(by: { shelter1, shelter2 in
+            let location1 = CLLocation(latitude: shelter1.latitude, longitude: shelter1.longitude)
+            let location2 = CLLocation(latitude: shelter2.latitude, longitude: shelter2.longitude)
+            return userLocation.distance(from: location1) < userLocation.distance(from: location2)
+        })
+    }
     
     // MARK: - Private Methods
     
@@ -210,7 +191,7 @@ final class ShelterViewModel: ObservableObject {
             self.shelters = []
             self.selectedShelter = nil
         }
-    }
+    } 
 }
 
 // MARK: - Helper Methods
@@ -227,4 +208,16 @@ extension ShelterViewModel {
 // MARK: - Private Types
 private struct ShelterResponse: Codable {
     let shelters: [Shelter]
+}
+
+// MARK: - CLLocationManagerDelegate
+extension ShelterViewModel: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        userLocation = location
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Location error: \(error.localizedDescription)")
+    }
 }

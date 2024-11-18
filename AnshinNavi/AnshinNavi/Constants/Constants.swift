@@ -34,3 +34,6 @@ let WHAT_IS_SHELTER_FILTER: AttributedString = {
     
     return text
 }()
+
+// Base Font Size
+let BASE_FONT_SIZE:CGFloat = 14
