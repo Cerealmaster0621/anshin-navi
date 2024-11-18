@@ -55,6 +55,11 @@ struct MapContainerView: View {
                     .presentationDragIndicator(.visible)
             }
         }
+        .onChange(of: activeSheet) { oldValue in
+            if oldValue != nil {  // Only update previousSheet when there was an actual sheet
+                previousSheet = oldValue
+            }
+        }
     }
     
     private func handleSheetDismissal() {
@@ -64,6 +69,15 @@ struct MapContainerView: View {
         
         if activeSheet == nil {
             activeSheet = .bottomDrawer
+        }
+
+        if previousSheet == .filter {
+            print("I'm here")
+            NotificationCenter.default.post(
+                name: Notification.Name("searchRegion"),
+                object: nil
+            )
+            print(NotificationCenter.default)
         }
         
         isTransitioning = false

@@ -33,6 +33,15 @@ struct MapView: UIViewRepresentable {
         setupLocationServices(context)
         setupMapControls(mapView, with: context)
         
+        // Add observer for filter updates
+        NotificationCenter.default.addObserver(
+            forName: Notification.Name("searchRegion"),
+            object: nil,
+            queue: .main
+        ) { [context] _ in
+            context.coordinator.shelterHandler.updateAnnotations(on: mapView)
+        }
+        
         return mapView
     }
     
