@@ -155,6 +155,36 @@ final class ShelterViewModel: NSObject, ObservableObject {
             return userLocation.distance(from: location1) < userLocation.distance(from: location2)
         })
     }
+
+    func addPinAndCenterCamera(for shelter: Shelter) {
+        guard let mapView = mapView else { return }
+        
+        // Create coordinate and region
+        let coordinate = CLLocationCoordinate2D(
+            latitude: shelter.latitude,
+            longitude: shelter.longitude
+        )
+        let region = MKCoordinateRegion(
+            center: coordinate,
+            latitudinalMeters: 1000,  // 1km zoom level
+            longitudinalMeters: 1000
+        )
+        
+        // Check if annotation already exists
+        let existingAnnotation = mapView.annotations.first { annotation in
+            guard let shelterAnnotation = annotation as? ShelterAnnotation else { return false }
+            return shelterAnnotation.shelter.id == shelter.id
+        }
+        
+        // Add annotation if it doesn't exist
+        if existingAnnotation == nil {
+            let annotation = ShelterAnnotation(shelter: shelter)
+            mapView.addAnnotation(annotation)
+        }
+        
+        // Animate to the shelter's location
+        mapView.setRegion(region, animated: true)
+    }
     
     // MARK: - Private Methods
     

@@ -41,6 +41,9 @@ struct MapContainerView: View {
                 if let shelter = selectedShelter {
                     DetailedShelterView(shelter: shelter, activeSheet: $activeSheet)
                         .presentationDragIndicator(.visible)
+                        .onAppear {
+                            shelterViewModel.addPinAndCenterCamera(for: shelter)
+                        }
                 }
             
             case .settings:
