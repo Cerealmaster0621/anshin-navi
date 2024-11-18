@@ -67,9 +67,9 @@ playground.xcworkspace
 *.swo
 
 # Raw Data files
-/AnshinNavi/RawDatas/*
-!AnshinNavi/RawDatas/*.py
-!AnshinNavi/RawDatas/data_tools.py
+Src/RawDatas/*
+!Src/RawDatas/*.py
+!Src/RawDatas/data_tools.py
 
 # Project specific
 *.generated.swift
