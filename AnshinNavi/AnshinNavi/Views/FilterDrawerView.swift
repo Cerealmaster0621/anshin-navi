@@ -9,6 +9,17 @@ struct FilterDrawerView: View {
         NavigationView {
             List {
                 if currentAnnotationType == .shelter {
+                    // Reset button section
+                    Section {
+                        Button(action: {
+                            selectedShelterFilterTypes.removeAll()
+                        }) {
+                            Text("フィルターをリセット")
+                                .foregroundColor(.blue)
+                        }
+                        .disabled(selectedShelterFilterTypes.isEmpty)
+                    }
+                    
                     // First section for disaster types
                     Section(header: Text("災害種別")) {
                         ForEach(ShelterFilterType.allCases.filter { $0 != .isSameAsEvacuationCenter }, id: \.self) { filterType in
