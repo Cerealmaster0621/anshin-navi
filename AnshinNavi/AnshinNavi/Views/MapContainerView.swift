@@ -71,13 +71,11 @@ struct MapContainerView: View {
             activeSheet = .bottomDrawer
         }
 
-        if previousSheet == .filter {
-            print("I'm here")
+        if previousSheet == .filter, activeSheet != .filter {
             NotificationCenter.default.post(
                 name: Notification.Name("searchRegion"),
                 object: nil
             )
-            print(NotificationCenter.default)
         }
         
         isTransitioning = false

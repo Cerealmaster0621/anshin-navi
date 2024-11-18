@@ -9,16 +9,31 @@ struct FilterDrawerView: View {
         NavigationView {
             List {
                 if currentAnnotationType == .shelter {
+                    // First section for disaster types
                     Section(header: Text("災害種別")) {
-                        ForEach(ShelterFilterType.allCases, id: \.self) { filterType in
+                        ForEach(ShelterFilterType.allCases.filter { $0 != .isSameAsEvacuationCenter }, id: \.self) { filterType in
                             FilterToggleRow(
                                 filterType: filterType,
                                 isSelected: selectedShelterFilterTypes.contains(filterType),
                                 onToggle: { isSelected in
-                                    handleFilterToggle(filterType: filterType, isSelected: isSelected)
+                                    handleShelterFilterToggle(filterType: filterType, isSelected: isSelected)
                                 }
                             )
                         }
+                    }
+                    
+                    // Second section for evacuation center
+                    Section(footer: Text(WHAT_IS_SHELTER_FILTER)
+                        .font(.footnote)
+                        .padding(.top, 2)
+                        .foregroundColor(.secondary)) {
+                        FilterToggleRow(
+                            filterType: .isSameAsEvacuationCenter,
+                            isSelected: selectedShelterFilterTypes.contains(.isSameAsEvacuationCenter),
+                            onToggle: { isSelected in
+                                handleShelterFilterToggle(filterType: .isSameAsEvacuationCenter, isSelected: isSelected)
+                            }
+                        )
                     }
                 }
             }
@@ -36,7 +51,7 @@ struct FilterDrawerView: View {
         .presentationDragIndicator(.visible)
     }
     
-    private func handleFilterToggle(filterType: ShelterFilterType, isSelected: Bool) {
+    private func handleShelterFilterToggle(filterType: ShelterFilterType, isSelected: Bool) {
         if isSelected {
             if !selectedShelterFilterTypes.contains(filterType) {
                 selectedShelterFilterTypes.append(filterType)
@@ -47,7 +62,6 @@ struct FilterDrawerView: View {
     }
 }
 
-// Extracted toggle row for better reusability and cleaner code
 struct FilterToggleRow: View {
     let filterType: ShelterFilterType
     let isSelected: Bool
@@ -63,6 +77,7 @@ struct FilterToggleRow: View {
                     .foregroundColor(.blue)
                     .font(.system(size: 16))
                     .frame(width: 24, alignment: .center)
+                
                 Text(filterType.rawValue)
                     .font(.system(size: 15))
             }
