@@ -30,6 +30,8 @@
 		B3C01F092CEBA88700FB6E82 /* MBDShelterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01F082CEBA88700FB6E82 /* MBDShelterView.swift */; };
 		B3C01F0B2CEC5EBC00FB6E82 /* MBDAnnotationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01F0A2CEC5EBC00FB6E82 /* MBDAnnotationCardView.swift */; };
 		B3C01F0D2CEC6BDE00FB6E82 /* MBDViewMoreShelters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01F0C2CEC6BDE00FB6E82 /* MBDViewMoreShelters.swift */; };
+		B3C01F132CECBFCB00FB6E82 /* FilterShelterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01F122CECBFCB00FB6E82 /* FilterShelterView.swift */; };
+		B3C01F152CECC1CA00FB6E82 /* MapShelterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C01F142CECC1CA00FB6E82 /* MapShelterView.swift */; };
 		B3D664F42CE85AC700B549DA /* MapRightSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D664F32CE85AC700B549DA /* MapRightSideView.swift */; };
 		B3D665112CE88C6300B549DA /* DetailedShelterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D665102CE88C6300B549DA /* DetailedShelterView.swift */; };
 		B3D665132CE890B800B549DA /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D665122CE890B800B549DA /* MapView.swift */; };
@@ -80,6 +82,8 @@
 		B3C01F082CEBA88700FB6E82 /* MBDShelterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDShelterView.swift; sourceTree = "<group>"; };
 		B3C01F0A2CEC5EBC00FB6E82 /* MBDAnnotationCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDAnnotationCardView.swift; sourceTree = "<group>"; };
 		B3C01F0C2CEC6BDE00FB6E82 /* MBDViewMoreShelters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDViewMoreShelters.swift; sourceTree = "<group>"; };
+		B3C01F122CECBFCB00FB6E82 /* FilterShelterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterShelterView.swift; sourceTree = "<group>"; };
+		B3C01F142CECC1CA00FB6E82 /* MapShelterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapShelterView.swift; sourceTree = "<group>"; };
 		B3D664F32CE85AC700B549DA /* MapRightSideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRightSideView.swift; sourceTree = "<group>"; };
 		B3D665102CE88C6300B549DA /* DetailedShelterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedShelterView.swift; sourceTree = "<group>"; };
 		B3D665122CE890B800B549DA /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -176,17 +180,14 @@
 		B33F83572CE63DB900D33A0D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B3C01F0F2CECB85300FB6E82 /* Shelter */,
 				B3D664F32CE85AC700B549DA /* MapRightSideView.swift */,
 				B3C01EF52CE984D600FB6E82 /* FilterDrawerView.swift */,
 				B3C01EF32CE8E22B00FB6E82 /* MainBottomDrawerView.swift */,
-				B3C01F082CEBA88700FB6E82 /* MBDShelterView.swift */,
 				B3C01F0A2CEC5EBC00FB6E82 /* MBDAnnotationCardView.swift */,
-				B3C01F0C2CEC6BDE00FB6E82 /* MBDViewMoreShelters.swift */,
-				B3D665102CE88C6300B549DA /* DetailedShelterView.swift */,
 				B3C01EFD2CEA320A00FB6E82 /* SettingDrawerView.swift */,
 				B3D665122CE890B800B549DA /* MapView.swift */,
 				B33F83582CE63DD300D33A0D /* MapContainerView.swift */,
-				B366C1E92CE7B3B50063E659 /* ShelterView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -240,6 +241,19 @@
 			children = (
 			);
 			path = Localizations;
+			sourceTree = "<group>";
+		};
+		B3C01F0F2CECB85300FB6E82 /* Shelter */ = {
+			isa = PBXGroup;
+			children = (
+				B3C01F082CEBA88700FB6E82 /* MBDShelterView.swift */,
+				B3C01F0C2CEC6BDE00FB6E82 /* MBDViewMoreShelters.swift */,
+				B3D665102CE88C6300B549DA /* DetailedShelterView.swift */,
+				B366C1E92CE7B3B50063E659 /* ShelterView.swift */,
+				B3C01F122CECBFCB00FB6E82 /* FilterShelterView.swift */,
+				B3C01F142CECC1CA00FB6E82 /* MapShelterView.swift */,
+			);
+			path = Shelter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,7 +394,9 @@
 				B3C01EFE2CEA320A00FB6E82 /* SettingDrawerView.swift in Sources */,
 				B33F83622CE63E6B00D33A0D /* Constants.swift in Sources */,
 				B3D664F42CE85AC700B549DA /* MapRightSideView.swift in Sources */,
+				B3C01F132CECBFCB00FB6E82 /* FilterShelterView.swift in Sources */,
 				B3C01F0D2CEC6BDE00FB6E82 /* MBDViewMoreShelters.swift in Sources */,
+				B3C01F152CECC1CA00FB6E82 /* MapShelterView.swift in Sources */,
 				B3C01F0B2CEC5EBC00FB6E82 /* MBDAnnotationCardView.swift in Sources */,
 				B3C01EFC2CEA301B00FB6E82 /* CurrentSheet.swift in Sources */,
 				B3C01F002CEA632400FB6E82 /* CurrentAnnotation.swift in Sources */,

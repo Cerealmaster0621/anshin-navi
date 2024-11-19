@@ -30,7 +30,7 @@ struct MBDAnnotationCardView: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
-                    // Shelter circle (active)
+                    //<-----SHELTER CIRCLE----->
                     VStack(spacing: 6) {
                         Circle()
                             .fill(Color(.systemGreen))
@@ -45,7 +45,7 @@ struct MBDAnnotationCardView: View {
                             .foregroundColor(.primary)
                     }
                     
-                    // Police circle (inactive)
+                    //<-----POLICE CIRCLE----->
                     VStack(spacing: 6) {
                         Circle()
                             .fill(Color(.systemGray5))

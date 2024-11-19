@@ -30,6 +30,7 @@ struct MapContainerView: View {
                 }
         }
         .sheet(item: $activeSheet, onDismiss: handleSheetDismissal) { sheet in
+            //<-----SHEET CHANGE LOGIC----->
             switch sheet {
             case .bottomDrawer:
                 MainBottomDrawerView(selectedDetent: $selectedDetent,
@@ -37,13 +38,18 @@ struct MapContainerView: View {
                     .presentationBackground(.regularMaterial)
                     .interactiveDismissDisabled()
             
-            case .shelterDetail:
-                if let shelter = selectedShelter {
-                    DetailedShelterView(shelter: shelter, activeSheet: $activeSheet)
-                        .presentationDragIndicator(.visible)
-                        .onAppear {
-                            shelterViewModel.addPinAndCenterCamera(for: shelter)
+            case .detail:
+                switch currentAnnotationType {
+                    //<-----SHELTER DETAIL DRAWER OPENED----->
+                    case .shelter:
+                        if let shelter = selectedShelter {
+                            DetailedShelterView(shelter: shelter, activeSheet: $activeSheet)
+                                .presentationDragIndicator(.visible)
                         }
+                    case .police:
+                        EmptyView()
+                    case .none:
+                        EmptyView()
                 }
             
             case .settings:
@@ -92,8 +98,10 @@ struct MapContainerView: View {
         previousDetent = selectedDetent
         previousSheet = activeSheet
         
-        if activeSheet != .shelterDetail {
-            activeSheet = .shelterDetail
+        shelterViewModel.addPinAndCenterCamera(for: shelter)
+        
+        if activeSheet != .detail {
+            activeSheet = .detail
         }
         
         isTransitioning = false

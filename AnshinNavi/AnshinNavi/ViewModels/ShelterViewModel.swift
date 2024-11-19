@@ -9,18 +9,18 @@ enum DataError: Error {
 }
 
 final class ShelterViewModel: NSObject, ObservableObject {
-    @Published private(set) var shelters: [Shelter] = []
+    @Published var shelters: [Shelter] = []
     @Published var selectedShelter: Shelter?
     @Published var visibleShelterCount: Int = 0
     @Published var userLocation: CLLocation?
-    @Published private(set) var currentVisibleShelters: [Shelter] = []
-    @Published private(set) var currentUnfilteredShelters: [Shelter] = []
+    @Published var currentVisibleShelters: [Shelter] = []
+    @Published var currentUnfilteredShelters: [Shelter] = []
     
     private let locationManager = CLLocationManager()
     private let jsonFileName = "shelters"
     private let jsonFileExtension = "json"
     
-    weak var mapView: MKMapView?
+    var mapView: MKMapView?
     
     override init() {
         super.init()
@@ -171,7 +171,10 @@ final class ShelterViewModel: NSObject, ObservableObject {
     }
 
     func addPinAndCenterCamera(for shelter: Shelter) {
-        guard let mapView = mapView else { return }
+        guard let mapView = mapView else {
+            print("MapView not available") // Add debug logging
+            return
+        }
         
         // Create coordinate and region
         let coordinate = CLLocationCoordinate2D(
@@ -184,20 +187,19 @@ final class ShelterViewModel: NSObject, ObservableObject {
             longitudinalMeters: 1000
         )
         
-        // Check if annotation already exists
-        let existingAnnotation = mapView.annotations.first { annotation in
-            guard let shelterAnnotation = annotation as? ShelterAnnotation else { return false }
-            return shelterAnnotation.shelter.id == shelter.id
-        }
+        // Remove existing shelter annotations
+        let existingAnnotations = mapView.annotations.filter { $0 is ShelterAnnotation }
+        mapView.removeAnnotations(existingAnnotations)
         
-        // Add annotation if it doesn't exist
-        if existingAnnotation == nil {
-            let annotation = ShelterAnnotation(shelter: shelter)
-            mapView.addAnnotation(annotation)
-        }
+        // Add new annotation
+        let annotation = ShelterAnnotation(shelter: shelter)
+        mapView.addAnnotation(annotation)
         
         // Animate to the shelter's location
         mapView.setRegion(region, animated: true)
+        
+        // Select the annotation to show the callout
+        mapView.selectAnnotation(annotation, animated: true)
     }
     
     // MARK: - Private Methods

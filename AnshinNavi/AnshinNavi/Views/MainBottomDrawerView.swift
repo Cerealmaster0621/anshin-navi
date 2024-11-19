@@ -49,12 +49,17 @@ struct MainBottomDrawerView: View {
                     .frame(width: 36, height: 5)
                     .padding(.top, 8)
 
-                // <------ ANNOTATION SHELTER ------>
-                if currentAnnotationType == .shelter {
-                    MBDShelterView(
-                        isSmallDetent: isSmallDetent,
-                        selectedShelterFilterTypes: selectedShelterFilterTypes
-                    )
+                // Annotation type content
+                switch currentAnnotationType {
+                    case .shelter:
+                        MBDShelterView(
+                            isSmallDetent: isSmallDetent,
+                            selectedShelterFilterTypes: selectedShelterFilterTypes
+                        )
+                    case .police:
+                        EmptyView()
+                    case .none:
+                        EmptyView()
                 }
             }
         }

@@ -29,6 +29,9 @@ struct MapView: UIViewRepresentable {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
         
+        // Set the mapView reference in ShelterViewModel
+        shelterViewModel.mapView = mapView
+        
         configureMapView(mapView)
         setupLocationServices(context)
         setupMapControls(mapView, with: context)
@@ -39,7 +42,7 @@ struct MapView: UIViewRepresentable {
             object: nil,
             queue: .main
         ) { [context] _ in
-            context.coordinator.shelterHandler.updateAnnotations(on: mapView)
+            context.coordinator.shelterMapHandler.updateAnnotations(on: mapView)
         }
         
         return mapView
@@ -134,7 +137,7 @@ struct MapView: UIViewRepresentable {
         weak var filterButton: UIButton?
         weak var compassButton: MKCompassButton?
         private var isInitialLocationSet = false
-        var shelterHandler: ShelterHandler!
+        var shelterMapHandler: ShelterMapHandler!
         weak var searchButtonBottomConstraint: NSLayoutConstraint?
         private var searchButtonTimer: Timer?
         private var isMapScrolling = false
@@ -154,19 +157,37 @@ struct MapView: UIViewRepresentable {
             self._isTransitioning = isTransitioning
             self._selectedShelterFilterTypes = selectedShelterFilterTypes
             super.init()
-            self.shelterHandler = ShelterHandler(coordinator: self, 
-                                               shelterViewModel: shelterViewModel,
-                                               selectedShelterFilterTypes: selectedShelterFilterTypes)
+            self.shelterMapHandler = ShelterMapHandler(
+                coordinator: self,
+                shelterViewModel: shelterViewModel,
+                selectedShelterFilterTypes: selectedShelterFilterTypes
+            )
         }
         
         // MARK: - MKMapViewDelegate Methods
         
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-            return shelterHandler.mapView(mapView, viewFor: annotation)
+            switch parent.currentAnnotationType {
+            case .shelter:
+                return shelterMapHandler.mapView(mapView, viewFor: annotation)
+            case .police:
+                // TODO: Handle police annotation view
+                return nil
+            case .none:
+                return nil
+            }
         }
         
         func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-            shelterHandler.mapView(mapView, annotationView: view, calloutAccessoryControlTapped: control)
+            switch parent.currentAnnotationType {
+            case .shelter:
+                shelterMapHandler.mapView(mapView, annotationView: view, calloutAccessoryControlTapped: control)
+            case .police:
+                // TODO: Handle police callout tapped
+                break
+            case .none:
+                break
+            }
         }
         
         func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
@@ -226,7 +247,17 @@ struct MapView: UIViewRepresentable {
             
             isInitialLocationSet = true
             updateMapRegion(mapView, coordinate: location.coordinate)
-            shelterHandler.updateAnnotations(on: mapView)
+            
+            switch parent.currentAnnotationType {
+            case .shelter:
+                shelterMapHandler.updateAnnotations(on: mapView)
+            case .police:
+                // TODO: Handle police annotations update
+                break
+            case .none:
+                break
+            }
+            
             manager.stopUpdatingLocation()
         }
         
@@ -246,6 +277,7 @@ struct MapView: UIViewRepresentable {
             
             mapView.setUserTrackingMode(.followWithHeading, animated: true)
             
+            // Handle search button animation
             UIView.animate(withDuration: searchButtonAnimationDuration,
                           delay: 0,
                           options: [.curveEaseOut]) {
@@ -263,7 +295,15 @@ struct MapView: UIViewRepresentable {
                 return
             }
             
-            shelterHandler.updateAnnotations(on: mapView)
+            switch parent.currentAnnotationType {
+            case .shelter:
+                shelterMapHandler.updateAnnotations(on: mapView)
+            case .police:
+                // TODO: Handle police annotations update
+                break
+            case .none:
+                break
+            }
         }
         
         @objc func searchRegionButtonTapped() {
@@ -278,10 +318,13 @@ struct MapView: UIViewRepresentable {
                 self.searchButton?.isHidden = true
                 self.searchButton?.transform = .identity
             }
-            
-            searchButtonTimer?.invalidate()
+            //<-----SEARCH BUTTON SHELTER ANNOTATION HANDLER----->
+            if parent.currentAnnotationType == .shelter {
+                searchButtonTimer?.invalidate()
 
-            shelterHandler.updateAnnotations(on: mapView)
+                shelterMapHandler.updateAnnotations(on: mapView)
+            }
+            //<-----SEARCH BUTTON POLICE ANNOTATION HANDLER----->
         }
 
         @objc func settingButtonTapped() {
