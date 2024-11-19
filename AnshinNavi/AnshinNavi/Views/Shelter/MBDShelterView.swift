@@ -11,9 +11,9 @@ struct MBDShelterView: View {
     private var shelterTypeText: String {
         if let lastFilter = selectedShelterFilterTypes.last,
            lastFilter == .isSameAsEvacuationCenter {
-            return "避難所"
+            return "evacuation_shelter_lowercase".localized
         }
-        return "避難場所"
+        return "evacuation_area_lowercase".localized
     }
     
     var body: some View {

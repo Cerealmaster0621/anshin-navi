@@ -38,7 +38,7 @@ struct MapView: UIViewRepresentable {
         
         // Add observer for filter updates
         NotificationCenter.default.addObserver(
-            forName: Notification.Name("searchRegion"),
+            forName: Notification.Name("search_region_notification".localized),
             object: nil,
             queue: .main
         ) { [context] _ in
@@ -81,49 +81,8 @@ struct MapView: UIViewRepresentable {
             context.coordinator.filterButton = rightSideView.filterButton
         }
 
-        // Search button
-        let searchButton = createSearchButton(target: context.coordinator)
-        mapView.addSubview(searchButton)
-        
-        // Calculate initial padding based on drawer height
-        let initialDrawerHeight = MainBottomDrawerView.getCurrentHeight(for: selectedDetent)
-        let initialSearchButtonPadding: CGFloat = -(initialDrawerHeight + MAIN_DRAWER_SEARCH_BOX_PADDING)
-        
-        // Create bottom constraint and store it in coordinator
-        let bottomConstraint = searchButton.bottomAnchor.constraint(
-            equalTo: mapView.safeAreaLayoutGuide.bottomAnchor,
-            constant: initialSearchButtonPadding
-        )
-        
-        NSLayoutConstraint.activate([
-            searchButton.centerXAnchor.constraint(equalTo: mapView.centerXAnchor),
-            bottomConstraint,
-            searchButton.heightAnchor.constraint(equalToConstant: 36),
-            searchButton.widthAnchor.constraint(lessThanOrEqualTo: mapView.widthAnchor, multiplier: 0.7)
-        ])
-        
-        context.coordinator.searchButton = searchButton
-        context.coordinator.searchButtonBottomConstraint = bottomConstraint
-    }
-    
-    private func createSearchButton(target: Coordinator) -> UIButton {
-        var config = UIButton.Configuration.filled()
-        config.baseBackgroundColor = .systemBackground
-        config.baseForegroundColor = .label
-        config.cornerStyle = .medium
-        config.image = UIImage(systemName: "magnifyingglass")
-        config.imagePlacement = .leading
-        config.imagePadding = 6
-        config.title = "この地域で検索"
-        
-        let button = UIButton(configuration: config)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.shadowOffset = CGSize(width: 0, height: 2)
-        button.layer.shadowRadius = 4
-        button.layer.shadowOpacity = 0.15
-        button.addTarget(target, action: #selector(Coordinator.searchRegionButtonTapped), for: .touchUpInside)
-        
-        return button
+        // Let coordinator setup the search button
+        context.coordinator.setupSearchButton(on: mapView, for: selectedDetent)
     }
     
     // MARK: - Coordinator
@@ -249,6 +208,7 @@ struct MapView: UIViewRepresentable {
             updateMapRegion(mapView, coordinate: location.coordinate)
             
             switch parent.currentAnnotationType {
+            //<-----SHELTER UPDATE----->
             case .shelter:
                 shelterMapHandler.updateAnnotations(on: mapView)
             case .police:
@@ -291,11 +251,12 @@ struct MapView: UIViewRepresentable {
             searchButtonTimer?.invalidate()
             
             guard (locationManager?.location) != nil else {
-                print("User location is not available.")
+                print("user_location_unavailable".localized)
                 return
             }
             
             switch parent.currentAnnotationType {
+            //<-----SHELTER UPDATE----->
             case .shelter:
                 shelterMapHandler.updateAnnotations(on: mapView)
             case .police:
@@ -318,13 +279,17 @@ struct MapView: UIViewRepresentable {
                 self.searchButton?.isHidden = true
                 self.searchButton?.transform = .identity
             }
-            //<-----SEARCH BUTTON SHELTER ANNOTATION HANDLER----->
-            if parent.currentAnnotationType == .shelter {
-                searchButtonTimer?.invalidate()
-
-                shelterMapHandler.updateAnnotations(on: mapView)
+            switch parent.currentAnnotationType{
+                //<-----SEARCH BUTTON SHELTER ANNOTATION HANDLER----->
+                case .shelter:
+                    searchButtonTimer?.invalidate()
+                    shelterMapHandler.updateAnnotations(on: mapView)
+                //<-----SEARCH BUTTON POLICE ANNOTATION HANDLER----->
+                case .police:
+                    break
+                case .none:
+                    break
             }
-            //<-----SEARCH BUTTON POLICE ANNOTATION HANDLER----->
         }
 
         @objc func settingButtonTapped() {
@@ -429,10 +394,55 @@ struct MapView: UIViewRepresentable {
         deinit {
             searchButtonTimer?.invalidate()
         }
+        
+        func setupSearchButton(on mapView: MKMapView, for detent: PresentationDetent) {
+            let searchButton = UIButton(type: .system)
+            searchButton.translatesAutoresizingMaskIntoConstraints = false
+            
+            // Configure button using the new configuration API
+            var config = UIButton.Configuration.plain()
+            config.title = "search_this_area".localized
+            config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+            config.background.backgroundColor = .systemBackground
+            searchButton.configuration = config
+            
+            searchButton.addTarget(self, action: #selector(searchRegionButtonTapped), for: .touchUpInside)
+            
+            // Setup shadow and corner radius
+            searchButton.layer.cornerRadius = 18
+            searchButton.layer.shadowColor = UIColor.black.cgColor
+            searchButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+            searchButton.layer.shadowRadius = 4
+            searchButton.layer.shadowOpacity = 0.1
+            
+            mapView.addSubview(searchButton)
+            
+            // Calculate initial padding based on drawer height
+            let initialDrawerHeight = MainBottomDrawerView.getCurrentHeight(for: detent)
+            let initialSearchButtonPadding: CGFloat = -(initialDrawerHeight + MAIN_DRAWER_SEARCH_BOX_PADDING)
+            
+            // Create bottom constraint
+            let bottomConstraint = searchButton.bottomAnchor.constraint(
+                equalTo: mapView.safeAreaLayoutGuide.bottomAnchor,
+                constant: initialSearchButtonPadding
+            )
+            
+            NSLayoutConstraint.activate([
+                searchButton.centerXAnchor.constraint(equalTo: mapView.centerXAnchor),
+                bottomConstraint,
+                searchButton.heightAnchor.constraint(equalToConstant: 36),
+                searchButton.widthAnchor.constraint(lessThanOrEqualTo: mapView.widthAnchor, multiplier: 0.7)
+            ])
+            
+            self.searchButton = searchButton
+            self.searchButtonBottomConstraint = bottomConstraint
+        }
     }
 }
 
 // extension for new search when closing filter sheet
 extension MapView {
-    static let searchRegionNotification = NotificationCenter.default.publisher(for: Notification.Name("searchRegion"))
+    static let searchRegionNotification = NotificationCenter.default.publisher(
+        for: Notification.Name("search_region_notification".localized)
+    )
 }

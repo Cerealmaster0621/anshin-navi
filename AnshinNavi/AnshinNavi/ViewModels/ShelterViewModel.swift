@@ -110,32 +110,32 @@ final class ShelterViewModel: NSObject, ObservableObject {
                 longitude: region.center.longitude
             )
             
-            // Sort shelters by distance and limit to MAX_ANNOTATIONS
-            let limitedUnfilteredShelters = unfilteredShelters
-                .sorted { shelter1, shelter2 in
-                    let location1 = CLLocation(latitude: shelter1.latitude, longitude: shelter1.longitude)
-                    let location2 = CLLocation(latitude: shelter2.latitude, longitude: shelter2.longitude)
-                    return location1.distance(from: centerLocation) < location2.distance(from: centerLocation)
-                }
-                .prefix(MAX_ANNOTATIONS)
-            
-            let limitedFilteredShelters = visibleShelters
-                .sorted { shelter1, shelter2 in
-                    let location1 = CLLocation(latitude: shelter1.latitude, longitude: shelter1.longitude)
-                    let location2 = CLLocation(latitude: shelter2.latitude, longitude: shelter2.longitude)
-                    return location1.distance(from: centerLocation) < location2.distance(from: centerLocation)
-                }
-                .prefix(MAX_ANNOTATIONS)
-            
-            // Update visible shelter count and both shelter arrays
-            DispatchQueue.main.async {
-                self.visibleShelterCount = min(visibleShelters.count, MAX_ANNOTATIONS)
-                self.currentUnfilteredShelters = Array(limitedUnfilteredShelters)
-                self.currentVisibleShelters = Array(limitedFilteredShelters)
+            // Sort all shelters by distance from center
+            let sortedUnfilteredShelters = unfilteredShelters.sorted { shelter1, shelter2 in
+                let location1 = CLLocation(latitude: shelter1.latitude, longitude: shelter1.longitude)
+                let location2 = CLLocation(latitude: shelter2.latitude, longitude: shelter2.longitude)
+                return location1.distance(from: centerLocation) < location2.distance(from: centerLocation)
             }
             
-            // Convert shelters to annotations
-            let annotations = limitedFilteredShelters.map { shelter in
+            let sortedVisibleShelters = visibleShelters.sorted { shelter1, shelter2 in
+                let location1 = CLLocation(latitude: shelter1.latitude, longitude: shelter1.longitude)
+                let location2 = CLLocation(latitude: shelter2.latitude, longitude: shelter2.longitude)
+                return location1.distance(from: centerLocation) < location2.distance(from: centerLocation)
+            }
+            
+            // Take only the closest MAX_ANNOTATIONS shelters
+            let limitedUnfilteredShelters = Array(sortedUnfilteredShelters.prefix(MAX_ANNOTATIONS))
+            let limitedVisibleShelters = Array(sortedVisibleShelters.prefix(MAX_ANNOTATIONS))
+            
+            // Update shelter view model on main thread
+            DispatchQueue.main.async {
+                self.visibleShelterCount = visibleShelters.count // Show total count before limiting
+                self.currentUnfilteredShelters = limitedUnfilteredShelters
+                self.currentVisibleShelters = limitedVisibleShelters
+            }
+            
+            // Create annotations for the limited visible shelters
+            let annotations = limitedVisibleShelters.map { shelter in
                 ShelterAnnotation(shelter: shelter)
             }
             
@@ -186,10 +186,6 @@ final class ShelterViewModel: NSObject, ObservableObject {
             latitudinalMeters: 1000,  // 1km zoom level
             longitudinalMeters: 1000
         )
-        
-        // Remove existing shelter annotations
-        let existingAnnotations = mapView.annotations.filter { $0 is ShelterAnnotation }
-        mapView.removeAnnotations(existingAnnotations)
         
         // Add new annotation
         let annotation = ShelterAnnotation(shelter: shelter)

@@ -9,18 +9,11 @@ struct DetailedShelterView: View {
     @State private var showingAddressCopied = false
     
     private var shareText: String {
-        """
-        避難場所の位置情報を共有します
-        
-        \(shelter.name)
-        \(shelter.address)
-        
-        Apple Maps:
-        https://maps.apple.com/?q=\(shelter.latitude),\(shelter.longitude)
-        
-        Google Maps:
-        https://www.google.com/maps/search/?api=1&query=\(shelter.latitude),\(shelter.longitude)
-        """
+        String(format: "shelter_share_message".localized,
+               shelter.name,
+               shelter.address,
+               "https://maps.apple.com/?q=\(shelter.latitude),\(shelter.longitude)",
+               "https://www.google.com/maps/search/?api=1&query=\(shelter.latitude),\(shelter.longitude)")
     }
     
     var body: some View {
@@ -93,7 +86,7 @@ struct DetailedShelterView: View {
                 VStack(spacing: 20) {
                     Group {
                         // Address with Copy Button
-                        informationCard(title: "住所", icon: "mappin.circle.fill") {
+                        informationCard(title: "address".localized, icon: "mappin.circle.fill") {
                             Button(action: {
                                 UIPasteboard.general.string = shelter.address
                                 showingAddressCopied = true
@@ -114,9 +107,9 @@ struct DetailedShelterView: View {
                         }
                         
                         // Coordinates with Integrated Copy
-                        informationCard(title: "位置座標", icon: "location.circle.fill") {
+                        informationCard(title: "coordinates".localized, icon: "location.circle.fill") {
                             Button(action: {
-                                let coordinates = "緯度: \(String(format: "%.6f", shelter.latitude)), 軽度: \(String(format: "%.6f", shelter.longitude))" // TODO - change copy form depends on setting
+                                let coordinates = "\(String(format: "latitude".localized)): \(String(format: "%.6f", shelter.latitude)), \(String(format: "longitude".localized)): \(String(format: "%.6f", shelter.longitude))" // TODO - change copy form depends on setting
                                 UIPasteboard.general.string = coordinates
                                 showingCoordinatesCopied = true
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -125,9 +118,9 @@ struct DetailedShelterView: View {
                             }) {
                                 HStack {
                                     VStack(alignment: .leading, spacing: 8) {
-                                        Text("緯度: \(String(format: "%.6f", shelter.latitude))")
+                                        Text("\(String(format: "latitude".localized)): \(String(format: "%.6f", shelter.latitude))")
                                             .font(.system(size: 17))
-                                        Text("軽度: \(String(format: "%.6f", shelter.longitude))")
+                                        Text("\(String(format: "longitude".localized)): \(String(format: "%.6f", shelter.longitude))")
                                             .font(.system(size: 17))
                                     }
                                     Spacer()
@@ -149,7 +142,7 @@ struct DetailedShelterView: View {
                     
                     // Safety Features
                     if !shelter.trueSafetyFeatures.isEmpty {
-                        informationCard(title: "対応災害", icon: "shield.fill") {
+                        informationCard(title: "supported_disasters".localized, icon: "shield.fill") {
                             LazyVGrid(columns: [
                                 GridItem(.flexible()),
                                 GridItem(.flexible())
@@ -176,7 +169,7 @@ struct DetailedShelterView: View {
                     
                     // Additional Info
                     if !shelter.additionalInfo.isEmpty {
-                        informationCard(title: "追加情報", icon: "info.circle.fill") {
+                        informationCard(title: "additional_info".localized, icon: "info.circle.fill") {
                             Text(shelter.additionalInfo)
                                 .font(.system(size: 17))
                         }
@@ -187,7 +180,7 @@ struct DetailedShelterView: View {
                         Button(action: {
                             openInAppleMaps()
                         }) {
-                            Text("Apple マップで開く")
+                            Text("open_in_apple_maps".localized)
                                 .font(.system(size: 16))
                                 .foregroundColor(.blue)
                                 .frame(maxWidth: .infinity)
@@ -206,7 +199,7 @@ struct DetailedShelterView: View {
                         Button(action: {
                             openInGoogleMaps()
                         }) {
-                            Text("Google マップで開く")
+                            Text("open_in_google_maps".localized)
                                 .font(.system(size: 16))
                                 .foregroundColor(.blue)
                                 .frame(maxWidth: .infinity)
@@ -230,8 +223,8 @@ struct DetailedShelterView: View {
         .background(Color(.systemGroupedBackground))
         .overlay(
             Group {
-                ToastView(message: "位置座標をコピーしました", isShowing: $showingCoordinatesCopied)
-                ToastView(message: "住所をコピーしました", isShowing: $showingAddressCopied)
+                ToastView(message: "coordinates_copied".localized, isShowing: $showingCoordinatesCopied)
+                ToastView(message: "address_copied".localized, isShowing: $showingAddressCopied)
             }
         )
         .presentationDetents([.medium, .large])

@@ -8,10 +8,8 @@ struct FilterDrawerView: View {
     var body: some View {
         NavigationView {
             switch currentAnnotationType {
-                //<-----SHELTER FILTER----->
                 case .shelter:
                     FilterShelterView(selectedShelterFilterTypes: $selectedShelterFilterTypes)
-                //<-----POLICE FILTER----->
                 case .police:
                     EmptyView()
                 case .none:

@@ -82,7 +82,7 @@ struct MapContainerView: View {
 
         if previousSheet == .filter, activeSheet != .filter {
             NotificationCenter.default.post(
-                name: Notification.Name("searchRegion"),
+                name: Notification.Name("search_region_notification".localized),
                 object: nil
             )
         }
