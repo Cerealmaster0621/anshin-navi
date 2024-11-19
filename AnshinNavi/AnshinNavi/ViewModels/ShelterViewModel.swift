@@ -292,3 +292,28 @@ extension ShelterViewModel {
         }
     }
 }
+
+extension ShelterViewModel {
+    /// Searches for shelters matching the given keyword in name or region
+    /// - Parameters:
+    ///   - shelters: Array of shelters to search through
+    ///   - keyword: Search keyword
+    /// - Returns: Array of shelters matching the search criteria
+    func searchShelters(_ shelters: [Shelter], keyword: String) -> [Shelter] {
+        guard !keyword.isEmpty else { return shelters }
+        
+        let trimmedKeyword = keyword.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        
+        return shelters.filter { shelter in
+            shelter.name.lowercased().contains(trimmedKeyword) ||
+            shelter.regionName.lowercased().contains(trimmedKeyword)
+        }
+    }
+    
+    /// Searches through currently visible shelters
+    /// - Parameter keyword: Search keyword
+    /// - Returns: Array of visible shelters matching the search criteria
+    func searchCurrentVisibleShelters(keyword: String) -> [Shelter] {
+        return searchShelters(currentVisibleShelters, keyword: keyword)
+    }
+}

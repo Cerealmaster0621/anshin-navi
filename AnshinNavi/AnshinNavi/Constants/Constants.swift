@@ -37,3 +37,28 @@ let WHAT_IS_SHELTER_FILTER: AttributedString = {
 
 // Base Font Size
 let BASE_FONT_SIZE:CGFloat = 14
+
+// Share message templates
+let SHARE_MESSAGE_TEMPLATE = """
+私の位置情報を共有します
+
+位置座標: %@
+
+%@
+
+地図で開く:
+Apple Map
+
+Google Map
+
+"""
+
+let SHARE_NEAREST_SHELTER_TEMPLATE = """
+最寄りの%@:
+%@
+%@
+距離: %@
+"""
+
+let SHARE_GOOGLE_MAPS_URL_TEMPLATE = "https://www.google.com/maps/search/?api=1&query=%f,%f"
+let SHARE_APPLE_MAPS_URL_TEMPLATE = "http://maps.apple.com/?q=%f,%f"
