@@ -13,6 +13,7 @@ final class ShelterViewModel: NSObject, ObservableObject {
     @Published var selectedShelter: Shelter?
     @Published var visibleShelterCount: Int = 0
     @Published var userLocation: CLLocation?
+    @Published private(set) var currentVisibleShelters: [Shelter] = []
     
     private let locationManager = CLLocationManager()
     private let jsonFileName = "shelters"
@@ -41,19 +42,18 @@ final class ShelterViewModel: NSObject, ObservableObject {
     ///   - radius: The search radius in meters (defaults to 2km)
     /// - Returns: Array of shelters within the specified radius
     func getSheltersNearLocation(_ location: CLLocation, radius: CLLocationDistance = 2000) -> [Shelter] {
-        let shelterLocations = shelters.map { shelter in
-            (
-                shelter: shelter,
-                distance: location.distance(from: CLLocation(
-                    latitude: shelter.latitude,
-                    longitude: shelter.longitude
-                ))
-            )
-        }
+        let lat = location.coordinate.latitude
+        let lon = location.coordinate.longitude
         
-        return shelterLocations
-            .filter { $0.distance <= radius }
-            .map { $0.shelter }
+        return shelters.filter { shelter in
+            let distance = fastDistance(
+                lat1: lat,
+                lon1: lon,
+                lat2: shelter.latitude,
+                lon2: shelter.longitude
+            )
+            return distance <= radius
+        }
     }
     
     /// Retrieves shelters visible within the current map region
@@ -100,11 +100,6 @@ final class ShelterViewModel: NSObject, ObservableObject {
                 visibleShelters = self.filterVisibleSheltersByTypes(selectedFilters, in: region)
             }
             
-            // Update visible shelter count
-            DispatchQueue.main.async {
-                self.visibleShelterCount = min(visibleShelters.count, MAX_ANNOTATIONS)
-            }
-            
             // Get center location for distance calculation
             let centerLocation = CLLocation(
                 latitude: region.center.latitude,
@@ -119,6 +114,12 @@ final class ShelterViewModel: NSObject, ObservableObject {
                     return location1.distance(from: centerLocation) < location2.distance(from: centerLocation)
                 }
                 .prefix(MAX_ANNOTATIONS)
+            
+            // Update visible shelter count and currentVisibleShelters
+            DispatchQueue.main.async {
+                self.visibleShelterCount = min(visibleShelters.count, MAX_ANNOTATIONS)
+                self.currentVisibleShelters = Array(limitedShelters)
+            }
             
             // Convert shelters to annotations
             let annotations = limitedShelters.map { shelter in
@@ -249,5 +250,45 @@ extension ShelterViewModel: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Location error: \(error.localizedDescription)")
+    }
+}
+
+extension ShelterViewModel {
+    /// Calculates distance between two coordinates using optimized Haversine formula
+    /// - Parameters:
+    ///   - lat1: First latitude in degrees
+    ///   - lon1: First longitude in degrees
+    ///   - lat2: Second latitude in degrees
+    ///   - lon2: Second longitude in degrees
+    /// - Returns: Distance in meters
+    func fastDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double) -> Double {
+        // Earth's radius in meters
+        let R: Double = 6371000
+        
+        // Convert coordinates to radians
+        let φ1 = lat1 * .pi / 180
+        let φ2 = lat2 * .pi / 180
+        let Δφ = (lat2 - lat1) * .pi / 180
+        let Δλ = (lon2 - lon1) * .pi / 180
+        
+        // Pre-calculate trigonometric values
+        let sinΔφ2 = sin(Δφ / 2)
+        let sinΔλ2 = sin(Δλ / 2)
+        
+        // Haversine formula
+        let a = sinΔφ2 * sinΔφ2 +
+                cos(φ1) * cos(φ2) * sinΔλ2 * sinΔλ2
+        let c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        
+        return R * c
+    }
+
+    func formatDistance(meters: Double) -> String {
+        if meters >= 1000 {
+            let km = meters / 1000
+            return String(format: "%.1f km", km)
+        } else {
+            return String(format: "%.0f m", meters)
+        }
     }
 }

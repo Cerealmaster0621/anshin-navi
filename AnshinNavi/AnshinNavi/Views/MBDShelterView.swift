@@ -10,8 +10,10 @@ import SwiftUI
 
 struct MBDShelterView: View {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
+    @State private var selectedFacility: FacilityType = .shelter
     let isSmallDetent: Bool
     let selectedShelterFilterTypes: [ShelterFilterType]
+    @State private var showingMoreShelters = false
     
     private var shelterTypeText: String {
         if let lastFilter = selectedShelterFilterTypes.last,
@@ -70,7 +72,7 @@ struct MBDShelterView: View {
                             }
                             .padding(.horizontal)
                         }
-                        .padding(.bottom, 16)
+                        .padding(.bottom, 12)
                     }
                     
                     Spacer()
@@ -103,7 +105,14 @@ struct MBDShelterView: View {
                                             .font(.system(size: 17))
                                             .foregroundColor(.primary)
                                         
-                                        Text(closestShelter.regionName)
+                                        let distance = shelterViewModel.fastDistance(
+                                            lat1: userLocation.coordinate.latitude,
+                                            lon1: userLocation.coordinate.longitude,
+                                            lat2: closestShelter.latitude,
+                                            lon2: closestShelter.longitude
+                                        )
+                                        
+                                        Text("\(closestShelter.regionName) ･ \(shelterViewModel.formatDistance(meters: distance))")
                                             .font(.system(size: 14))
                                             .foregroundColor(Color(.systemGray))
                                     }
@@ -122,6 +131,98 @@ struct MBDShelterView: View {
                     }
                     
                     Spacer()
+                        .frame(height:12)
+                    
+                    // Library section
+                    MBDAnnotationCardView()
+                    
+                    Spacer()
+                        .frame(height: 24)
+                    
+                    // Search Results section
+                    VStack(alignment: .leading, spacing: 8) {
+                        // Header with "View More" button
+                        HStack {
+                            if shelterViewModel.currentVisibleShelters.count <= 0 {
+                                Text("検索結果がありません")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(Color(.systemGray))    
+                            } else{
+                                Text("検索結果")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(Color(.systemGray))
+                            }
+                            
+                            Spacer()
+                            
+                            if shelterViewModel.currentVisibleShelters.count > 3 {
+                                Button(action: {
+                                    showingMoreShelters = true
+                                }) {
+                                    Text("もっと見る")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(.blue)
+                                }
+                                .fullScreenCover(isPresented: $showingMoreShelters) {
+                                    MBDViewMoreShelters()
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                        
+                        // Results cards (limited to 3)
+                        VStack(spacing: 1) {
+                            ForEach(shelterViewModel.currentVisibleShelters.prefix(3), id: \.id) { shelter in
+                                Button(action: {
+                                    shelterViewModel.selectedShelter = shelter
+                                }) {
+                                    HStack(spacing: 16) {
+                                        // Location icon
+                                        Image(systemName: "mappin.circle.fill")
+                                            .font(.system(size: 28))
+                                            .foregroundColor(Color(.systemGreen))
+                                            .frame(width: 40)
+                                        
+                                        // Shelter information
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(shelter.name)
+                                                .font(.system(size: 17))
+                                                .foregroundColor(.primary)
+                                            
+                                            if let userLocation = shelterViewModel.userLocation {
+                                                let distance = shelterViewModel.fastDistance(
+                                                    lat1: userLocation.coordinate.latitude,
+                                                    lon1: userLocation.coordinate.longitude,
+                                                    lat2: shelter.latitude,
+                                                    lon2: shelter.longitude
+                                                )
+                                                
+                                                Text("\(shelter.regionName) ･ \(shelterViewModel.formatDistance(meters: distance))")
+                                                    .font(.system(size: 14))
+                                                    .foregroundColor(Color(.systemGray))
+                                            } else {
+                                                Text(shelter.regionName)
+                                                    .font(.system(size: 14))
+                                                    .foregroundColor(Color(.systemGray))
+                                            }
+                                        }
+                                        
+                                        Spacer()
+                                        
+                                        Image(systemName: "chevron.right")
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding()
+                                    .background(Color(.secondarySystemGroupedBackground))
+                                }
+                            }
+                        }
+                        .cornerRadius(12)
+                        .padding(.horizontal)
+                    }
+                    
+                    Spacer()
+                        .frame(height: 24)
                 }
             }
         }

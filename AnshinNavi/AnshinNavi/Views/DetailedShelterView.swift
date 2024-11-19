@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct DetailedShelterView: View {
+    @EnvironmentObject var shelterViewModel: ShelterViewModel
     let shelter: Shelter
     @Binding var activeSheet: CurrentSheet?
     @StateObject private var networkReachability = NetworkReachability()
@@ -31,9 +32,23 @@ struct DetailedShelterView: View {
                         Text(shelter.name)
                             .font(.system(size: 32, weight: .bold))
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(shelter.regionName)
-                                .font(.system(size: 17))
-                                .foregroundColor(.secondary)
+                            if let userLocation = shelterViewModel.userLocation {
+                                let distance = shelterViewModel.fastDistance(
+                                    lat1: userLocation.coordinate.latitude,
+                                    lon1: userLocation.coordinate.longitude,
+                                    lat2: shelter.latitude,
+                                    lon2: shelter.longitude
+                                )
+                                
+                                Text("\(shelter.regionName) ･ \(shelterViewModel.formatDistance(meters: distance))")
+                                    .font(.system(size: 17))
+                                    .foregroundColor(.secondary)
+                            } else {
+                                Text(shelter.regionName)
+                                    .font(.system(size: 17))
+                                    .foregroundColor(.secondary)
+                            }
+                            
                             if shelter.isSameAsEvacuationCenter {
                                 Spacer()
                                     .frame(height: 4)
