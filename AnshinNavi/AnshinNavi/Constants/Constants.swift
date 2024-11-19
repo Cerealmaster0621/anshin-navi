@@ -47,10 +47,12 @@ let SHARE_MESSAGE_TEMPLATE = """
 %@
 
 地図で開く:
+
 Apple Map
+%@
 
 Google Map
-
+%@
 """
 
 let SHARE_NEAREST_SHELTER_TEMPLATE = """

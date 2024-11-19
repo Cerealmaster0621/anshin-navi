@@ -1,10 +1,3 @@
-//
-//  MBDShelterView.swift
-//  AnshinNavi
-//
-//  Created by YoungJune Kang on 2024/11/19.
-//
-
 import Foundation
 import SwiftUI
 

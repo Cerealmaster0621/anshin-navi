@@ -133,6 +133,7 @@
 		B33F832A2CE63DA200D33A0D /* AnshinNavi */ = {
 			isa = PBXGroup;
 			children = (
+				B3C01F0E2CECA2DF00FB6E82 /* Localizations */,
 				B3C01F012CEB36C300FB6E82 /* Tools */,
 				B3B569452CE756180073C38A /* Datas */,
 				B33F83632CE6434C00D33A0D /* Info.plist */,
@@ -232,6 +233,13 @@
 				B3C01F042CEB691F00FB6E82 /* DynamicSizeRelated.swift */,
 			);
 			path = Tools;
+			sourceTree = "<group>";
+		};
+		B3C01F0E2CECA2DF00FB6E82 /* Localizations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Localizations;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

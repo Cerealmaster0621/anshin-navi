@@ -135,8 +135,8 @@ struct MBDViewMoreShelters: View {
                             // Reset button
                             Button(action: {
                                 selectedFilters.removeAll()
-                                // Reset local shelters to original state
-                                localShelters = shelterViewModel.currentVisibleShelters
+                                // Reset local shelters to unfiltered state
+                                localShelters = shelterViewModel.currentUnfilteredShelters
                             }) {
                                 Text("フィルターをリセット")
                                     .foregroundColor(.blue)
@@ -157,7 +157,7 @@ struct MBDViewMoreShelters: View {
                                             selectedFilters.insert(filterType)
                                         }
                                         // Update local shelters based on new filters
-                                        localShelters = shelterViewModel.currentVisibleShelters.filter { shelter in
+                                        localShelters = shelterViewModel.currentUnfilteredShelters.filter { shelter in
                                             selectedFilters.isEmpty || selectedFilters.allSatisfy { filterType in
                                                 filterType.matches(shelter)
                                             }
@@ -189,7 +189,7 @@ struct MBDViewMoreShelters: View {
                                     selectedFilters.insert(evacuationCenter)
                                 }
                                 // Update local shelters based on new filters
-                                localShelters = shelterViewModel.currentVisibleShelters.filter { shelter in
+                                localShelters = shelterViewModel.currentUnfilteredShelters.filter { shelter in
                                     selectedFilters.isEmpty || selectedFilters.allSatisfy { filterType in
                                         filterType.matches(shelter)
                                     }
@@ -279,7 +279,7 @@ struct MBDViewMoreShelters: View {
         }
         .background(Color(.systemGroupedBackground))
         .onAppear {
-            localShelters = shelterViewModel.currentVisibleShelters
+            localShelters = shelterViewModel.currentUnfilteredShelters
         }
     }
 }

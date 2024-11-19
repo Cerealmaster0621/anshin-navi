@@ -14,6 +14,7 @@ final class ShelterViewModel: NSObject, ObservableObject {
     @Published var visibleShelterCount: Int = 0
     @Published var userLocation: CLLocation?
     @Published private(set) var currentVisibleShelters: [Shelter] = []
+    @Published private(set) var currentUnfilteredShelters: [Shelter] = []
     
     private let locationManager = CLLocationManager()
     private let jsonFileName = "shelters"
@@ -92,10 +93,13 @@ final class ShelterViewModel: NSObject, ObservableObject {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
             
+            // Get all visible shelters without filters first
+            let unfilteredShelters = self.getSheltersInMapRegion(region)
+            
             // Get visible shelters based on filters
             let visibleShelters: [Shelter]
             if selectedFilters.isEmpty {
-                visibleShelters = self.getSheltersInMapRegion(region)
+                visibleShelters = unfilteredShelters
             } else {
                 visibleShelters = self.filterVisibleSheltersByTypes(selectedFilters, in: region)
             }
@@ -107,7 +111,7 @@ final class ShelterViewModel: NSObject, ObservableObject {
             )
             
             // Sort shelters by distance and limit to MAX_ANNOTATIONS
-            let limitedShelters = visibleShelters
+            let limitedUnfilteredShelters = unfilteredShelters
                 .sorted { shelter1, shelter2 in
                     let location1 = CLLocation(latitude: shelter1.latitude, longitude: shelter1.longitude)
                     let location2 = CLLocation(latitude: shelter2.latitude, longitude: shelter2.longitude)
@@ -115,14 +119,23 @@ final class ShelterViewModel: NSObject, ObservableObject {
                 }
                 .prefix(MAX_ANNOTATIONS)
             
-            // Update visible shelter count and currentVisibleShelters
+            let limitedFilteredShelters = visibleShelters
+                .sorted { shelter1, shelter2 in
+                    let location1 = CLLocation(latitude: shelter1.latitude, longitude: shelter1.longitude)
+                    let location2 = CLLocation(latitude: shelter2.latitude, longitude: shelter2.longitude)
+                    return location1.distance(from: centerLocation) < location2.distance(from: centerLocation)
+                }
+                .prefix(MAX_ANNOTATIONS)
+            
+            // Update visible shelter count and both shelter arrays
             DispatchQueue.main.async {
                 self.visibleShelterCount = min(visibleShelters.count, MAX_ANNOTATIONS)
-                self.currentVisibleShelters = Array(limitedShelters)
+                self.currentUnfilteredShelters = Array(limitedUnfilteredShelters)
+                self.currentVisibleShelters = Array(limitedFilteredShelters)
             }
             
             // Convert shelters to annotations
-            let annotations = limitedShelters.map { shelter in
+            let annotations = limitedFilteredShelters.map { shelter in
                 ShelterAnnotation(shelter: shelter)
             }
             
