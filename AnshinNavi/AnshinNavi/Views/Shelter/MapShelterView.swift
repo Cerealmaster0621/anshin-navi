@@ -2,6 +2,28 @@ import SwiftUI
 import MapKit
 import CoreLocation
 
+// MARK: - Shelter Annotation
+class ShelterAnnotation: NSObject, MKAnnotation {
+    let shelter: Shelter
+    
+    var coordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: shelter.latitude, longitude: shelter.longitude)
+    }
+    
+    var title: String? {
+        shelter.name
+    }
+    
+    var subtitle: String? {
+        shelter.regionName
+    }
+    
+    init(shelter: Shelter) {
+        self.shelter = shelter
+        super.init()
+    }
+}
+
 class ShelterMapHandler: NSObject {
     weak var coordinator: MapView.Coordinator?
     private let shelterViewModel: ShelterViewModel
@@ -83,7 +105,7 @@ extension ShelterMapHandler: MKMapViewDelegate {
             ?? MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         
         annotationView.canShowCallout = true
-        annotationView.markerTintColor = .systemGreen
+        annotationView.markerTintColor = UIColor(Color(.systemGreen))
         annotationView.glyphImage = UIImage(systemName: "house.fill")
         
         let button = UIButton(type: .detailDisclosure)

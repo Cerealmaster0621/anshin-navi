@@ -11,26 +11,31 @@ import CoreLocation
 
 struct MapView: UIViewRepresentable {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
+    @EnvironmentObject var policeViewModel: PoliceViewModel
     var selectedDetent: PresentationDetent
     @Binding var currentAnnotationType: CurrentAnnotationType
     @Binding var activeSheet: CurrentSheet?
     @Binding var isTransitioning: Bool
     @Binding var selectedShelterFilterTypes: [ShelterFilterType]
+    @Binding var selectedPoliceTypes: [PoliceType]
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self, 
                    shelterViewModel: shelterViewModel,
+                   policeViewModel: policeViewModel,
                    activeSheet: $activeSheet,
                    isTransitioning: $isTransitioning,
-                   selectedShelterFilterTypes: $selectedShelterFilterTypes)
+                   selectedShelterFilterTypes: $selectedShelterFilterTypes,
+                   selectedPoliceTypes: $selectedPoliceTypes)
     }
     
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
         
-        // Set the mapView reference in ShelterViewModel
+        // Set the mapView reference in ViewModels
         shelterViewModel.mapView = mapView
+        policeViewModel.mapView = mapView
         
         configureMapView(mapView)
         setupLocationServices(context)
@@ -42,7 +47,14 @@ struct MapView: UIViewRepresentable {
             object: nil,
             queue: .main
         ) { [context] _ in
-            context.coordinator.shelterMapHandler.updateAnnotations(on: mapView)
+            switch currentAnnotationType {
+            case .shelter:
+                context.coordinator.shelterMapHandler.updateAnnotations(on: mapView)
+            case .police:
+                context.coordinator.policeMapHandler.updateAnnotations(on: mapView)
+            case .none:
+                break
+            }
         }
         
         return mapView
@@ -89,6 +101,7 @@ struct MapView: UIViewRepresentable {
     class Coordinator: NSObject, MKMapViewDelegate, CLLocationManagerDelegate {
         private let parent: MapView
         var shelterViewModel: ShelterViewModel
+        var policeViewModel: PoliceViewModel
         var locationManager: CLLocationManager?
         weak var locationButton: UIButton?
         weak var searchButton: UIButton?
@@ -97,6 +110,7 @@ struct MapView: UIViewRepresentable {
         weak var compassButton: MKCompassButton?
         private var isInitialLocationSet = false
         var shelterMapHandler: ShelterMapHandler!
+        var policeMapHandler: PoliceMapHandler!
         weak var searchButtonBottomConstraint: NSLayoutConstraint?
         private var searchButtonTimer: Timer?
         private var isMapScrolling = false
@@ -104,22 +118,34 @@ struct MapView: UIViewRepresentable {
         @Binding var activeSheet: CurrentSheet?
         @Binding var isTransitioning: Bool
         @Binding var selectedShelterFilterTypes: [ShelterFilterType]
+        @Binding var selectedPoliceTypes: [PoliceType]
         
         init(_ parent: MapView, 
              shelterViewModel: ShelterViewModel,
+             policeViewModel: PoliceViewModel,
              activeSheet: Binding<CurrentSheet?>,
              isTransitioning: Binding<Bool>,
-             selectedShelterFilterTypes: Binding<[ShelterFilterType]>) {
+             selectedShelterFilterTypes: Binding<[ShelterFilterType]>,
+             selectedPoliceTypes: Binding<[PoliceType]>) {
             self.parent = parent
             self.shelterViewModel = shelterViewModel
+            self.policeViewModel = policeViewModel
             self._activeSheet = activeSheet
             self._isTransitioning = isTransitioning
             self._selectedShelterFilterTypes = selectedShelterFilterTypes
+            self._selectedPoliceTypes = selectedPoliceTypes
             super.init()
+            
             self.shelterMapHandler = ShelterMapHandler(
                 coordinator: self,
                 shelterViewModel: shelterViewModel,
                 selectedShelterFilterTypes: selectedShelterFilterTypes
+            )
+            
+            self.policeMapHandler = PoliceMapHandler(
+                coordinator: self,
+                policeViewModel: policeViewModel,
+                selectedPoliceTypes: selectedPoliceTypes
             )
         }
         
@@ -130,8 +156,7 @@ struct MapView: UIViewRepresentable {
             case .shelter:
                 return shelterMapHandler.mapView(mapView, viewFor: annotation)
             case .police:
-                // TODO: Handle police annotation view
-                return nil
+                return policeMapHandler.mapView(mapView, viewFor: annotation)
             case .none:
                 return nil
             }
@@ -142,8 +167,7 @@ struct MapView: UIViewRepresentable {
             case .shelter:
                 shelterMapHandler.mapView(mapView, annotationView: view, calloutAccessoryControlTapped: control)
             case .police:
-                // TODO: Handle police callout tapped
-                break
+                policeMapHandler.mapView(mapView, annotationView: view, calloutAccessoryControlTapped: control)
             case .none:
                 break
             }
@@ -212,7 +236,7 @@ struct MapView: UIViewRepresentable {
             case .shelter:
                 shelterMapHandler.updateAnnotations(on: mapView)
             case .police:
-                // TODO: Handle police annotations update
+                policeMapHandler.updateAnnotations(on: mapView)
                 break
             case .none:
                 break
@@ -259,9 +283,9 @@ struct MapView: UIViewRepresentable {
             //<-----SHELTER UPDATE----->
             case .shelter:
                 shelterMapHandler.updateAnnotations(on: mapView)
+            //<-----POLICE UPDATE----->
             case .police:
-                // TODO: Handle police annotations update
-                break
+                policeMapHandler.updateAnnotations(on: mapView)
             case .none:
                 break
             }
@@ -286,7 +310,8 @@ struct MapView: UIViewRepresentable {
                     shelterMapHandler.updateAnnotations(on: mapView)
                 //<-----SEARCH BUTTON POLICE ANNOTATION HANDLER----->
                 case .police:
-                    break
+                    searchButtonTimer?.invalidate()
+                    policeMapHandler.updateAnnotations(on: mapView)
                 case .none:
                     break
             }

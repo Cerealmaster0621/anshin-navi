@@ -68,11 +68,22 @@ enum PoliceType: String, Codable {
     var iconName: String {
         switch self {
         case .koban:
-            return "building.columns.fill" // Icon representing a koban
+            return "building.columns.fill"
         case .keisatsusho:
-            return "shield.fill" // Icon representing a police station
+            return "shield.fill"
         case .honbu:
-            return "star.circle.fill" // Icon representing the headquarters
+            return "star.circle.fill"
+        }
+    }
+    
+    var localizedName: String {
+        switch self {
+        case .koban:
+            return "koban".localized
+        case .keisatsusho:
+            return "keisatsusho".localized
+        case .honbu:
+            return "honbu".localized
         }
     }
 }

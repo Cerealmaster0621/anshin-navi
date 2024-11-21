@@ -19,10 +19,12 @@ final class MapViewModel: ObservableObject {
     
     // Reference to ShelterViewModel
     let shelterViewModel: ShelterViewModel
+    let policeViewModel: PoliceViewModel
     
     init(region: MKCoordinateRegion = MKCoordinateRegion()) {
         self.region = region
         self.shelterViewModel = ShelterViewModel()
+        self.policeViewModel = PoliceViewModel()
     }
     
     // MARK: - Map Interaction Methods
@@ -42,6 +44,11 @@ final class MapViewModel: ObservableObject {
     // Example method to get shelters in the current map region
     func getSheltersInCurrentRegion() -> [Shelter] {
         return shelterViewModel.getSheltersInMapRegion(region)
+    }
+    
+    // Add methods for police stations
+    func getPoliceStationsInCurrentRegion() -> [PoliceBase] {
+        return policeViewModel.getPoliceStationsInMapRegion(region)
     }
     
     // add more methods to interact with shelters via shelterViewModel

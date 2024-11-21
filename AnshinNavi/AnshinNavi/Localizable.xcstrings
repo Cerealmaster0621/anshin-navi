@@ -27,12 +27,32 @@
         }
       }
     },
+    "%@ ･ %@%@" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ ･ %2$@%3$@"
+          }
+        }
+      }
+    },
     "%@: %@" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "%1$@: %2$@"
+          }
+        }
+      }
+    },
+    "%@%@" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@"
           }
         }
       }
@@ -317,6 +337,23 @@
         }
       }
     },
+    "coordinates_not_trustful" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "coordinates might not accurate"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "位置情報不一致可能性有り"
+          }
+        }
+      }
+    },
     "displaying_facilities" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -405,6 +442,57 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "避難場所"
+          }
+        }
+      }
+    },
+    "honbu" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "police headquarter"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "警察本部"
+          }
+        }
+      }
+    },
+    "keisatsusho" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "police station"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "警察署"
+          }
+        }
+      }
+    },
+    "koban" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "police box"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "交番"
           }
         }
       }
@@ -794,6 +882,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용자 위치를 사용할 수 없습니다."
+          }
+        }
+      }
+    },
+    "view_parent_police" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "view administrating $"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "担当%@を見る"
           }
         }
       }

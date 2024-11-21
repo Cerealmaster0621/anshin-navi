@@ -12,11 +12,13 @@ import MapKit
 @main
 struct AnshinNaviApp: App {
     @StateObject private var shelterViewModel = ShelterViewModel()
+    @StateObject private var policeViewModel = PoliceViewModel()
     
     var body: some Scene {
         WindowGroup {
             MapContainerView()
                 .environmentObject(shelterViewModel)
+                .environmentObject(policeViewModel)
         }
     }
 }
