@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B30332152CEF1D8600312AF1 /* Police.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30332142CEF1D8600312AF1 /* Police.swift */; };
 		B33F832C2CE63DA200D33A0D /* AnshinNaviApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33F832B2CE63DA200D33A0D /* AnshinNaviApp.swift */; };
 		B33F83322CE63DA300D33A0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B33F83312CE63DA300D33A0D /* Assets.xcassets */; };
 		B33F83352CE63DA300D33A0D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B33F83342CE63DA300D33A0D /* Preview Assets.xcassets */; };
@@ -71,6 +72,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B30332142CEF1D8600312AF1 /* Police.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Police.swift; sourceTree = "<group>"; };
 		B33F83282CE63DA200D33A0D /* AnshinNavi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnshinNavi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B33F832B2CE63DA200D33A0D /* AnshinNaviApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnshinNaviApp.swift; sourceTree = "<group>"; };
 		B33F83312CE63DA300D33A0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 			children = (
 				B33F835E2CE63E4A00D33A0D /* Shelter.swift */,
 				B3C01EFF2CEA632400FB6E82 /* CurrentAnnotation.swift */,
+				B30332142CEF1D8600312AF1 /* Police.swift */,
 				B3C01EFB2CEA301B00FB6E82 /* CurrentSheet.swift */,
 			);
 			path = Models;
@@ -415,6 +418,7 @@
 				B3C01F0D2CEC6BDE00FB6E82 /* MBDViewMoreShelters.swift in Sources */,
 				B3C01F152CECC1CA00FB6E82 /* MapShelterView.swift in Sources */,
 				B3C01F0B2CEC5EBC00FB6E82 /* MBDAnnotationCardView.swift in Sources */,
+				B30332152CEF1D8600312AF1 /* Police.swift in Sources */,
 				B3C01EFC2CEA301B00FB6E82 /* CurrentSheet.swift in Sources */,
 				B3C01F002CEA632400FB6E82 /* CurrentAnnotation.swift in Sources */,
 				B3D665112CE88C6300B549DA /* DetailedShelterView.swift in Sources */,
