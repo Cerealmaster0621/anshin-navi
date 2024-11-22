@@ -52,3 +52,162 @@ let SHARE_NEAREST_SHELTER_TEMPLATE = "nearest_shelter_info".localized
 
 let SHARE_GOOGLE_MAPS_URL_TEMPLATE = "https://www.google.com/maps/search/?api=1&query=%f,%f"
 let SHARE_APPLE_MAPS_URL_TEMPLATE = "http://maps.apple.com/?q=%f,%f"
+
+// Map Settings
+let DEFAULT_MAP_TYPE: MapType = .standard
+let DEFAULT_MAX_ANNOTATIONS: Double = 50
+let MAX_ANNOTATION_RANGE: ClosedRange<Double> = 10...100
+let ANNOTATION_STEP: Double = 10
+let DEFAULT_ANNOTATION_TYPE: AnnotationType = .shelter
+
+// Font Settings
+let DEFAULT_FONT_SIZE: FontSize = .medium
+
+// Setting Icons
+let SETTING_ICONS = [
+    "map": "map.fill",
+    "annotation": "mappin.circle.fill",
+    "defaultAnnotation": "building.2.fill",
+    "fontSize": "textformat.size",
+    "tsunami": "tsunami",
+    "earthquake": "earthquake",
+    "fire": "flame.fill",
+    "dataSources": "doc.text.fill"
+]
+
+// Setting Colors
+let SETTING_COLORS = [
+    "map": Color.green,
+    "annotation": Color.orange,
+    "defaultAnnotation": Color.blue,
+    "fontSize": Color.purple,
+    "tsunami": Color.blue,
+    "earthquake": Color.red,
+    "fire": Color.orange,
+    "dataSources": Color.gray
+]
+
+// Setting Presentation
+let SETTING_DETENTS: Set<PresentationDetent> = [.medium, .large]
+
+// Map Types
+enum MapType: String, CaseIterable, Identifiable {
+    case standard
+    case satellite
+    case hybrid
+    case satelliteWithLabels
+    
+    var id: String { rawValue }
+    var name: String {
+        switch self {
+        case .standard: return "Standard"
+        case .satellite: return "Satellite"
+        case .hybrid: return "Hybrid"
+        case .satelliteWithLabels: return "Satellite with Labels"
+        }
+    }
+    
+    // For map type grid preview images
+    var previewImageName: String {
+        switch self {
+        case .standard: return "map_preview_standard"
+        case .satellite: return "map_preview_satellite"
+        case .hybrid: return "map_preview_hybrid"
+        case .satelliteWithLabels: return "map_preview_satellite_labels"
+        }
+    }
+}
+
+// Annotation Types
+enum AnnotationType: String, CaseIterable, Identifiable {
+    case shelter
+    case police
+    case hospital
+    case fireStation
+    
+    var id: String { rawValue }
+    var name: String {
+        switch self {
+        case .shelter: return "Evacuation Shelter"
+        case .police: return "Police Station"
+        case .hospital: return "Hospital"
+        case .fireStation: return "Fire Station"
+        }
+    }
+    
+    var icon: String {
+        switch self {
+        case .shelter: return "house.fill"
+        case .police: return "building.columns.fill"
+        case .hospital: return "cross.circle.fill"
+        case .fireStation: return "flame.fill"
+        }
+    }
+}
+
+// Font Sizes
+enum FontSize: String, CaseIterable, Identifiable {
+    case small
+    case medium
+    case large
+    case extraLarge
+    
+    var id: String { rawValue }
+    var name: String {
+        switch self {
+        case .small: return "Small"
+        case .medium: return "Medium"
+        case .large: return "Large"
+        case .extraLarge: return "Extra Large"
+        }
+    }
+    
+    var size: CGFloat {
+        switch self {
+        case .small: return 14
+        case .medium: return 16
+        case .large: return 18
+        case .extraLarge: return 20
+        }
+    }
+}
+
+// Safety Guide Types
+enum SafetyGuideType: String, CaseIterable, Identifiable {
+    case tsunami
+    case earthquake
+    case fire
+    
+    var id: String { rawValue }
+    var title: String {
+        switch self {
+        case .tsunami: return "Tsunami Safety Guide"
+        case .earthquake: return "Earthquake Safety Guide"
+        case .fire: return "Fire Safety Guide"
+        }
+    }
+    
+    var icon: String { SETTING_ICONS[rawValue]! }
+    var color: Color { SETTING_COLORS[rawValue]! }
+}
+
+// Data Sources Section
+struct DataSourceInfo {
+    static let sources = [
+        "Shelter Data": "Data provided by Ministry of Land, Infrastructure, Transport and Tourism",
+        "Police Data": "Data provided by National Police Agency",
+        "Map Data": "Map data © OpenStreetMap contributors"
+    ]
+    
+    static let lastUpdated = "2024-01"
+    static let dataLicense = "This data is provided under CC BY 4.0 license"
+    static let attributionURL = "https://www.data.go.jp/"
+}
+
+// Additional Setting Constants
+let SETTING_ROW_HEIGHT: CGFloat = 44
+let SETTING_ICON_SIZE: CGFloat = 28
+let SETTING_CORNER_RADIUS: CGFloat = 6
+let SETTING_HORIZONTAL_PADDING: CGFloat = 16
+let MAP_GRID_SPACING: CGFloat = 10
+let MAP_PREVIEW_ASPECT_RATIO: CGFloat = 16/9

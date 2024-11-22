@@ -416,6 +416,9 @@ struct MapView: UIViewRepresentable {
             // Configure button using the new configuration API
             var config = UIButton.Configuration.plain()
             config.title = "search_this_area".localized
+            config.image = UIImage(systemName: "magnifyingglass")
+            config.imagePadding = 8  // Space between icon and text
+            config.imagePlacement = .leading  // Place icon before text
             config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
             config.background.backgroundColor = .systemBackground
             searchButton.configuration = config

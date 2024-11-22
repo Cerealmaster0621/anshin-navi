@@ -1,86 +1,132 @@
 import SwiftUI
 
 struct SettingDrawerView: View {
+    @State private var selectedMapType: MapType = DEFAULT_MAP_TYPE
+    @State private var maxAnnotations: Double = DEFAULT_MAX_ANNOTATIONS
+    @State private var defaultAnnotationType: AnnotationType = DEFAULT_ANNOTATION_TYPE
+    @State private var fontSize: FontSize = DEFAULT_FONT_SIZE
+    
     var body: some View {
         NavigationView {
             List {
-                // First Section
-                Section {
-                    SettingToggleRow(
-                        icon: "location.fill",
-                        iconBackground: .blue,
-                        title: "location_services".localized,
-                        isOn: .constant(true)
-                    )
+                // Map Settings Section
+                Section(header: Text("map_settings".localized)) {
+                    NavigationLink {
+                        MapTypeSelectionView(selection: $selectedMapType)
+                    } label: {
+                        SettingRow(
+                            icon: SETTING_ICONS["map"]!,
+                            iconColor: SETTING_COLORS["map"]!,
+                            title: "map_type".localized,
+                            value: selectedMapType.name
+                        )
+                    }
                     
-                    SettingToggleRow(
-                        icon: "bell.fill",
-                        iconBackground: .red,
-                        title: "notifications".localized,
-                        isOn: .constant(false)
-                    )
-                } header: {
-                    Text("general".localized)
+                    VStack(alignment: .leading) {
+                        SettingRow(
+                            icon: SETTING_ICONS["annotation"]!,
+                            iconColor: SETTING_COLORS["annotation"]!,
+                            title: "max_annotations".localized,
+                            value: "\(Int(maxAnnotations))"
+                        )
+                        Slider(
+                            value: $maxAnnotations,
+                            in: MAX_ANNOTATION_RANGE,
+                            step: ANNOTATION_STEP
+                        )
+                    }
+                    
+                    NavigationLink {
+                        DefaultAnnotationView(selection: $defaultAnnotationType)
+                    } label: {
+                        SettingRow(
+                            icon: SETTING_ICONS["defaultAnnotation"]!,
+                            iconColor: SETTING_COLORS["defaultAnnotation"]!,
+                            title: "default_annotation".localized,
+                            value: defaultAnnotationType.name
+                        )
+                    }
                 }
                 
-                // Second Section
-                Section {
-                    SettingToggleRow(
-                        icon: "map.fill",
-                        iconBackground: .green,
-                        title: "default_map".localized,
-                        isOn: .constant(true)
-                    )
-                    
-                    SettingToggleRow(
-                        icon: "ruler.fill",
-                        iconBackground: .orange,
-                        title: "distance_unit".localized,
-                        isOn: .constant(true)
-                    )
-                } header: {
-                    Text("map_settings".localized)
-                } footer: {
-                    Text("map_settings_description".localized)
+                // Accessibility Section
+                Section(header: Text("accessibility".localized)) {
+                    NavigationLink {
+                        FontSizeSelectionView(selection: $fontSize)
+                    } label: {
+                        SettingRow(
+                            icon: SETTING_ICONS["fontSize"]!,
+                            iconColor: SETTING_COLORS["fontSize"]!,
+                            title: "font_size".localized,
+                            value: fontSize.name
+                        )
+                    }
                 }
                 
-                // Third Section
-                Section {
-                    SettingLinkRow(
-                        icon: "doc.text.fill",
-                        iconBackground: .gray,
-                        title: "privacy_policy".localized
-                    )
+                // Safety Guides Section
+                Section(header: Text("safety_guides".localized)) {
+                    NavigationLink {
+//                        SafetyGuideView(type: .tsunami)
+                    } label: {
+                        SettingRow(
+                            icon: SETTING_ICONS["tsunami"]!,
+                            iconColor: SETTING_COLORS["tsunami"]!,
+                            title: "tsunami_guide".localized
+                        )
+                    }
                     
-                    SettingLinkRow(
-                        icon: "info.circle.fill",
-                        iconBackground: .gray,
-                        title: "about".localized
-                    )
-                } header: {
-                    Text("about".localized)
+                    NavigationLink {
+//                        SafetyGuideView(type: .earthquake)
+                    } label: {
+                        SettingRow(
+                            icon: SETTING_ICONS["earthquake"]!,
+                            iconColor: SETTING_COLORS["earthquake"]!,
+                            title: "earthquake_guide".localized
+                        )
+                    }
+                    
+                    NavigationLink {
+//                        SafetyGuideView(type: .fire)
+                    } label: {
+                        SettingRow(
+                            icon: SETTING_ICONS["fire"]!,
+                            iconColor: SETTING_COLORS["fire"]!,
+                            title: "fire_guide".localized
+                        )
+                    }
+                }
+                
+                // About Section
+                Section(header: Text("about".localized)) {
+                    NavigationLink {
+//                        DataSourcesView()
+                    } label: {
+                        SettingRow(
+                            icon: SETTING_ICONS["dataSources"]!,
+                            iconColor: SETTING_COLORS["dataSources"]!,
+                            title: "data_sources".localized
+                        )
+                    }
                 }
             }
             .navigationTitle("settings".localized)
         }
-        .presentationDetents([.large])
-        .presentationDragIndicator(.visible)
+        .presentationDetents(SETTING_DETENTS)
     }
 }
 
-// MARK: - Setting Row Views
-private struct SettingToggleRow: View {
+// Helper View for consistent setting row styling
+private struct SettingRow: View {
     let icon: String
-    let iconBackground: Color
+    let iconColor: Color
     let title: String
-    @Binding var isOn: Bool
+    var value: String? = nil
     
     var body: some View {
         HStack {
             Image(systemName: icon)
                 .foregroundColor(.white)
                 .frame(width: 28, height: 28)
-                .background(iconBackground)
+                .background(iconColor)
                 .cornerRadius(6)
             
             Text(title)
@@ -88,32 +134,85 @@ private struct SettingToggleRow: View {
             
             Spacer()
             
-            Toggle("", isOn: $isOn)
+            if let value = value {
+                Text(value)
+                    .foregroundColor(.gray)
+            }
         }
     }
 }
 
-private struct SettingLinkRow: View {
-    let icon: String
-    let iconBackground: Color
-    let title: String
+// Selection Views remain the same but with updated styling
+struct MapTypeSelectionView: View {
+    @Binding var selection: MapType
     
     var body: some View {
-        HStack {
-            Image(systemName: icon)
-                .foregroundColor(.white)
-                .frame(width: 28, height: 28)
-                .background(iconBackground)
-                .cornerRadius(6)
-            
-            Text(title)
-                .padding(.leading, 8)
-            
-            Spacer()
-            
-            Image(systemName: "chevron.right")
-                .foregroundColor(.gray)
-                .font(.system(size: 14, weight: .semibold))
+        List {
+            ForEach(MapType.allCases) { type in
+                SelectionRow(
+                    title: type.name,
+                    isSelected: type == selection
+                ) {
+                    selection = type
+                }
+            }
+        }
+        .navigationTitle("map_type".localized)
+    }
+}
+
+struct DefaultAnnotationView: View {
+    @Binding var selection: AnnotationType
+    
+    var body: some View {
+        List {
+            ForEach(AnnotationType.allCases) { type in
+                SelectionRow(
+                    title: type.name,
+                    isSelected: type == selection
+                ) {
+                    selection = type
+                }
+            }
+        }
+        .navigationTitle("default_annotation".localized)
+    }
+}
+
+struct FontSizeSelectionView: View {
+    @Binding var selection: FontSize
+    
+    var body: some View {
+        List {
+            ForEach(FontSize.allCases) { size in
+                SelectionRow(
+                    title: size.name,
+                    isSelected: size == selection
+                ) {
+                    selection = size
+                }
+            }
+        }
+        .navigationTitle("font_size".localized)
+    }
+}
+
+// Helper View for consistent selection row styling
+private struct SelectionRow: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Text(title)
+                Spacer()
+                if isSelected {
+                    Image(systemName: "checkmark")
+                        .foregroundColor(.blue)
+                }
+            }
         }
     }
 }
