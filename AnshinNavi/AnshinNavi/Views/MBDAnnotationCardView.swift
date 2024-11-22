@@ -71,14 +71,12 @@ struct MBDAnnotationCardView: View {
                 switch facilityType {
                 case .shelter:
                     currentAnnotationType = .shelter
-                    shelterMapHandler.updateAnnotations(on: mapView)
                     NotificationCenter.default.post(
                         name: Notification.Name("search_region_notification".localized),
                         object: nil
                     )
                 case .police:
                     currentAnnotationType = .police
-                    policeMapHandler.updateAnnotations(on: mapView)
                     NotificationCenter.default.post(
                         name: Notification.Name("search_region_notification".localized),
                         object: nil

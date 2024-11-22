@@ -231,17 +231,6 @@ struct MapView: UIViewRepresentable {
             isInitialLocationSet = true
             updateMapRegion(mapView, coordinate: location.coordinate)
             
-            switch parent.currentAnnotationType {
-            //<-----SHELTER UPDATE----->
-            case .shelter:
-                shelterMapHandler.updateAnnotations(on: mapView)
-            case .police:
-                policeMapHandler.updateAnnotations(on: mapView)
-                break
-            case .none:
-                break
-            }
-            
             manager.stopUpdatingLocation()
         }
         
