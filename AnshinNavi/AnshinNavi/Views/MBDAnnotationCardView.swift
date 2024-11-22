@@ -1,7 +1,12 @@
-
 import SwiftUI
+import MapKit
 
 struct MBDAnnotationCardView: View {
+    @Binding var currentAnnotationType: CurrentAnnotationType
+    let mapView: MKMapView
+    let shelterMapHandler: ShelterMapHandler
+    let policeMapHandler: PoliceMapHandler
+    
     private enum FacilityType {
         case shelter
         case police
@@ -16,7 +21,23 @@ struct MBDAnnotationCardView: View {
         var title: String {
             switch self {
             case .shelter: return "避難施設"
-            case .police: return "警察署"
+            case .police: return "警察施設"
+            }
+        }
+        
+        var activeColor: Color {
+            switch self {
+            case .shelter: return Color(.systemGreen)
+            case .police: return Color(.systemBlue)
+            }
+        }
+        
+        func matches(_ annotationType: CurrentAnnotationType) -> Bool {
+            switch (self, annotationType) {
+            case (.shelter, .shelter), (.police, .police):
+                return true
+            default:
+                return false
             }
         }
     }
@@ -30,35 +51,8 @@ struct MBDAnnotationCardView: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
-                    //<-----SHELTER CIRCLE----->
-                    VStack(spacing: 6) {
-                        Circle()
-                            .fill(Color(.systemGreen))
-                            .frame(width: 52, height: 52)
-                            .overlay(
-                                Image(systemName: FacilityType.shelter.icon)
-                                    .font(.system(size: 24))
-                                    .foregroundColor(.white)
-                            )
-                        Text(FacilityType.shelter.title)
-                            .font(.system(size: 12))
-                            .foregroundColor(.primary)
-                    }
-                    
-                    //<-----POLICE CIRCLE----->
-                    VStack(spacing: 6) {
-                        Circle()
-                            .fill(Color(.systemGray5))
-                            .frame(width: 52, height: 52)
-                            .overlay(
-                                Image(systemName: FacilityType.police.icon)
-                                    .font(.system(size: 24))
-                                    .foregroundColor(Color(.systemGray2))
-                            )
-                        Text(FacilityType.police.title)
-                            .font(.system(size: 12))
-                            .foregroundColor(Color(.systemGray))
-                    }
+                    facilityButton(for: .shelter)
+                    facilityButton(for: .police)
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 8)
@@ -66,6 +60,45 @@ struct MBDAnnotationCardView: View {
             .background(Color(.secondarySystemGroupedBackground))
             .cornerRadius(12)
             .padding(.horizontal)
+        }
+    }
+    
+    private func facilityButton(for facilityType: FacilityType) -> some View {
+        let isActive = facilityType.matches(currentAnnotationType)
+        
+        return Button(action: {
+            withAnimation {
+                switch facilityType {
+                case .shelter:
+                    currentAnnotationType = .shelter
+                    shelterMapHandler.updateAnnotations(on: mapView)
+                    NotificationCenter.default.post(
+                        name: Notification.Name("search_region_notification".localized),
+                        object: nil
+                    )
+                case .police:
+                    currentAnnotationType = .police
+                    policeMapHandler.updateAnnotations(on: mapView)
+                    NotificationCenter.default.post(
+                        name: Notification.Name("search_region_notification".localized),
+                        object: nil
+                    )
+                }
+            }
+        }) {
+            VStack(spacing: 6) {
+                Circle()
+                    .fill(isActive ? facilityType.activeColor : Color(.systemGray5))
+                    .frame(width: 52, height: 52)
+                    .overlay(
+                        Image(systemName: facilityType.icon)
+                            .font(.system(size: 24))
+                            .foregroundColor(isActive ? .white : Color(.systemGray2))
+                    )
+                Text(facilityType.title)
+                    .font(.system(size: 12))
+                    .foregroundColor(isActive ? .primary : Color(.systemGray))
+            }
         }
     }
 }

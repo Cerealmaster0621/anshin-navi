@@ -3,9 +3,10 @@ import MapKit
 import CoreLocation
 
 struct MapContainerView: View {
+    @EnvironmentObject var mapViewModel: MapViewModel
     @EnvironmentObject var shelterViewModel: ShelterViewModel
     @EnvironmentObject var policeViewModel: PoliceViewModel
-    @State private var currentAnnotationType: CurrentAnnotationType = .shelter// DEFAULT ANNOTATION
+    @State private var currentAnnotationType: CurrentAnnotationType = .police// DEFAULT ANNOTATION
     @State private var selectedShelter: Shelter?
     @State private var selectedPoliceBase: PoliceBase?
     @State private var selectedDetent: PresentationDetent = .custom(MainBottomDrawerView.SmallDetent.self)
@@ -44,7 +45,7 @@ struct MapContainerView: View {
             switch sheet {
             case .bottomDrawer:
                 MainBottomDrawerView(selectedDetent: $selectedDetent,
-                                     currentAnnotationType: $currentAnnotationType, selectedShelterFilterTypes: $selectedShelterFilterTypes)
+                                     currentAnnotationType: $currentAnnotationType, selectedShelterFilterTypes: $selectedShelterFilterTypes, selectedPoliceTypes: $selectedPoliceTypes, mapView: mapViewModel.mapView, shelterMapHandler: mapViewModel.shelterMapHandler, policeMapHandler: mapViewModel.policeMapHandler)
                     .presentationBackground(.regularMaterial)
                     .interactiveDismissDisabled()
             

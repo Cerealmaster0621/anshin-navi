@@ -1,10 +1,15 @@
 import SwiftUI
+import MapKit
 
 struct MainBottomDrawerView: View {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
     @Binding var selectedDetent: PresentationDetent
     @Binding var currentAnnotationType: CurrentAnnotationType
     @Binding var selectedShelterFilterTypes: [ShelterFilterType]
+    @Binding var selectedPoliceTypes: [PoliceType]
+    let mapView: MKMapView
+    let shelterMapHandler: ShelterMapHandler
+    let policeMapHandler: PoliceMapHandler
     
     // Custom detent for 10% height
     struct SmallDetent: CustomPresentationDetent {
@@ -53,11 +58,22 @@ struct MainBottomDrawerView: View {
                 switch currentAnnotationType {
                     case .shelter:
                         MBDShelterView(
+                            currentAnnotationType: $currentAnnotationType,
+                            mapView: mapView,
+                            shelterMapHandler: shelterMapHandler,
+                            policeMapHandler: policeMapHandler,
                             isSmallDetent: isSmallDetent,
                             selectedShelterFilterTypes: selectedShelterFilterTypes
                         )
                     case .police:
-                        EmptyView()
+                        MBDPoliceView(
+                            currentAnnotationType: $currentAnnotationType,
+                            mapView: mapView,
+                            shelterMapHandler: shelterMapHandler,
+                            policeMapHandler: policeMapHandler,
+                            isSmallDetent: isSmallDetent,
+                            selectedPoliceTypes: selectedPoliceTypes
+                        )
                     case .none:
                         EmptyView()
                 }

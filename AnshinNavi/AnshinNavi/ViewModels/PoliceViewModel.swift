@@ -64,7 +64,10 @@ final class PoliceViewModel: NSObject, ObservableObject {
     }
     
     func filterVisiblePoliceStationsByType(_ types: [PoliceType], in region: MKCoordinateRegion) -> [PoliceBase] {
+        // First get only visible stations in the map region
         let visibleStations = getPoliceStationsInMapRegion(region)
+        
+        // If no types are selected, return all visible stations
         guard !types.isEmpty else { return visibleStations }
         
         return visibleStations.filter { station in
@@ -76,8 +79,10 @@ final class PoliceViewModel: NSObject, ObservableObject {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
             
+            // Get all visible police stations without filters first
             let unfilteredStations = self.getPoliceStationsInMapRegion(region)
             
+            // Get visible stations based on filters
             let visibleStations: [PoliceBase]
             if selectedTypes.isEmpty {
                 visibleStations = unfilteredStations
@@ -85,11 +90,13 @@ final class PoliceViewModel: NSObject, ObservableObject {
                 visibleStations = self.filterVisiblePoliceStationsByType(selectedTypes, in: region)
             }
             
+            // Get center location for distance calculation
             let centerLocation = CLLocation(
                 latitude: region.center.latitude,
                 longitude: region.center.longitude
             )
             
+            // Sort all stations by distance from center
             let sortedUnfilteredStations = unfilteredStations.sorted { station1, station2 in
                 let location1 = CLLocation(latitude: station1.latitude, longitude: station1.longitude)
                 let location2 = CLLocation(latitude: station2.latitude, longitude: station2.longitude)
@@ -102,24 +109,11 @@ final class PoliceViewModel: NSObject, ObservableObject {
                 return location1.distance(from: centerLocation) < location2.distance(from: centerLocation)
             }
             
-            let limitedUnfilteredStations = Array(sortedUnfilteredStations.prefix(MAX_ANNOTATIONS))
-            let limitedVisibleStations = Array(sortedVisibleStations.prefix(MAX_ANNOTATIONS))
-            
+            // Update on main thread
             DispatchQueue.main.async {
-                self.visiblePoliceCount = visibleStations.count
-                self.currentUnfilteredPoliceStations = limitedUnfilteredStations
-                self.currentVisiblePoliceStations = limitedVisibleStations
-            }
-            
-            let annotations = limitedVisibleStations.map { station in
-                PoliceAnnotation(police: station)
-            }
-            
-            DispatchQueue.main.async { [weak self] in
-                guard let mapView = self?.mapView else { return }
-                let existingAnnotations = mapView.annotations.filter { !($0 is MKUserLocation) }
-                mapView.removeAnnotations(existingAnnotations)
-                mapView.addAnnotations(annotations)
+                self.currentUnfilteredPoliceStations = sortedUnfilteredStations
+                self.currentVisiblePoliceStations = sortedVisibleStations
+                self.visiblePoliceCount = sortedVisibleStations.count
             }
         }
     }

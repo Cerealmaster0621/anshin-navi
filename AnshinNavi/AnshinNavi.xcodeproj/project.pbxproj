@@ -14,6 +14,8 @@
 		B30332202CEF6B4100312AF1 /* polices.json in Resources */ = {isa = PBXBuildFile; fileRef = B303321F2CEF6B4100312AF1 /* polices.json */; };
 		B30332222CF04BDA00312AF1 /* FilterPoliceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30332212CF04BDA00312AF1 /* FilterPoliceView.swift */; };
 		B30332242CF0530700312AF1 /* IsUserAppJapanese.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30332232CF0530700312AF1 /* IsUserAppJapanese.swift */; };
+		B30332262CF056B100312AF1 /* MBDPoliceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30332252CF056B100312AF1 /* MBDPoliceView.swift */; };
+		B30332282CF056BE00312AF1 /* MBDViewMorePolices.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30332272CF056BE00312AF1 /* MBDViewMorePolices.swift */; };
 		B33F832C2CE63DA200D33A0D /* AnshinNaviApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33F832B2CE63DA200D33A0D /* AnshinNaviApp.swift */; };
 		B33F83322CE63DA300D33A0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B33F83312CE63DA300D33A0D /* Assets.xcassets */; };
 		B33F83352CE63DA300D33A0D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B33F83342CE63DA300D33A0D /* Preview Assets.xcassets */; };
@@ -84,6 +86,8 @@
 		B303321F2CEF6B4100312AF1 /* polices.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = polices.json; sourceTree = "<group>"; };
 		B30332212CF04BDA00312AF1 /* FilterPoliceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterPoliceView.swift; sourceTree = "<group>"; };
 		B30332232CF0530700312AF1 /* IsUserAppJapanese.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsUserAppJapanese.swift; sourceTree = "<group>"; };
+		B30332252CF056B100312AF1 /* MBDPoliceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDPoliceView.swift; sourceTree = "<group>"; };
+		B30332272CF056BE00312AF1 /* MBDViewMorePolices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDViewMorePolices.swift; sourceTree = "<group>"; };
 		B33F83282CE63DA200D33A0D /* AnshinNavi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnshinNavi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B33F832B2CE63DA200D33A0D /* AnshinNaviApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnshinNaviApp.swift; sourceTree = "<group>"; };
 		B33F83312CE63DA300D33A0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -148,6 +152,8 @@
 			isa = PBXGroup;
 			children = (
 				B303321B2CEF285C00312AF1 /* MapPoliceView.swift */,
+				B30332272CF056BE00312AF1 /* MBDViewMorePolices.swift */,
+				B30332252CF056B100312AF1 /* MBDPoliceView.swift */,
 				B30332212CF04BDA00312AF1 /* FilterPoliceView.swift */,
 				B303321D2CEF5D8500312AF1 /* DetailedPoliceBaseView.swift */,
 			);
@@ -439,6 +445,7 @@
 				B3C01EFE2CEA320A00FB6E82 /* SettingDrawerView.swift in Sources */,
 				B33F83622CE63E6B00D33A0D /* Constants.swift in Sources */,
 				B3D664F42CE85AC700B549DA /* MapRightSideView.swift in Sources */,
+				B30332282CF056BE00312AF1 /* MBDViewMorePolices.swift in Sources */,
 				B3C01F132CECBFCB00FB6E82 /* FilterShelterView.swift in Sources */,
 				B3C01F0D2CEC6BDE00FB6E82 /* MBDViewMoreShelters.swift in Sources */,
 				B3C01F152CECC1CA00FB6E82 /* MapShelterView.swift in Sources */,
@@ -458,6 +465,7 @@
 				B303321C2CEF285C00312AF1 /* MapPoliceView.swift in Sources */,
 				B303321E2CEF5D8500312AF1 /* DetailedPoliceBaseView.swift in Sources */,
 				B3C01F1A2CECDBED00FB6E82 /* LocalizationHelper.swift in Sources */,
+				B30332262CF056B100312AF1 /* MBDPoliceView.swift in Sources */,
 				B3C01F032CEB36D100FB6E82 /* NetworkReachability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

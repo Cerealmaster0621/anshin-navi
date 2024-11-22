@@ -1,9 +1,13 @@
 import Foundation
 import SwiftUI
+import MapKit
 
 struct MBDShelterView: View {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
-    @State private var selectedFacility: FacilityType = .shelter
+    @Binding var currentAnnotationType: CurrentAnnotationType
+    let mapView: MKMapView
+    let shelterMapHandler: ShelterMapHandler
+    let policeMapHandler: PoliceMapHandler
     let isSmallDetent: Bool
     let selectedShelterFilterTypes: [ShelterFilterType]
     @State private var showingMoreShelters = false
@@ -139,7 +143,7 @@ struct MBDShelterView: View {
                         .frame(height:12)
                     
                     // Library section
-                    MBDAnnotationCardView()
+                    MBDAnnotationCardView(currentAnnotationType: $currentAnnotationType, mapView: mapView, shelterMapHandler: shelterMapHandler, policeMapHandler: policeMapHandler)
                     
                     Spacer()
                         .frame(height: 24)
