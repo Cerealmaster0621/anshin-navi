@@ -97,6 +97,20 @@ enum ShelterFilterType: String, CaseIterable {
         }
     }
     
+    var localizedName: String {
+        switch self {
+        case .generalFlooding: return "general_flooding".localized
+        case .landslide: return "landslide".localized
+        case .highTide: return "high_tide".localized
+        case .earthquake: return "earthquake".localized
+        case .tsunami: return "tsunami".localized
+        case .fire: return "fire".localized
+        case .internalFlooding: return "internal_flooding".localized
+        case .volcano: return "volcano".localized
+        case .isSameAsEvacuationCenter: return "is_same_as_evacuation_center".localized
+        }
+    }
+    
     func matches(_ shelter: Shelter) -> Bool {
         switch self {
         case .generalFlooding: return shelter.generalFlooding

@@ -12,6 +12,8 @@
 		B303321C2CEF285C00312AF1 /* MapPoliceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B303321B2CEF285C00312AF1 /* MapPoliceView.swift */; };
 		B303321E2CEF5D8500312AF1 /* DetailedPoliceBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B303321D2CEF5D8500312AF1 /* DetailedPoliceBaseView.swift */; };
 		B30332202CEF6B4100312AF1 /* polices.json in Resources */ = {isa = PBXBuildFile; fileRef = B303321F2CEF6B4100312AF1 /* polices.json */; };
+		B30332222CF04BDA00312AF1 /* FilterPoliceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30332212CF04BDA00312AF1 /* FilterPoliceView.swift */; };
+		B30332242CF0530700312AF1 /* IsUserAppJapanese.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30332232CF0530700312AF1 /* IsUserAppJapanese.swift */; };
 		B33F832C2CE63DA200D33A0D /* AnshinNaviApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33F832B2CE63DA200D33A0D /* AnshinNaviApp.swift */; };
 		B33F83322CE63DA300D33A0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B33F83312CE63DA300D33A0D /* Assets.xcassets */; };
 		B33F83352CE63DA300D33A0D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B33F83342CE63DA300D33A0D /* Preview Assets.xcassets */; };
@@ -80,6 +82,8 @@
 		B303321B2CEF285C00312AF1 /* MapPoliceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPoliceView.swift; sourceTree = "<group>"; };
 		B303321D2CEF5D8500312AF1 /* DetailedPoliceBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedPoliceBaseView.swift; sourceTree = "<group>"; };
 		B303321F2CEF6B4100312AF1 /* polices.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = polices.json; sourceTree = "<group>"; };
+		B30332212CF04BDA00312AF1 /* FilterPoliceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterPoliceView.swift; sourceTree = "<group>"; };
+		B30332232CF0530700312AF1 /* IsUserAppJapanese.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsUserAppJapanese.swift; sourceTree = "<group>"; };
 		B33F83282CE63DA200D33A0D /* AnshinNavi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnshinNavi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B33F832B2CE63DA200D33A0D /* AnshinNaviApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnshinNaviApp.swift; sourceTree = "<group>"; };
 		B33F83312CE63DA300D33A0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -144,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				B303321B2CEF285C00312AF1 /* MapPoliceView.swift */,
+				B30332212CF04BDA00312AF1 /* FilterPoliceView.swift */,
 				B303321D2CEF5D8500312AF1 /* DetailedPoliceBaseView.swift */,
 			);
 			path = Police;
@@ -272,6 +277,7 @@
 				B3C01F022CEB36D100FB6E82 /* NetworkReachability.swift */,
 				B3C01F042CEB691F00FB6E82 /* DynamicSizeRelated.swift */,
 				B3C01F192CECDBED00FB6E82 /* LocalizationHelper.swift */,
+				B30332232CF0530700312AF1 /* IsUserAppJapanese.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -427,6 +433,7 @@
 			files = (
 				B366C1E82CE7B3A80063E659 /* ShelterViewModel.swift in Sources */,
 				B33F835F2CE63E4A00D33A0D /* Shelter.swift in Sources */,
+				B30332222CF04BDA00312AF1 /* FilterPoliceView.swift in Sources */,
 				B33F835C2CE63E1500D33A0D /* MapViewModel.swift in Sources */,
 				B33F83592CE63DD300D33A0D /* MapContainerView.swift in Sources */,
 				B3C01EFE2CEA320A00FB6E82 /* SettingDrawerView.swift in Sources */,
@@ -445,6 +452,7 @@
 				B3D665132CE890B800B549DA /* MapView.swift in Sources */,
 				B3C01EF42CE8E22B00FB6E82 /* MainBottomDrawerView.swift in Sources */,
 				B3C01F052CEB691F00FB6E82 /* DynamicSizeRelated.swift in Sources */,
+				B30332242CF0530700312AF1 /* IsUserAppJapanese.swift in Sources */,
 				B3C01F092CEBA88700FB6E82 /* MBDShelterView.swift in Sources */,
 				B33F832C2CE63DA200D33A0D /* AnshinNaviApp.swift in Sources */,
 				B303321C2CEF285C00312AF1 /* MapPoliceView.swift in Sources */,

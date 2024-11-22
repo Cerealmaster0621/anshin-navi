@@ -2,52 +2,118 @@ import SwiftUI
 
 struct SettingDrawerView: View {
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                // Header with Title and Close Button
-                HStack(alignment: .top) {
-                    Text("setting")
-                        .font(.system(size: 32, weight: .bold))
-                    Spacer()
+        NavigationView {
+            List {
+                // First Section
+                Section {
+                    SettingToggleRow(
+                        icon: "location.fill",
+                        iconBackground: .blue,
+                        title: "location_services".localized,
+                        isOn: .constant(true)
+                    )
+                    
+                    SettingToggleRow(
+                        icon: "bell.fill",
+                        iconBackground: .red,
+                        title: "notifications".localized,
+                        isOn: .constant(false)
+                    )
+                } header: {
+                    Text("general".localized)
                 }
                 
-                // Setting Options Section
-                VStack(spacing: 20) {
-                    // Example Setting options
-                    ForEach(0..<5) { _ in
-                        SettingCard {
-                            HStack {
-                                Text("Setting Option")
-                                    .font(.system(size: 17))
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .foregroundColor(.gray)
-                            }
-                        }
-                    }
+                // Second Section
+                Section {
+                    SettingToggleRow(
+                        icon: "map.fill",
+                        iconBackground: .green,
+                        title: "default_map".localized,
+                        isOn: .constant(true)
+                    )
+                    
+                    SettingToggleRow(
+                        icon: "ruler.fill",
+                        iconBackground: .orange,
+                        title: "distance_unit".localized,
+                        isOn: .constant(true)
+                    )
+                } header: {
+                    Text("map_settings".localized)
+                } footer: {
+                    Text("map_settings_description".localized)
+                }
+                
+                // Third Section
+                Section {
+                    SettingLinkRow(
+                        icon: "doc.text.fill",
+                        iconBackground: .gray,
+                        title: "privacy_policy".localized
+                    )
+                    
+                    SettingLinkRow(
+                        icon: "info.circle.fill",
+                        iconBackground: .gray,
+                        title: "about".localized
+                    )
+                } header: {
+                    Text("about".localized)
                 }
             }
-            .padding()
+            .navigationTitle("settings".localized)
         }
-        .background(Color(.systemGroupedBackground))
-        .presentationDetents([.medium])
+        .presentationDetents([.large])
         .presentationDragIndicator(.visible)
     }
+}
+
+// MARK: - Setting Row Views
+private struct SettingToggleRow: View {
+    let icon: String
+    let iconBackground: Color
+    let title: String
+    @Binding var isOn: Bool
     
-    private func SettingCard<Content: View>(
-        @ViewBuilder content: () -> Content
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            content()
+    var body: some View {
+        HStack {
+            Image(systemName: icon)
+                .foregroundColor(.white)
+                .frame(width: 28, height: 28)
+                .background(iconBackground)
+                .cornerRadius(6)
+            
+            Text(title)
+                .padding(.leading, 8)
+            
+            Spacer()
+            
+            Toggle("", isOn: $isOn)
         }
-        .padding()
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(Color(.systemGray5), lineWidth: 1)
-        )
-        .shadow(color: Color.black.opacity(0.03), radius: 8, x: 0, y: 2)
+    }
+}
+
+private struct SettingLinkRow: View {
+    let icon: String
+    let iconBackground: Color
+    let title: String
+    
+    var body: some View {
+        HStack {
+            Image(systemName: icon)
+                .foregroundColor(.white)
+                .frame(width: 28, height: 28)
+                .background(iconBackground)
+                .cornerRadius(6)
+            
+            Text(title)
+                .padding(.leading, 8)
+            
+            Spacer()
+            
+            Image(systemName: "chevron.right")
+                .foregroundColor(.gray)
+                .font(.system(size: 14, weight: .semibold))
+        }
     }
 }

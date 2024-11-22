@@ -52,9 +52,12 @@ struct DetailedPoliceBaseView: View {
     }
     
     private var locationInfoView: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            distanceText
-            policeTypeTag
+        HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 6) {
+                distanceText
+                policeTypeTag
+            }
+            Spacer()
         }
     }
     
@@ -107,7 +110,7 @@ struct DetailedPoliceBaseView: View {
     // MARK: - Main Content Views
     private var mainContentView: some View {
         VStack(spacing: 20) {
-            if networkReachability.isConnected && !policeBase.phoneNumber.isEmpty && policeBase.phoneNumber != "nan" {
+            if networkReachability.isConnected && !policeBase.phoneNumber.isEmpty && policeBase.phoneNumber != "nan" && policeBase.phoneNumber != "無し" && policeBase.phoneNumber != "なし"{
                 emergencyCallButton
             }
             
@@ -155,7 +158,7 @@ struct DetailedPoliceBaseView: View {
     }
     
     private var informationCards: some View {
-        Group {
+        VStack(spacing: 20) {
             addressCard
             coordinatesCard
             if !policeBase.remarks.isEmpty && policeBase.remarks != "nan" {
@@ -185,7 +188,7 @@ struct DetailedPoliceBaseView: View {
     private var addressCard: some View {
         InformationCard(title: "address".localized, icon: "mappin.circle.fill") {
             Button(action: {
-                UIPasteboard.general.string = policeBase.fullNotation
+                UIPasteboard.general.string = policeBase.prefecture + policeBase.fullNotation
                 showingAddressCopied = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     showingAddressCopied = false
@@ -256,6 +259,7 @@ struct DetailedPoliceBaseView: View {
         InformationCard(title: "remarks".localized, icon: "info.circle.fill") {
             Text(policeBase.remarks)
                 .font(.system(size: 17))
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
     

@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "ja",
   "strings" : {
+    "" : {
+
+    },
     "･" : {
       "localizations" : {
         "en" : {
@@ -342,14 +345,14 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "coordinates might not accurate"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "位置情報不一致可能性有り"
+            "value" : "位置座標が不正な可能性があります"
           }
         }
       }
@@ -400,6 +403,23 @@
         }
       }
     },
+    "earthquake" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Earthquake"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地震"
+          }
+        }
+      }
+    },
     "evacuation_area_lowercase" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -446,6 +466,57 @@
         }
       }
     },
+    "fire" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Large Fire"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "大規模な火事"
+          }
+        }
+      }
+    },
+    "general_flooding" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flooding"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "洪水"
+          }
+        }
+      }
+    },
+    "high_tide" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "High Tide"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "高潮"
+          }
+        }
+      }
+    },
     "honbu" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -459,6 +530,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "警察本部"
+          }
+        }
+      }
+    },
+    "internal_flooding" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Internal Flooding"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "内水氾濫"
+          }
+        }
+      }
+    },
+    "is_same_as_evacuation_center" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Available as Evacuation Center"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "指定避難所として利用可能"
           }
         }
       }
@@ -493,6 +598,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "交番"
+          }
+        }
+      }
+    },
+    "landslide" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Landslide"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "土砂崩れ"
           }
         }
       }
@@ -618,6 +740,23 @@
         }
       }
     },
+    "remarks" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "remarks"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追記"
+          }
+        }
+      }
+    },
     "search_region_notification" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -677,6 +816,7 @@
       }
     },
     "setting" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -697,9 +837,6 @@
           }
         }
       }
-    },
-    "Setting Option" : {
-
     },
     "share_location" : {
       "extractionState" : "manual",
@@ -736,25 +873,25 @@
       "localizations" : {
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "AnshinNavi zeigt hauptsächlich Daten von ausgewiesenen Notunterkünften an. Durch Aktivierung der Filter werden auch Einrichtungen angezeigt, die als festgelegte Evakuierungszentren registriert sind."
           }
         },
         "en" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "AnshinNavi data primarily displays designated emergency evacuation area. By enabling filters, facilities that are also registered as designated evacuation shelters will be shown. About the difference between evacuation shelters and areas..."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "安心ナビで表示しているのは主に指定緊急避難場所のデータです。フィルターを有効にすることで、指定避難所としても登録されている施設が表示されます。"
+            "value" : "安心ナビで表示しているのは主に指定緊急避難場所のデータです。フィルターを有効にすることで、指定避難所としても登録されている施設が表示されます。避難所と指定緊急避難場所の違いについて..."
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "安心네비에서 보여주는 것은 주로 지정된 대피소 데이터입니다. 필터를 활성화하면 지정된 대피소로도 등록된 시설이 표시됩니다. "
           }
         }
@@ -857,6 +994,23 @@
         }
       }
     },
+    "tsunami" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tsunami"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "津波"
+          }
+        }
+      }
+    },
     "user_location_unavailable" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -899,6 +1053,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "担当%@を見る"
+          }
+        }
+      }
+    },
+    "volcano" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volcano"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "火山"
+          }
+        }
+      }
+    },
+    "WHAT_IS_POLICE_FILTER" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Japan, Police Offices are divided in to three depends on the work."
           }
         }
       }
@@ -982,6 +1164,9 @@
           }
         }
       }
+    },
+    "施設種別" : {
+
     },
     "検索結果" : {
       "localizations" : {

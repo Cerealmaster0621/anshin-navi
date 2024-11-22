@@ -3,6 +3,7 @@ import SwiftUI
 struct FilterDrawerView: View {
     let currentAnnotationType: CurrentAnnotationType
     @Binding var selectedShelterFilterTypes: [ShelterFilterType]
+    @Binding var selectedPoliceTypes: [PoliceType]
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -11,7 +12,7 @@ struct FilterDrawerView: View {
                 case .shelter:
                     FilterShelterView(selectedShelterFilterTypes: $selectedShelterFilterTypes)
                 case .police:
-                    EmptyView()
+                    FilterPoliceView(selectedPoliceTypes: $selectedPoliceTypes)
                 case .none:
                     EmptyView()
             }

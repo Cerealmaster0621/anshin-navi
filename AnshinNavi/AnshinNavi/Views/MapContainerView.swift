@@ -5,7 +5,7 @@ import CoreLocation
 struct MapContainerView: View {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
     @EnvironmentObject var policeViewModel: PoliceViewModel
-    @State private var currentAnnotationType: CurrentAnnotationType = .police// DEFAULT ANNOTATION
+    @State private var currentAnnotationType: CurrentAnnotationType = .shelter// DEFAULT ANNOTATION
     @State private var selectedShelter: Shelter?
     @State private var selectedPoliceBase: PoliceBase?
     @State private var selectedDetent: PresentationDetent = .custom(MainBottomDrawerView.SmallDetent.self)
@@ -14,7 +14,7 @@ struct MapContainerView: View {
     @State private var activeSheet: CurrentSheet? = .bottomDrawer
     @State private var previousSheet: CurrentSheet? = nil
     @State private var selectedShelterFilterTypes: [ShelterFilterType] = []
-    @State private var selectedPoliceTypes: [PoliceType] = [.honbu,.keisatsusho,.koban]
+    @State private var selectedPoliceTypes: [PoliceType] = []
 
     var body: some View {
         ZStack {
@@ -72,7 +72,8 @@ struct MapContainerView: View {
             case .filter:
                 FilterDrawerView(
                     currentAnnotationType: currentAnnotationType,
-                    selectedShelterFilterTypes: $selectedShelterFilterTypes
+                    selectedShelterFilterTypes: $selectedShelterFilterTypes,
+                    selectedPoliceTypes: $selectedPoliceTypes
                 )
                     .presentationDragIndicator(.visible)
             }
