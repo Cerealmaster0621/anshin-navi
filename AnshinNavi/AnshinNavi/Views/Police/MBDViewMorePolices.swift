@@ -42,13 +42,13 @@ struct MBDViewMorePolices: View {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(alignment: .center) {
                         Text("\(policeTypeText)一覧")
-                            .font(.system(size: 28, weight: .bold))
+                            .font(.system(size: FONT_SIZE.size * 1.75, weight: .bold))
                         Spacer()
                         Button(action: { 
                             dismiss()
                         }) {
                             Image(systemName: "xmark.circle.fill")
-                                .font(.system(size: 28))
+                                .font(.system(size: FONT_SIZE.size * 1.75))
                                 .foregroundColor(.secondary)
                         }
                     }
@@ -60,7 +60,7 @@ struct MBDViewMorePolices: View {
                                 Image(systemName: "magnifyingglass")
                                     .foregroundColor(.secondary)
                                 TextField("\(policeTypeText)を検索", text: $searchText)
-                                    .font(.system(size: 17))
+                                    .font(.system(size: FONT_SIZE.size))
                                 
                                 if !searchText.isEmpty {
                                     Button(action: {
@@ -77,7 +77,7 @@ struct MBDViewMorePolices: View {
                         }
                         
                         Text("\(filteredPolices.count)件の検索結果")
-                            .font(.system(size: 15))
+                            .font(.system(size: FONT_SIZE.size * 0.875))
                             .foregroundColor(.secondary)
                     }
                 }
@@ -95,14 +95,14 @@ struct MBDViewMorePolices: View {
                     }) {
                         HStack {
                             Image(systemName: "line.3.horizontal.decrease.circle.fill")
-                                .font(.system(size: 20))
+                                .font(.system(size: FONT_SIZE.size * 1.25))
                             Text("絞り込み")
-                                .font(.system(size: 17))
+                                .font(.system(size: FONT_SIZE.size))
                             Spacer()
                             
                             if !selectedFilters.isEmpty {
                                 Text("\(selectedFilters.count)")
-                                    .font(.system(size: 12, weight: .medium))
+                                    .font(.system(size: FONT_SIZE.size * 0.75, weight: .medium))
                                     .foregroundColor(.white)
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 4)
@@ -112,7 +112,7 @@ struct MBDViewMorePolices: View {
                             }
                             
                             Image(systemName: "chevron.down")
-                                .font(.system(size: 14))
+                                .font(.system(size: FONT_SIZE.size * 0.875))
                                 .foregroundColor(.secondary)
                                 .rotationEffect(.degrees(isFilterExpanded ? 180 : 0))
                         }
@@ -139,7 +139,7 @@ struct MBDViewMorePolices: View {
                             // Filter type section
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("施設種別")
-                                    .font(.system(size: 15, weight: .medium))
+                                    .font(.system(size: FONT_SIZE.size * 0.875, weight: .medium))
                                     .foregroundColor(.secondary)
                                 
                                 ForEach([PoliceType.honbu, .keisatsusho, .koban], id: \.self) { policeType in
@@ -192,14 +192,14 @@ struct MBDViewMorePolices: View {
                                         .fill(Color.blue.opacity(0.1))
                                         .frame(width: 40, height: 40)
                                     Image(systemName: police.policeType.iconName)
-                                        .font(.system(size: 22))
+                                        .font(.system(size: FONT_SIZE.size * 1.25))
                                         .foregroundColor(.blue)
                                 }
                                 
                                 // Police information
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(police.name)
-                                        .font(.system(size: 17))
+                                        .font(.system(size: FONT_SIZE.size * 1.125))
                                         .foregroundColor(.primary)
                                         .multilineTextAlignment(.leading)
                                     
@@ -216,14 +216,14 @@ struct MBDViewMorePolices: View {
                                             )))
                                         }
                                     }
-                                    .font(.system(size: 14))
+                                    .font(.system(size: FONT_SIZE.size * 0.875))
                                     .foregroundColor(.secondary)
                                 }
                                 
                                 Spacer()
                                 
                                 Image(systemName: "chevron.right")
-                                    .font(.system(size: 14))
+                                    .font(.system(size: FONT_SIZE.size * 0.875))
                                     .foregroundColor(.secondary)
                             }
                             .padding()

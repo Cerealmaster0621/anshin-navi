@@ -31,7 +31,7 @@ struct MBDShelterView: View {
                 }) {
                     VStack(alignment: .center, spacing: 4) {
                         Text("\(shelterViewModel.visibleShelterCount)件の\(shelterTypeText)が検索されました")
-                            .font(.system(size: dynamicSize(baseSize: 20)))
+                            .font(.system(size: dynamicSize(baseSize: FONT_SIZE.size * 1.125)))
                             .foregroundColor(.primary)
                             .transition(.opacity.combined(with: .move(edge: .top)))
                         
@@ -58,7 +58,7 @@ struct MBDShelterView: View {
                     // Header with count and type
                     HStack {
                         Text("\(shelterViewModel.visibleShelterCount)件の指定\(shelterTypeText)")
-                            .font(.system(size: 24, weight: .bold))
+                            .font(.system(size: FONT_SIZE.size * 1.25, weight: .bold))
                         Spacer()
                     }
                     .padding(.horizontal)
@@ -71,7 +71,7 @@ struct MBDShelterView: View {
                             HStack(spacing: 8) {
                                 ForEach(selectedShelterFilterTypes, id: \.self) { filter in
                                     Text(filter.rawValue)
-                                        .font(.system(size: 15))
+                                        .font(.system(size: FONT_SIZE.size * 0.875))
                                         .foregroundColor(.white)
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 6)
@@ -94,7 +94,7 @@ struct MBDShelterView: View {
                        ) {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("あなたと最寄りの\(shelterTypeText)")
-                                .font(.system(size: 14))
+                                .font(.system(size: FONT_SIZE.size * 0.875))
                                 .foregroundColor(Color(.systemGray))
                                 .padding(.horizontal)
                             
@@ -104,14 +104,14 @@ struct MBDShelterView: View {
                                 HStack(spacing: 16) {
                                     // Location icon
                                     Image(systemName: "mappin.circle.fill")
-                                        .font(.system(size: 28))
+                                        .font(.system(size: FONT_SIZE.size * 1.75))
                                         .foregroundColor(Color(.systemGreen))
                                         .frame(width: 40)
                                     
                                     // Shelter information
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(closestShelter.name)
-                                            .font(.system(size: 17))
+                                            .font(.system(size: FONT_SIZE.size))
                                             .foregroundColor(.primary)
                                         
                                         let distance = shelterViewModel.fastDistance(
@@ -122,7 +122,7 @@ struct MBDShelterView: View {
                                         )
                                         
                                         Text("\(closestShelter.regionName) ･ \(shelterViewModel.formatDistance(meters: distance))")
-                                            .font(.system(size: 14))
+                                            .font(.system(size: FONT_SIZE.size * 0.875))
                                             .foregroundColor(Color(.systemGray))
                                     }
                                     
@@ -154,11 +154,11 @@ struct MBDShelterView: View {
                         HStack {
                             if shelterViewModel.currentVisibleShelters.count <= 0 {
                                 Text("検索結果がありません")
-                                    .font(.system(size: 14))
+                                    .font(.system(size: FONT_SIZE.size * 0.875))
                                     .foregroundColor(Color(.systemGray))    
                             } else{
                                 Text("検索結果")
-                                    .font(.system(size: 14))
+                                    .font(.system(size: FONT_SIZE.size * 0.875))
                                     .foregroundColor(Color(.systemGray))
                             }
                             
@@ -169,7 +169,7 @@ struct MBDShelterView: View {
                                     showingMoreShelters = true
                                 }) {
                                     Text("もっと見る")
-                                        .font(.system(size: 14))
+                                        .font(.system(size: FONT_SIZE.size * 0.875))
                                         .foregroundColor(.blue)
                                 }
                                 .fullScreenCover(isPresented: $showingMoreShelters) {
@@ -188,14 +188,14 @@ struct MBDShelterView: View {
                                     HStack(spacing: 16) {
                                         // Location icon
                                         Image(systemName: "mappin.circle.fill")
-                                            .font(.system(size: 28))
+                                            .font(.system(size: FONT_SIZE.size * 1.75))
                                             .foregroundColor(Color(.systemGreen))
                                             .frame(width: 40)
                                         
                                         // Shelter information
                                         VStack(alignment: .leading, spacing: 4) {
                                             Text(shelter.name)
-                                                .font(.system(size: 17))
+                                                .font(.system(size: FONT_SIZE.size))
                                                 .foregroundColor(.primary)
                                             
                                             if let userLocation = shelterViewModel.userLocation {
@@ -207,11 +207,11 @@ struct MBDShelterView: View {
                                                 )
                                                 
                                                 Text("\(shelter.regionName) ･ \(shelterViewModel.formatDistance(meters: distance))")
-                                                    .font(.system(size: 14))
+                                                    .font(.system(size: FONT_SIZE.size * 0.875))
                                                     .foregroundColor(Color(.systemGray))
                                             } else {
                                                 Text(shelter.regionName)
-                                                    .font(.system(size: 14))
+                                                    .font(.system(size: FONT_SIZE.size * 0.875))
                                                     .foregroundColor(Color(.systemGray))
                                             }
                                         }
@@ -285,7 +285,7 @@ struct MBDShelterView: View {
                             HStack {
                                 Image(systemName: "square.and.arrow.up")
                                 Text("現在地を共有")
-                                    .font(.system(size: 17))
+                                    .font(.system(size: FONT_SIZE.size))
                             }
                             .foregroundColor(.blue)
                             .frame(maxWidth: .infinity)

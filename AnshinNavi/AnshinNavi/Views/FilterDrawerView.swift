@@ -44,11 +44,11 @@ struct FilterToggleRow: View {
             HStack(spacing: 12) {
                 Image(systemName: filterType.iconName)
                     .foregroundColor(.blue)
-                    .font(.system(size: 16))
+                    .font(.system(size: FONT_SIZE.size))
                     .frame(width: 24, alignment: .center)
                 
                 Text(filterType.rawValue)
-                    .font(.system(size: 15))
+                    .font(.system(size: FONT_SIZE.size))
             }
         }
     }

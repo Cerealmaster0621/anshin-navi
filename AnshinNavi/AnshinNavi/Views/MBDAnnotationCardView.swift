@@ -45,7 +45,7 @@ struct MBDAnnotationCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("表示する施設")
-                .font(.system(size: 14))
+                .font(.system(size: FONT_SIZE.size*0.875))
                 .foregroundColor(Color(.systemGray))
                 .padding(.horizontal)
             
@@ -90,11 +90,11 @@ struct MBDAnnotationCardView: View {
                     .frame(width: 52, height: 52)
                     .overlay(
                         Image(systemName: facilityType.icon)
-                            .font(.system(size: 24))
+                            .font(.system(size: FONT_SIZE.size * 1) )
                             .foregroundColor(isActive ? .white : Color(.systemGray2))
                     )
                 Text(facilityType.title)
-                    .font(.system(size: 12))
+                    .font(.system(size: FONT_SIZE.size * 0.875))
                     .foregroundColor(isActive ? .primary : Color(.systemGray))
             }
         }

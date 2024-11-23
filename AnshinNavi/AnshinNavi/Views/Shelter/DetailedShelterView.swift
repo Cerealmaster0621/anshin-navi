@@ -40,7 +40,7 @@ struct DetailedShelterView: View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(shelter.name)
-                    .font(.system(size: 32, weight: .bold))
+                    .font(.system(size: FONT_SIZE.size * 2, weight: .bold))
                 locationInfoView
             }
             Spacer()
@@ -71,7 +71,7 @@ struct DetailedShelterView: View {
                 Text(shelter.regionName)
             }
         }
-        .font(.system(size: 17))
+        .font(.system(size: FONT_SIZE.size * 1.0))
         .foregroundColor(.secondary)
     }
     
@@ -81,11 +81,11 @@ struct DetailedShelterView: View {
                 // TODO: Show explanation about evacuation center
             }) {
                 Image(systemName: "questionmark.circle")
-                    .font(.system(size: 14))
+                    .font(.system(size: FONT_SIZE.size * 0.875))
                     .foregroundColor(.blue)
             }
             Text(shelter.trueSafetyFeatures.last!.rawValue)
-                .font(.system(size: 13))
+                .font(.system(size: FONT_SIZE.size * 0.75))
                 .foregroundColor(.blue)
         }
         .padding(.horizontal, 8)
@@ -98,12 +98,12 @@ struct DetailedShelterView: View {
         HStack(spacing: 4) {
             ShareLink(item: shareText) {
                 Image(systemName: "square.and.arrow.up.circle.fill")
-                    .font(.system(size: 32))
+                    .font(.system(size: FONT_SIZE.size * 2))
                     .foregroundColor(Color(.systemGray4))
             }
             Button(action: { activeSheet = .bottomDrawer }) {
                 Image(systemName: "xmark.circle.fill")
-                    .font(.system(size: 32))
+                    .font(.system(size: FONT_SIZE.size * 2))
                     .foregroundColor(Color(.systemGray4))
             }
         }
@@ -145,10 +145,10 @@ struct DetailedShelterView: View {
             }) {
                 HStack {
                     Text(shelter.address)
-                        .font(.system(size: 17))
+                        .font(.system(size: FONT_SIZE.size))
                     Spacer()
                     Image(systemName: "doc.on.clipboard")
-                        .font(.system(size: 20))
+                        .font(.system(size: FONT_SIZE.size * 1.25))
                         .foregroundColor(.blue)
                 }
             }
@@ -171,10 +171,10 @@ struct DetailedShelterView: View {
                         Text("\(String(format: "latitude".localized)): \(String(format: "%.6f", shelter.latitude))")
                         Text("\(String(format: "longitude".localized)): \(String(format: "%.6f", shelter.longitude))")
                     }
-                    .font(.system(size: 17))
+                    .font(.system(size: FONT_SIZE.size))
                     Spacer()
                     Image(systemName: "doc.on.clipboard")
-                        .font(.system(size: 20))
+                        .font(.system(size: FONT_SIZE.size * 1.25))
                         .foregroundColor(.blue)
                 }
             }
@@ -190,9 +190,9 @@ struct DetailedShelterView: View {
                         HStack(spacing: 8) {
                             Image(systemName: feature.iconName)
                                 .foregroundColor(.blue)
-                                .font(.system(size: 16))
+                                .font(.system(size: FONT_SIZE.size))
                             Text(feature.rawValue)
-                                .font(.system(size: 15))
+                                .font(.system(size: FONT_SIZE.size * 0.875))
                             Spacer()
                         }
                         .padding(.vertical, 4)
@@ -208,7 +208,7 @@ struct DetailedShelterView: View {
     private var additionalInfoCard: some View {
         InformationCard(title: "additional_info".localized, icon: "info.circle.fill") {
             Text(shelter.additionalInfo)
-                .font(.system(size: 17))
+                .font(.system(size: FONT_SIZE.size))
         }
     }
     
@@ -235,7 +235,7 @@ struct DetailedShelterView: View {
             UIApplication.shared.open(url)
         }) {
             Text(title)
-                .font(.system(size: 16))
+                .font(.system(size: FONT_SIZE.size))
                 .foregroundColor(.blue)
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
@@ -261,7 +261,7 @@ struct ToastView: View {
             VStack {
                 Spacer()
                 Text(message)
-                    .font(.system(size: 16))
+                    .font(.system(size: FONT_SIZE.size))
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
                     .background(Color(.systemBackground))
@@ -301,7 +301,7 @@ private struct InformationCard<Content: View>: View {
                 Image(systemName: icon)
                     .foregroundColor(.blue)
                 Text(title)
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.system(size: FONT_SIZE.size * 0.875, weight: .semibold))
             }
             content
         }

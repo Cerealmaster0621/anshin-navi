@@ -44,7 +44,7 @@ struct DetailedPoliceBaseView: View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(policeBase.name)
-                    .font(.system(size: 32, weight: .bold))
+                    .font(.system(size: FONT_SIZE.size * 2, weight: .bold))
                 locationInfoView
             }
             Spacer()
@@ -76,7 +76,7 @@ struct DetailedPoliceBaseView: View {
                 Text("\(policeBase.prefecture)\(!policeBase.isCoordinatesTrustful ? " ･ \("coordinates_not_trustful".localized)" : "")")
             }
         }
-        .font(.system(size: 17))
+        .font(.system(size: FONT_SIZE.size * 1.125))
         .foregroundColor(.secondary)
     }
     
@@ -85,7 +85,7 @@ struct DetailedPoliceBaseView: View {
             Image(systemName: policeBase.policeType.iconName)
                 .foregroundColor(.blue)
             Text(policeBase.policeType.localizedName)
-                .font(.system(size: 15))
+                .font(.system(size: FONT_SIZE.size * 0.875))
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
@@ -97,12 +97,12 @@ struct DetailedPoliceBaseView: View {
         HStack(spacing: 4) {
             ShareLink(item: shareText) {
                 Image(systemName: "square.and.arrow.up.circle.fill")
-                    .font(.system(size: 32))
+                    .font(.system(size: FONT_SIZE.size * 2))
                     .foregroundColor(Color(.systemGray4))
             }
             Button(action: { activeSheet = .bottomDrawer }) {
                 Image(systemName: "xmark.circle.fill")
-                    .font(.system(size: 32))
+                    .font(.system(size: FONT_SIZE.size * 2))
                     .foregroundColor(Color(.systemGray4))
             }
         }
@@ -135,7 +135,7 @@ struct DetailedPoliceBaseView: View {
             HStack {
                 Image(systemName: "phone.fill")
                 Text(policeBase.phoneNumber)
-                    .font(.system(size: 17, weight: .semibold))
+                    .font(.system(size: FONT_SIZE.size * 1.125, weight: .semibold))
             }
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
@@ -150,7 +150,7 @@ struct DetailedPoliceBaseView: View {
         HStack {
             Image(systemName: "exclamationmark.triangle.fill")
             Text("coordinates_might_not_be_accurate".localized)
-                .font(.system(size: 15))
+                .font(.system(size: FONT_SIZE.size * 0.875))
         }
         .foregroundColor(.orange)
         .padding(12)
@@ -198,12 +198,12 @@ struct DetailedPoliceBaseView: View {
             }) {
                 HStack {
                     Text("\(policeBase.prefecture)\(policeBase.fullNotation)")
-                        .font(.system(size: 17))
+                        .font(.system(size: FONT_SIZE.size))
                         .lineLimit(nil)
                         .multilineTextAlignment(.leading)
                     Spacer()
                     Image(systemName: "doc.on.clipboard")
-                        .font(.system(size: 20))
+                        .font(.system(size: FONT_SIZE.size * 1.125))
                         .foregroundColor(.blue)
                 }
             }
@@ -226,10 +226,10 @@ struct DetailedPoliceBaseView: View {
                         Text("\(String(format: "latitude".localized)): \(String(format: "%.6f", policeBase.latitude))")
                         Text("\(String(format: "longitude".localized)): \(String(format: "%.6f", policeBase.longitude))")
                     }
-                    .font(.system(size: 17))
+                    .font(.system(size: FONT_SIZE.size))
                     Spacer()
                     Image(systemName: "doc.on.clipboard")
-                        .font(.system(size: 20))
+                        .font(.system(size: FONT_SIZE.size * 1.125))
                         .foregroundColor(.blue)
                 }
             }
@@ -243,7 +243,7 @@ struct DetailedPoliceBaseView: View {
         }) {
             HStack {
                 Text(String(format: "view_parent_police".localized, parent.policeType.localizedName))
-                    .font(.system(size: 16))
+                    .font(.system(size: FONT_SIZE.size))
                     .foregroundColor(.blue)
             }
             .frame(maxWidth: .infinity)
@@ -262,7 +262,7 @@ struct DetailedPoliceBaseView: View {
     private var remarksCard: some View {
         InformationCard(title: "remarks".localized, icon: "info.circle.fill") {
             Text(policeBase.remarks)
-                .font(.system(size: 17))
+                .font(.system(size: FONT_SIZE.size))
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
@@ -273,7 +273,7 @@ struct DetailedPoliceBaseView: View {
             UIApplication.shared.open(url)
         }) {
             Text(title)
-                .font(.system(size: 16))
+                .font(.system(size: FONT_SIZE.size))
                 .foregroundColor(.blue)
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
@@ -318,7 +318,7 @@ private struct InformationCard<Content: View>: View {
                 Image(systemName: icon)
                     .foregroundColor(.blue)
                 Text(title)
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.system(size: FONT_SIZE.size, weight: .semibold))
             }
             content
         }

@@ -28,7 +28,7 @@ struct MBDPoliceView: View {
                 }) {
                     VStack(alignment: .center, spacing: 4) {
                         Text("\(policeViewModel.visiblePoliceCount)件の\(policeTypeText)が検索されました")
-                            .font(.system(size: dynamicSize(baseSize: 20)))
+                            .font(.system(size: dynamicSize(baseSize: FONT_SIZE.size * 1.125)))
                             .foregroundColor(.primary)
                             .transition(.opacity.combined(with: .move(edge: .top)))
                         
@@ -55,7 +55,7 @@ struct MBDPoliceView: View {
                     // Header with count and type
                     HStack {
                         Text("\(policeViewModel.visiblePoliceCount)件の\(policeTypeText)")
-                            .font(.system(size: 24, weight: .bold))
+                            .font(.system(size: FONT_SIZE.size * 1.25, weight: .bold))
                         Spacer()
                     }
                     .padding(.horizontal)
@@ -68,7 +68,7 @@ struct MBDPoliceView: View {
                             HStack(spacing: 8) {
                                 ForEach(selectedPoliceTypes, id: \.self) { filter in
                                     Text(filter.localizedName)
-                                        .font(.system(size: 15))
+                                        .font(.system(size: FONT_SIZE.size))
                                         .foregroundColor(.white)
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 6)
@@ -91,7 +91,7 @@ struct MBDPoliceView: View {
                        ) {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("あなたと最寄りの\(policeTypeText)")
-                                .font(.system(size: 14))
+                                .font(.system(size: FONT_SIZE.size * 0.875))
                                 .foregroundColor(Color(.systemGray))
                                 .padding(.horizontal)
                             
@@ -101,13 +101,13 @@ struct MBDPoliceView: View {
                             }) {
                                 HStack(spacing: 16) {
                                     Image(systemName: "mappin.circle.fill")
-                                        .font(.system(size: 28))
+                                        .font(.system(size: FONT_SIZE.size * 1.75))
                                         .foregroundColor(Color(.systemBlue))
                                         .frame(width: 40)
                                     
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(closestPolice.name)
-                                            .font(.system(size: 17))
+                                            .font(.system(size: FONT_SIZE.size))
                                             .foregroundColor(.primary)
                                         
                                         let distance = policeViewModel.fastDistance(
@@ -118,7 +118,7 @@ struct MBDPoliceView: View {
                                         )
                                         
                                         Text("\(closestPolice.prefecture) ･ \(policeViewModel.formatDistance(meters: distance))")
-                                            .font(.system(size: 14))
+                                            .font(.system(size: FONT_SIZE.size * 0.875))
                                             .foregroundColor(Color(.systemGray))
                                     }
                                     
@@ -149,11 +149,11 @@ struct MBDPoliceView: View {
                         HStack {
                             if policeViewModel.currentVisiblePoliceStations.count <= 0 {
                                 Text("検索結果がありません")
-                                    .font(.system(size: 14))
+                                    .font(.system(size: FONT_SIZE.size * 0.875))
                                     .foregroundColor(Color(.systemGray))    
                             } else {
                                 Text("検索結果")
-                                    .font(.system(size: 14))
+                                    .font(.system(size: FONT_SIZE.size * 0.875))
                                     .foregroundColor(Color(.systemGray))
                             }
                             
@@ -164,7 +164,7 @@ struct MBDPoliceView: View {
                                     showingMorePolices = true
                                 }) {
                                     Text("もっと見る")
-                                        .font(.system(size: 14))
+                                        .font(.system(size: FONT_SIZE.size * 0.875))
                                         .foregroundColor(.blue)
                                 }
                                 .fullScreenCover(isPresented: $showingMorePolices) {
@@ -182,13 +182,13 @@ struct MBDPoliceView: View {
                                 }) {
                                     HStack(spacing: 16) {
                                         Image(systemName: "mappin.circle.fill")
-                                            .font(.system(size: 28))
+                                            .font(.system(size: FONT_SIZE.size * 1.75))
                                             .foregroundColor(Color(.systemBlue))
                                             .frame(width: 40)
                                         
                                         VStack(alignment: .leading, spacing: 4) {
                                             Text(police.name)
-                                                .font(.system(size: 17))
+                                                .font(.system(size: FONT_SIZE.size))
                                                 .foregroundColor(.primary)
                                             
                                             if let userLocation = policeViewModel.userLocation {
@@ -200,11 +200,11 @@ struct MBDPoliceView: View {
                                                 )
                                                 
                                                 Text("\(police.prefecture) ･ \(policeViewModel.formatDistance(meters: distance))")
-                                                    .font(.system(size: 14))
+                                                    .font(.system(size: FONT_SIZE.size * 0.875))
                                                     .foregroundColor(Color(.systemGray))
                                             } else {
                                                 Text(police.prefecture)
-                                                    .font(.system(size: 14))
+                                                    .font(.system(size: FONT_SIZE.size * 0.875))
                                                     .foregroundColor(Color(.systemGray))
                                             }
                                         }
@@ -229,7 +229,7 @@ struct MBDPoliceView: View {
                             HStack {
                                 Image(systemName: "square.and.arrow.up")
                                 Text("現在地を共有")
-                                    .font(.system(size: 17))
+                                    .font(.system(size: FONT_SIZE.size))
                             }
                             .foregroundColor(.blue)
                             .frame(maxWidth: .infinity)
