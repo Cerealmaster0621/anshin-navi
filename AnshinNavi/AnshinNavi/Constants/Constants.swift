@@ -12,7 +12,12 @@ let MEDIUM_DENT_WEIGHT = 0.4
 let MAIN_DRAWER_SEARCH_BOX_PADDING: CGFloat = 14
 
 // Maximum number of annotations to show on the map at once
-let MAX_ANNOTATIONS = 200
+var MAX_ANNOTATIONS = 200
+
+// Default Annotation Type
+var ANNOTATION_TYPE:CurrentAnnotationType = .shelter
+
+// Default FontSize Weight
 
 // evacuation shelters/centers
 let WHAT_IS_SHELTER_FILTER: AttributedString = {
@@ -50,18 +55,18 @@ let SHARE_MESSAGE_TEMPLATE = "share_location_message".localized
 
 let SHARE_NEAREST_SHELTER_TEMPLATE = "nearest_shelter_info".localized
 
+let SHARE_NEAREST_POLICE_TEMPLATE = "nearest_police_info".localized
+
 let SHARE_GOOGLE_MAPS_URL_TEMPLATE = "https://www.google.com/maps/search/?api=1&query=%f,%f"
 let SHARE_APPLE_MAPS_URL_TEMPLATE = "http://maps.apple.com/?q=%f,%f"
 
 // Map Settings
-let DEFAULT_MAP_TYPE: MapType = .standard
-let DEFAULT_MAX_ANNOTATIONS: Double = 50
-let MAX_ANNOTATION_RANGE: ClosedRange<Double> = 10...100
+var MAP_TYPE: MapType = .standard
+let MAX_ANNOTATION_RANGE: ClosedRange<Double> = 100...500
 let ANNOTATION_STEP: Double = 10
-let DEFAULT_ANNOTATION_TYPE: AnnotationType = .shelter
 
 // Font Settings
-let DEFAULT_FONT_SIZE: FontSize = .medium
+var FONT_SIZE: FontSize = .medium
 
 // Setting Icons
 let SETTING_ICONS = [

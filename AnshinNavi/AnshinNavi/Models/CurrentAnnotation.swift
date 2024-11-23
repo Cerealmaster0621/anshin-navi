@@ -1,13 +1,17 @@
-enum CurrentAnnotationType {
-    case shelter
-    case none
-    // TODO: Add other annotation types
-     case police
+enum CurrentAnnotationType: Int, CaseIterable {
+    case shelter = 0
+    case police = 1
+    case none = 2
+    
     var id: Int {
+        return self.rawValue
+    }
+    
+    var name: String {
         switch self {
-        case .shelter: return 0
-        case .none: return 1
-        case .police: return 2
+        case .shelter: return "evacuation_area_lowercase".localized
+        case .police: return "police_facility_lowercase".localized
+        case .none: return ""
         }
     }
 }

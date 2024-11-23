@@ -570,7 +570,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "指定避難所として利用可能"
+            "value" : "指定避難所に利用可能"
           }
         }
       }
@@ -676,7 +676,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "近くの避難場所および交番などの位置を探すために位置情報へのアクセスが必要です。"
+            "value" : "近くの避難場所および交番などの位置を探すために位置情報へのアクセス必要です。"
           }
         },
         "ko" : {
@@ -763,6 +763,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "警察施設"
+          }
+        }
+      }
+    },
+    "police_share_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sharing police location\n\n%@\n%@\n\nApple Maps:\n%@\n\nGoogle Maps:\n%@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の位置情報を共有します\n\n%@\n%@\n\nApple Maps:\n%@\n\nGoogle Maps:\n%@"
           }
         }
       }
@@ -865,37 +882,25 @@
         }
       }
     },
-    "share_location" : {
+    "share_location_message" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Standort teilen"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share Location"
+            "value" : "Sharing current location\n\nCoordinates:\n%@\n\nApple Maps:\n%@\n\nGoogle Maps:\n%@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "位置情報を共有"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "내 위치 공유"
+            "value" : "現在地を共有します\n\n座標:\n%@\n\nApple Maps:\n%@\n\nGoogle Maps:\n%@"
           }
         }
       }
     },
     "SHARE_NEAREST_POLICE_TEMPLATE" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -930,7 +935,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "安心ナビで表示しているのは主に指定緊急避難場所のデータです。フィルターを有効にすることで、指定避難所としても登録されている施設が表示されます。避難所と指定緊急避難場所の違いについて..."
+            "value" : "安心ナビで表示しているのは主に指定緊急避難場所のデータです。フィルターを有効にすることで、指定避難所に登録されている施設が表示されます。避難所と指定緊急避難場所の違いについて..."
           }
         },
         "ko" : {
@@ -1338,6 +1343,91 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "軽度: %@"
+          }
+        }
+      }
+    },
+    "settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定"
+          }
+        }
+      }
+    },
+    "map_settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map Settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "地図設定"
+          }
+        }
+      }
+    },
+    "map_type": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map Type"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "地図タイプ"
+          }
+        }
+      }
+    },
+    "max_annotations": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maximum Annotations"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最大表示数"
+          }
+        }
+      }
+    },
+    "default_annotation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Default Annotation"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デフォルト表示"
           }
         }
       }

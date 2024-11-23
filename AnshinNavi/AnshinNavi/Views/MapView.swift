@@ -57,6 +57,28 @@ struct MapView: UIViewRepresentable {
             }
         }
         
+        // Add observer for settings updates
+        NotificationCenter.default.addObserver(
+            forName: Notification.Name("settings_updated"),
+            object: nil,
+            queue: .main
+        ) { notification in
+            if let userInfo = notification.userInfo,
+               let mapType = userInfo["mapType"] as? MapType {
+                // Update map type
+                switch mapType {
+                case .standard:
+                    mapView.mapType = .standard
+                case .satellite:
+                    mapView.mapType = .satellite
+                case .hybrid:
+                    mapView.mapType = .hybrid
+                case .satelliteWithLabels:
+                    mapView.mapType = .satelliteFlyover
+                }
+            }
+        }
+        
         return mapView
     }
     

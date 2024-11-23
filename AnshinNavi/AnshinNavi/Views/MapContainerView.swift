@@ -6,7 +6,7 @@ struct MapContainerView: View {
     @EnvironmentObject var mapViewModel: MapViewModel
     @EnvironmentObject var shelterViewModel: ShelterViewModel
     @EnvironmentObject var policeViewModel: PoliceViewModel
-    @State private var currentAnnotationType: CurrentAnnotationType = .police// DEFAULT ANNOTATION
+    @State private var currentAnnotationType: CurrentAnnotationType = ANNOTATION_TYPE// DEFAULT ANNOTATION
     @State private var selectedShelter: Shelter?
     @State private var selectedPoliceBase: PoliceBase?
     @State private var selectedDetent: PresentationDetent = .custom(MainBottomDrawerView.SmallDetent.self)
@@ -39,6 +39,9 @@ struct MapContainerView: View {
                         handlePoliceSelection(police)
                     }
                 }
+        }
+        .onAppear {
+            observeSettingsChanges()
         }
         .sheet(item: $activeSheet, onDismiss: handleSheetDismissal) { sheet in
             //<-----SHEET CHANGE LOGIC----->
@@ -137,5 +140,27 @@ struct MapContainerView: View {
         }
         
         isTransitioning = false
+    }
+
+    private func observeSettingsChanges() {
+        NotificationCenter.default.addObserver(
+            forName: Notification.Name("settings_updated"),
+            object: nil,
+            queue: .main
+        ) { notification in
+            if let userInfo = notification.userInfo,
+               let maxAnnotations = userInfo["maxAnnotations"] as? Int,
+               let defaultAnnotationType = userInfo["defaultAnnotationType"] as? CurrentAnnotationType {
+                // Update the constants
+                UserDefaults.standard.set(maxAnnotations, forKey: "MaxAnnotations")
+                UserDefaults.standard.set(defaultAnnotationType.rawValue, forKey: "DefaultAnnotationType")
+                
+                // Trigger map refresh
+                NotificationCenter.default.post(
+                    name: Notification.Name("search_region_notification".localized),
+                    object: nil
+                )
+            }
+        }
     }
 }

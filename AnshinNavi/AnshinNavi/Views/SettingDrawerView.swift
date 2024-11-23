@@ -1,10 +1,20 @@
 import SwiftUI
 
 struct SettingDrawerView: View {
-    @State private var selectedMapType: MapType = DEFAULT_MAP_TYPE
-    @State private var maxAnnotations: Double = DEFAULT_MAX_ANNOTATIONS
-    @State private var defaultAnnotationType: AnnotationType = DEFAULT_ANNOTATION_TYPE
-    @State private var fontSize: FontSize = DEFAULT_FONT_SIZE
+    @State private var selectedMapType: MapType = UserDefaults.standard.string(forKey: "MapType").flatMap { MapType(rawValue: $0) } ?? MAP_TYPE
+    @State private var fontSize: FontSize = UserDefaults.standard.string(forKey: "FontSize").flatMap { FontSize(rawValue: $0) } ?? FONT_SIZE
+    @State private var defaultAnnotationType: CurrentAnnotationType = {
+        if let savedValue = UserDefaults.standard.object(forKey: "DefaultAnnotationType") as? Int,
+           let annotationType = CurrentAnnotationType(rawValue: savedValue) {
+            return annotationType
+        }
+        return ANNOTATION_TYPE
+    }()
+    @State private var maxAnnotations: Double = {
+        let savedValue = UserDefaults.standard.integer(forKey: "MaxAnnotations")
+        return savedValue > 0 ? Double(savedValue) : Double(MAX_ANNOTATIONS)
+    }()
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationView {
@@ -34,10 +44,17 @@ struct SettingDrawerView: View {
                             in: MAX_ANNOTATION_RANGE,
                             step: ANNOTATION_STEP
                         )
+                        .onChange(of: maxAnnotations) { newValue in
+                            MAX_ANNOTATIONS = Int(newValue)
+                            NotificationCenter.default.post(
+                                name: Notification.Name("search_region_notification".localized),
+                                object: nil
+                            )
+                        }
                     }
                     
                     NavigationLink {
-                        DefaultAnnotationView(selection: $defaultAnnotationType)
+                        DefaultAnnotationSelectionView(selection: $defaultAnnotationType)
                     } label: {
                         SettingRow(
                             icon: SETTING_ICONS["defaultAnnotation"]!,
@@ -109,8 +126,59 @@ struct SettingDrawerView: View {
                 }
             }
             .navigationTitle("settings".localized)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("完了") {
+                        dismiss()
+                    }
+                }
+            }
+            .onChange(of: selectedMapType) { newValue in
+                // Update global constant
+                MAP_TYPE = newValue
+                // Save to UserDefaults
+                UserDefaults.standard.set(newValue.rawValue, forKey: "MapType")
+                // Post notification to update map immediately
+                NotificationCenter.default.post(
+                    name: Notification.Name("settings_updated"),
+                    object: nil,
+                    userInfo: ["mapType": newValue]
+                )
+            }
         }
         .presentationDetents(SETTING_DETENTS)
+        .onDisappear {
+            saveSettings()
+        }
+    }
+    
+    private func saveSettings() {
+        // Save all settings to UserDefaults
+        UserDefaults.standard.set(selectedMapType.rawValue, forKey: "MapType")
+        UserDefaults.standard.set(fontSize.rawValue, forKey: "FontSize")
+        UserDefaults.standard.set(defaultAnnotationType.rawValue, forKey: "DefaultAnnotationType")
+        UserDefaults.standard.set(Int(maxAnnotations), forKey: "MaxAnnotations")
+        
+        // Update global constants
+        MAX_ANNOTATIONS = Int(maxAnnotations)
+        ANNOTATION_TYPE = defaultAnnotationType
+        MAP_TYPE = selectedMapType
+        FONT_SIZE = fontSize
+        
+        // Synchronize UserDefaults to ensure changes are saved immediately
+        UserDefaults.standard.synchronize()
+        
+        // Post notification for map to update
+        NotificationCenter.default.post(
+            name: Notification.Name("settings_updated"),
+            object: nil,
+            userInfo: [
+                "maxAnnotations": Int(maxAnnotations),
+                "defaultAnnotationType": defaultAnnotationType,
+                "mapType": selectedMapType,
+                "fontSize": fontSize
+            ]
+        )
     }
 }
 
@@ -161,24 +229,6 @@ struct MapTypeSelectionView: View {
     }
 }
 
-struct DefaultAnnotationView: View {
-    @Binding var selection: AnnotationType
-    
-    var body: some View {
-        List {
-            ForEach(AnnotationType.allCases) { type in
-                SelectionRow(
-                    title: type.name,
-                    isSelected: type == selection
-                ) {
-                    selection = type
-                }
-            }
-        }
-        .navigationTitle("default_annotation".localized)
-    }
-}
-
 struct FontSizeSelectionView: View {
     @Binding var selection: FontSize
     
@@ -194,6 +244,24 @@ struct FontSizeSelectionView: View {
             }
         }
         .navigationTitle("font_size".localized)
+    }
+}
+
+struct DefaultAnnotationSelectionView: View {
+    @Binding var selection: CurrentAnnotationType
+    
+    var body: some View {
+        List {
+            ForEach(CurrentAnnotationType.allCases.filter { $0 != .none }, id: \.self) { type in
+                SelectionRow(
+                    title: type.name,
+                    isSelected: type == selection
+                ) {
+                    selection = type
+                }
+            }
+        }
+        .navigationTitle("default_annotation".localized)
     }
 }
 

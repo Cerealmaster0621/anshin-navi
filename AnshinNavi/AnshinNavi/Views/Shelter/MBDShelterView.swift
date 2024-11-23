@@ -15,7 +15,7 @@ struct MBDShelterView: View {
     private var shelterTypeText: String {
         if let lastFilter = selectedShelterFilterTypes.last,
            lastFilter == .isSameAsEvacuationCenter {
-            return "evacuation_shelter_lowercase".localized
+            return "shelter_lowercase".localized
         }
         return "evacuation_area_lowercase".localized
     }
@@ -233,78 +233,53 @@ struct MBDShelterView: View {
                         Button(action: {
                             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                                   let window = windowScene.windows.first,
-                                  let rootVC = window.rootViewController else { return }
+                                  let rootVC = window.rootViewController,
+                                  let userLocation = shelterViewModel.userLocation else { return }
                             
-                            // Find the topmost presented view controller
                             var topController = rootVC
                             while let presentedVC = topController.presentedViewController {
                                 topController = presentedVC
                             }
                             
-                            if let userLocation = shelterViewModel.userLocation {
-                                var shareItems: [Any] = []
-                                
-                                // Format coordinates
-                                let coordinates = String(format: "%.6f, %.6f", 
-                                    userLocation.coordinate.latitude,
-                                    userLocation.coordinate.longitude
+                            var shareItems: [Any] = []
+                            
+                            // Format coordinates
+                            let coordinates = String(format: "%.6f, %.6f", 
+                                userLocation.coordinate.latitude,
+                                userLocation.coordinate.longitude
+                            )
+                            
+                            let appleMapsURL = String(format: SHARE_APPLE_MAPS_URL_TEMPLATE,
+                                userLocation.coordinate.latitude,
+                                userLocation.coordinate.longitude
+                            )     
+                            let googleMapsURL = String(format: SHARE_GOOGLE_MAPS_URL_TEMPLATE,
+                                userLocation.coordinate.latitude,
+                                userLocation.coordinate.longitude
+                            )
+                            
+                            let message = String(format: SHARE_MESSAGE_TEMPLATE,
+                                coordinates,
+                                appleMapsURL,
+                                googleMapsURL
+                            )
+                            
+                            shareItems.append(message)
+                            
+                            // Present share sheet
+                            DispatchQueue.main.async {
+                                let activityVC = UIActivityViewController(
+                                    activityItems: shareItems,
+                                    applicationActivities: nil
                                 )
                                 
-                                // Create shelter info if available
-                                var shelterInfo = ""
-                                if let closestShelter = shelterViewModel.getClosestShelter(
-                                    to: userLocation,
-                                    matching: selectedShelterFilterTypes
-                                ) {
-                                    let distance = shelterViewModel.fastDistance(
-                                        lat1: userLocation.coordinate.latitude,
-                                        lon1: userLocation.coordinate.longitude,
-                                        lat2: closestShelter.latitude,
-                                        lon2: closestShelter.longitude
-                                    )
-                                    
-                                    shelterInfo = String(format: SHARE_NEAREST_SHELTER_TEMPLATE,
-                                        shelterTypeText,
-                                        closestShelter.name,
-                                        closestShelter.regionName,
-                                        shelterViewModel.formatDistance(meters: distance)
-                                    )
+                                if let popoverController = activityVC.popoverPresentationController {
+                                    popoverController.sourceView = window
+                                    popoverController.sourceRect = CGRect(x: window.bounds.midX, y: window.bounds.midY, width: 0, height: 0)
+                                    popoverController.permittedArrowDirections = []
                                 }
                                 
-                                let appleMapsURL = String(format: SHARE_APPLE_MAPS_URL_TEMPLATE,
-                                    userLocation.coordinate.latitude,
-                                    userLocation.coordinate.longitude
-                                )     
-                                let googleMapsURL = String(format: SHARE_GOOGLE_MAPS_URL_TEMPLATE,
-                                    userLocation.coordinate.latitude,
-                                    userLocation.coordinate.longitude
-                                )
-                                
-                                let message = String(format: SHARE_MESSAGE_TEMPLATE,
-                                    coordinates,
-                                    shelterInfo,
-                                    appleMapsURL,
-                                    googleMapsURL
-                                )
-                                
-                                // Add only the message to share items (URLs are now included in the message)
-                                shareItems.append(message)
-                                
-                                // Present share sheet
-                                DispatchQueue.main.async {
-                                    let activityVC = UIActivityViewController(
-                                        activityItems: shareItems,
-                                        applicationActivities: nil
-                                    )
-                                    
-                                    if let popoverController = activityVC.popoverPresentationController {
-                                        popoverController.sourceView = window
-                                        popoverController.sourceRect = CGRect(x: window.bounds.midX, y: window.bounds.midY, width: 0, height: 0)
-                                        popoverController.permittedArrowDirections = []
-                                    }
-                                    
-                                    topController.present(activityVC, animated: true)
-                                }
+                                topController.present(activityVC, animated: true)
                             }
                         }) {
                             HStack {

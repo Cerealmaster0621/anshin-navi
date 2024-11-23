@@ -18,8 +18,9 @@ struct DetailedPoliceBaseView: View {
     
     private var shareText: String {
         String(format: "police_share_message".localized,
+               policeBase.policeType.localizedName,
                policeBase.name,
-               policeBase.fullNotation,
+               policeBase.prefecture + policeBase.fullNotation,
                "https://maps.apple.com/?q=\(policeBase.latitude),\(policeBase.longitude)",
                "https://www.google.com/maps/search/?api=1&query=\(policeBase.latitude),\(policeBase.longitude)")
     }
@@ -188,15 +189,18 @@ struct DetailedPoliceBaseView: View {
     private var addressCard: some View {
         InformationCard(title: "address".localized, icon: "mappin.circle.fill") {
             Button(action: {
-                UIPasteboard.general.string = policeBase.prefecture + policeBase.fullNotation
+                let fullAddress = policeBase.prefecture + policeBase.fullNotation
+                UIPasteboard.general.string = fullAddress
                 showingAddressCopied = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     showingAddressCopied = false
                 }
             }) {
                 HStack {
-                    Text(policeBase.fullNotation)
+                    Text("\(policeBase.prefecture)\(policeBase.fullNotation)")
                         .font(.system(size: 17))
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.leading)
                     Spacer()
                     Image(systemName: "doc.on.clipboard")
                         .font(.system(size: 20))

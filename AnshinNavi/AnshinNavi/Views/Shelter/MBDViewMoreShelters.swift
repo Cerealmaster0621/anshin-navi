@@ -19,7 +19,7 @@ struct MBDViewMoreShelters: View {
     
     private var shelterTypeText: String {
         if selectedFilters.contains(.isSameAsEvacuationCenter) {
-            return "evacuation_shelter_lowercase".localized
+            return "shelter_lowercase".localized
         }
         return "evacuation_area_lowercase".localized
     }

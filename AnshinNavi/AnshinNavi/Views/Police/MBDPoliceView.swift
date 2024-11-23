@@ -11,6 +11,7 @@ struct MBDPoliceView: View {
     let selectedPoliceTypes: [PoliceType]
     @State private var localPolices: [PoliceBase] = []
     @State private var showingMorePolices = false
+    @State private var closestPolice: PoliceBase?
     
     private var policeTypeText: String {
         "police_facility_lowercase".localized
@@ -96,6 +97,7 @@ struct MBDPoliceView: View {
                             
                             Button(action: {
                                 policeViewModel.selectedPoliceStation = closestPolice
+                                self.closestPolice = closestPolice
                             }) {
                                 HStack(spacing: 16) {
                                     Image(systemName: "mappin.circle.fill")
@@ -244,78 +246,71 @@ struct MBDPoliceView: View {
                 }
             }
         }
+        .onAppear {
+            updateClosestPolice()
+        }
+        .onChange(of: policeViewModel.userLocation) { _ in
+            updateClosestPolice()
+        }
+    }
+    
+    private func updateClosestPolice() {
+        if let userLocation = policeViewModel.userLocation {
+            closestPolice = policeViewModel.getClosestPoliceStation(
+                to: userLocation,
+                matching: selectedPoliceTypes
+            )
+        }
     }
     
     private func shareLocation() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first,
-              let rootVC = window.rootViewController else { return }
+              let rootVC = window.rootViewController,
+              let userLocation = policeViewModel.userLocation else { return }
         
         var topController = rootVC
         while let presentedVC = topController.presentedViewController {
             topController = presentedVC
         }
         
-        if let userLocation = policeViewModel.userLocation {
-            var shareItems: [Any] = []
-            
-            let coordinates = String(format: "%.6f, %.6f", 
-                userLocation.coordinate.latitude,
-                userLocation.coordinate.longitude
+        var shareItems: [Any] = []
+        
+        let coordinates = String(format: "%.6f, %.6f", 
+            userLocation.coordinate.latitude,
+            userLocation.coordinate.longitude
+        )
+        
+        let appleMapsURL = String(format: SHARE_APPLE_MAPS_URL_TEMPLATE,
+            userLocation.coordinate.latitude,
+            userLocation.coordinate.longitude
+        )     
+        let googleMapsURL = String(format: SHARE_GOOGLE_MAPS_URL_TEMPLATE,
+            userLocation.coordinate.latitude,
+            userLocation.coordinate.longitude
+        )
+        
+        let message = String(format: SHARE_MESSAGE_TEMPLATE,
+            coordinates,
+            appleMapsURL,
+            googleMapsURL
+        )
+        
+        shareItems.append(message)
+        
+        DispatchQueue.main.async {
+            let activityVC = UIActivityViewController(
+                activityItems: shareItems,
+                applicationActivities: nil
             )
             
-            var policeInfo = ""
-            if let closestPolice = policeViewModel.getClosestPoliceStation(
-                to: userLocation,
-                matching: selectedPoliceTypes
-            ) {
-                let distance = policeViewModel.fastDistance(
-                    lat1: userLocation.coordinate.latitude,
-                    lon1: userLocation.coordinate.longitude,
-                    lat2: closestPolice.latitude,
-                    lon2: closestPolice.longitude
-                )
-                
-                policeInfo = String(format: "SHARE_NEAREST_POLICE_TEMPLATE".localized(),
-                    policeTypeText,
-                    closestPolice.name,
-                    closestPolice.prefecture,
-                    policeViewModel.formatDistance(meters: distance)
-                )
+            if let popoverController = activityVC.popoverPresentationController {
+                popoverController.sourceView = window
+                popoverController.sourceRect = CGRect(x: window.bounds.midX, y: window.bounds.midY, width: 0, height: 0)
+                popoverController.permittedArrowDirections = []
             }
             
-            let appleMapsURL = String(format: SHARE_APPLE_MAPS_URL_TEMPLATE,
-                userLocation.coordinate.latitude,
-                userLocation.coordinate.longitude
-            )     
-            let googleMapsURL = String(format: SHARE_GOOGLE_MAPS_URL_TEMPLATE,
-                userLocation.coordinate.latitude,
-                userLocation.coordinate.longitude
-            )
-            
-            let message = String(format: SHARE_MESSAGE_TEMPLATE,
-                coordinates,
-                policeInfo,
-                appleMapsURL,
-                googleMapsURL
-            )
-            
-            shareItems.append(message)
-            
-            DispatchQueue.main.async {
-                let activityVC = UIActivityViewController(
-                    activityItems: shareItems,
-                    applicationActivities: nil
-                )
-                
-                if let popoverController = activityVC.popoverPresentationController {
-                    popoverController.sourceView = window
-                    popoverController.sourceRect = CGRect(x: window.bounds.midX, y: window.bounds.midY, width: 0, height: 0)
-                    popoverController.permittedArrowDirections = []
-                }
-                
-                topController.present(activityVC, animated: true)
-            }
+            topController.present(activityVC, animated: true)
         }
     }
 }
