@@ -20,7 +20,8 @@ struct SettingDrawerView: View {
         NavigationView {
             List {
                 // Map Settings Section
-                Section(header: Text("map_settings".localized)) {
+                Section(header: Text("map_settings".localized)
+                    .font(.system(size: FONT_SIZE.size * 0.875))) {
                     NavigationLink {
                         MapTypeSelectionView(selection: $selectedMapType)
                     } label: {
@@ -66,7 +67,8 @@ struct SettingDrawerView: View {
                 }
                 
                 // Accessibility Section
-                Section(header: Text("accessibility".localized)) {
+                Section(header: Text("accessibility".localized)
+                    .font(.system(size: FONT_SIZE.size * 0.875))) {
                     NavigationLink {
                         FontSizeSelectionView(selection: $fontSize)
                     } label: {
@@ -80,42 +82,26 @@ struct SettingDrawerView: View {
                 }
                 
                 // Safety Guides Section
-                Section(header: Text("safety_guides".localized)) {
-                    NavigationLink {
-//                        SafetyGuideView(type: .tsunami)
-                    } label: {
+                Section(header: Text("safety_guides".localized)
+                    .font(.system(size: FONT_SIZE.size * 0.875))) {
+                    Button(action: {
+                        if let url = URL(string: "https://www.maff.go.jp/j/pr/aff/1909/spe1_03.html") {
+                            UIApplication.shared.open(url)
+                        }
+                    }) {
                         SettingRow(
-                            icon: SETTING_ICONS["tsunami"]!,
-                            iconColor: SETTING_COLORS["tsunami"]!,
-                            title: "tsunami_guide".localized
-                        )
-                    }
-                    
-                    NavigationLink {
-//                        SafetyGuideView(type: .earthquake)
-                    } label: {
-                        SettingRow(
-                            icon: SETTING_ICONS["earthquake"]!,
-                            iconColor: SETTING_COLORS["earthquake"]!,
-                            title: "earthquake_guide".localized
-                        )
-                    }
-                    
-                    NavigationLink {
-//                        SafetyGuideView(type: .fire)
-                    } label: {
-                        SettingRow(
-                            icon: SETTING_ICONS["fire"]!,
-                            iconColor: SETTING_COLORS["fire"]!,
-                            title: "fire_guide".localized
+                            icon: "questionmark.circle.fill",
+                            iconColor: .blue,
+                            title: "disaster_response".localized
                         )
                     }
                 }
                 
                 // About Section
-                Section(header: Text("about".localized)) {
+                Section(header: Text("about".localized)
+                    .font(.system(size: FONT_SIZE.size * 0.875))) {
                     NavigationLink {
-//                        DataSourcesView()
+                        DataSourcesView()
                     } label: {
                         SettingRow(
                             icon: SETTING_ICONS["dataSources"]!,
@@ -126,11 +112,13 @@ struct SettingDrawerView: View {
                 }
             }
             .navigationTitle("settings".localized)
+            .font(.system(size: FONT_SIZE.size * 1.25))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("完了") {
                         dismiss()
                     }
+                    .font(.system(size: FONT_SIZE.size))
                 }
             }
             .onChange(of: selectedMapType) { newValue in
@@ -198,12 +186,14 @@ private struct SettingRow: View {
                 .cornerRadius(6)
             
             Text(title)
+                .font(.system(size: FONT_SIZE.size))
                 .padding(.leading, 8)
             
             Spacer()
             
             if let value = value {
                 Text(value)
+                    .font(.system(size: FONT_SIZE.size))
                     .foregroundColor(.gray)
             }
         }
@@ -216,16 +206,24 @@ struct MapTypeSelectionView: View {
     
     var body: some View {
         List {
-            ForEach(MapType.allCases) { type in
-                SelectionRow(
-                    title: type.name,
-                    isSelected: type == selection
-                ) {
-                    selection = type
+            Section {
+                ForEach(MapType.allCases) { type in
+                    SelectionRow(
+                        title: type.name,
+                        isSelected: type == selection
+                    ) {
+                        selection = type
+                    }
                 }
+            } footer: {
+                Text("map_type_explanation".localized)
+                    .font(.system(size: FONT_SIZE.size * 0.875))
+                    .foregroundColor(.gray)
+                    .padding(.top, 8)
             }
         }
         .navigationTitle("map_type".localized)
+        .font(.system(size: FONT_SIZE.size * 1.25))
     }
 }
 
@@ -234,16 +232,24 @@ struct FontSizeSelectionView: View {
     
     var body: some View {
         List {
-            ForEach(FontSize.allCases) { size in
-                SelectionRow(
-                    title: size.name,
-                    isSelected: size == selection
-                ) {
-                    selection = size
+            Section {
+                ForEach(FontSize.allCases) { size in
+                    SelectionRow(
+                        title: size.name,
+                        isSelected: size == selection
+                    ) {
+                        selection = size
+                    }
                 }
+            } footer: {
+                Text("font_size_explanation".localized)
+                    .font(.system(size: FONT_SIZE.size * 0.875))
+                    .foregroundColor(.gray)
+                    .padding(.top, 8)
             }
         }
         .navigationTitle("font_size".localized)
+        .font(.system(size: FONT_SIZE.size * 1.25))
     }
 }
 
@@ -252,16 +258,24 @@ struct DefaultAnnotationSelectionView: View {
     
     var body: some View {
         List {
-            ForEach(CurrentAnnotationType.allCases.filter { $0 != .none }, id: \.self) { type in
-                SelectionRow(
-                    title: type.name,
-                    isSelected: type == selection
-                ) {
-                    selection = type
+            Section {
+                ForEach(CurrentAnnotationType.allCases.filter { $0 != .none }, id: \.self) { type in
+                    SelectionRow(
+                        title: type.name,
+                        isSelected: type == selection
+                    ) {
+                        selection = type
+                    }
                 }
+            } footer: {
+                Text("default_annotation_explanation".localized)
+                    .font(.system(size: FONT_SIZE.size * 0.875))
+                    .foregroundColor(.gray)
+                    .padding(.top, 8)
             }
         }
         .navigationTitle("default_annotation".localized)
+        .font(.system(size: FONT_SIZE.size * 1.25))
     }
 }
 
@@ -275,12 +289,36 @@ private struct SelectionRow: View {
         Button(action: action) {
             HStack {
                 Text(title)
+                    .font(.system(size: FONT_SIZE.size))
                 Spacer()
                 if isSelected {
                     Image(systemName: "checkmark")
+                        .font(.system(size: FONT_SIZE.size))
                         .foregroundColor(.blue)
                 }
             }
         }
+    }
+}
+
+struct DataSourcesView: View {
+    var body: some View {
+        List {
+            Section(header: Text("shelter_data_source".localized)
+                .font(.system(size: FONT_SIZE.size * 0.875))) {
+                Link("国土地理院", destination: URL(string: "https://www.gsi.go.jp/top.html")!)
+                    .font(.system(size: FONT_SIZE.size))
+                    .foregroundColor(.blue)
+            }
+            
+            Section(header: Text("police_data_source".localized)
+                .font(.system(size: FONT_SIZE.size * 0.875))) {
+                Link("警察庁", destination: URL(string: "https://www.npa.go.jp/index.html")!)
+                    .font(.system(size: FONT_SIZE.size))
+                    .foregroundColor(.blue)
+            }
+        }
+        .navigationTitle("data_sources".localized)
+        .font(.system(size: FONT_SIZE.size * 1.25))
     }
 }

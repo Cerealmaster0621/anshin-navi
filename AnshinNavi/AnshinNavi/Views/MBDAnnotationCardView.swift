@@ -90,7 +90,7 @@ struct MBDAnnotationCardView: View {
                     .frame(width: 52, height: 52)
                     .overlay(
                         Image(systemName: facilityType.icon)
-                            .font(.system(size: FONT_SIZE.size * 1) )
+                            .font(.system(size: FONT_SIZE.size * 1))
                             .foregroundColor(isActive ? .white : Color(.systemGray2))
                     )
                 Text(facilityType.title)

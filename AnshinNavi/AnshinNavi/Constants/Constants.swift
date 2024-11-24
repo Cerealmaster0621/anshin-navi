@@ -100,15 +100,15 @@ enum MapType: String, CaseIterable, Identifiable {
     case standard
     case satellite
     case hybrid
-    case satelliteWithLabels
+    case satelliteFlyOver
     
     var id: String { rawValue }
     var name: String {
         switch self {
-        case .standard: return "Standard"
-        case .satellite: return "Satellite"
-        case .hybrid: return "Hybrid"
-        case .satelliteWithLabels: return "Satellite with Labels"
+        case .standard: return "map_type_standard".localized
+        case .satellite: return "map_type_satellite".localized
+        case .hybrid: return "map_type_hybrid".localized
+        case .satelliteFlyOver: return "map_type_satellite_fly_over".localized
         }
     }
     
@@ -118,7 +118,7 @@ enum MapType: String, CaseIterable, Identifiable {
         case .standard: return "map_preview_standard"
         case .satellite: return "map_preview_satellite"
         case .hybrid: return "map_preview_hybrid"
-        case .satelliteWithLabels: return "map_preview_satellite_labels"
+        case .satelliteFlyOver: return "map_preview_satellite_fly_over"
         }
     }
 }
@@ -160,10 +160,10 @@ enum FontSize: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var name: String {
         switch self {
-        case .small: return "Small"
-        case .medium: return "Medium"
-        case .large: return "Large"
-        case .extraLarge: return "Extra Large"
+        case .small: return "font_size_small".localized
+        case .medium: return "font_size_medium".localized
+        case .large: return "font_size_large".localized
+        case .extraLarge: return "font_size_extra_large".localized
         }
     }
     

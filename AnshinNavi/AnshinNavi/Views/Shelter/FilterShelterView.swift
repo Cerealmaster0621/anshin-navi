@@ -12,13 +12,15 @@ struct FilterShelterView: View {
                     selectedShelterFilterTypes.removeAll()
                 }) {
                     Text("フィルターをリセット")
+                        .font(.system(size: FONT_SIZE.size))
                         .foregroundColor(.blue)
                 }
                 .disabled(selectedShelterFilterTypes.isEmpty)
             }
             
             // First section for disaster types
-            Section(header: Text("災害種別")) {
+            Section(header: Text("災害種別")
+                .font(.system(size: FONT_SIZE.size * 0.875))) {
                 ForEach(ShelterFilterType.allCases.filter { $0 != .isSameAsEvacuationCenter }, id: \.self) { filterType in
                     FilterToggleRowShelter(
                         filterType: filterType,
@@ -32,7 +34,7 @@ struct FilterShelterView: View {
             
             // Second section for evacuation center
             Section(footer: Text(WHAT_IS_SHELTER_FILTER)
-                .font(.footnote)
+                .font(.system(size: FONT_SIZE.size * 0.875))
                 .padding(.top, 2)
                 .foregroundColor(.secondary)) {
                 FilterToggleRow(
@@ -68,14 +70,17 @@ private struct FilterToggleRowShelter: View {
         }) {
             HStack(spacing: 12) {
                 Image(systemName: filterType.iconName)
+                    .font(.system(size: FONT_SIZE.size))
                     .foregroundColor(.blue)
                     .frame(width: 20)
                 
                 Text(filterType.localizedName)
+                    .font(.system(size: FONT_SIZE.size))
                     .foregroundColor(.primary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: FONT_SIZE.size))
                     .foregroundColor(isSelected ? .blue : .gray)
                     .frame(width: 24)
             }

@@ -19,6 +19,7 @@ struct FilterPoliceView: View {
                     selectedPoliceTypes.removeAll()
                 }) {
                     Text("フィルターをリセット")
+                        .font(.system(size: FONT_SIZE.size))
                         .foregroundColor(.blue)
                 }
                 .disabled(selectedPoliceTypes.isEmpty)
@@ -26,11 +27,12 @@ struct FilterPoliceView: View {
             
             // Police types section
             Section(
-                header: Text("施設種別"),
+                header: Text("施設種別")
+                    .font(.system(size: FONT_SIZE.size * 0.875)),
                 footer: Group {
                     if !isUserAppJapanese {
                         Text("WHAT_IS_POLICE_FILTER".localized)
-                            .font(.footnote)
+                            .font(.system(size: FONT_SIZE.size * 0.875))
                             .padding(.top, 2)
                             .foregroundColor(.secondary)
                     }
@@ -71,14 +73,17 @@ private struct FilterToggleRowPolice: View {
         }) {
             HStack(spacing: 12) {
                 Image(systemName: policeType.iconName)
+                    .font(.system(size: FONT_SIZE.size))
                     .foregroundColor(.blue)
                     .frame(width: 20)
                 
                 Text(policeType.localizedName)
+                    .font(.system(size: FONT_SIZE.size))
                     .foregroundColor(.primary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: FONT_SIZE.size))
                     .foregroundColor(isSelected ? .blue : .gray)
                     .frame(width: 24)
             }

@@ -71,7 +71,7 @@ struct DetailedPoliceBaseView: View {
                     lat2: policeBase.latitude,
                     lon2: policeBase.longitude
                 )
-                Text("\(policeBase.prefecture) ･ \(policeViewModel.formatDistance(meters: distance))\(!policeBase.isCoordinatesTrustful ? " ･ \("coordinates_not_trustful".localized)" : "")")
+                Text("\(policeBase.prefecture)\(policeBase.cityTownVillage) ･ \(policeViewModel.formatDistance(meters: distance))\(!policeBase.isCoordinatesTrustful ? " ･ \("coordinates_not_trustful".localized)" : "")")
             } else {
                 Text("\(policeBase.prefecture)\(!policeBase.isCoordinatesTrustful ? " ･ \("coordinates_not_trustful".localized)" : "")")
             }
@@ -189,7 +189,9 @@ struct DetailedPoliceBaseView: View {
     private var addressCard: some View {
         InformationCard(title: "address".localized, icon: "mappin.circle.fill") {
             Button(action: {
-                let fullAddress = policeBase.prefecture + policeBase.fullNotation
+                let fullAddress = policeBase.policeType == .honbu 
+                    ? policeBase.fullNotation 
+                    : "\(policeBase.prefecture)\(policeBase.fullNotation)"
                 UIPasteboard.general.string = fullAddress
                 showingAddressCopied = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -197,7 +199,9 @@ struct DetailedPoliceBaseView: View {
                 }
             }) {
                 HStack {
-                    Text("\(policeBase.prefecture)\(policeBase.fullNotation)")
+                    Text(policeBase.policeType == .honbu 
+                        ? policeBase.fullNotation 
+                        : "\(policeBase.prefecture)\(policeBase.fullNotation)")
                         .font(.system(size: FONT_SIZE.size))
                         .lineLimit(nil)
                         .multilineTextAlignment(.leading)
@@ -261,9 +265,12 @@ struct DetailedPoliceBaseView: View {
     
     private var remarksCard: some View {
         InformationCard(title: "remarks".localized, icon: "info.circle.fill") {
-            Text(policeBase.remarks)
-                .font(.system(size: FONT_SIZE.size))
-                .frame(maxWidth: .infinity, alignment: .leading)
+            ScrollView {
+                Text(policeBase.remarks)
+                    .font(.system(size: FONT_SIZE.size))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(maxHeight: FONT_SIZE.size * 8)
         }
     }
     
@@ -317,8 +324,9 @@ private struct InformationCard<Content: View>: View {
             HStack(spacing: 6) {
                 Image(systemName: icon)
                     .foregroundColor(.blue)
+                    .font(.system(size: FONT_SIZE.size * 1.125))
                 Text(title)
-                    .font(.system(size: FONT_SIZE.size, weight: .semibold))
+                    .font(.system(size: FONT_SIZE.size * 1.125, weight: .semibold))
             }
             content
         }

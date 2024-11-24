@@ -23,7 +23,8 @@ class PoliceAnnotation: NSObject, MKAnnotation {
     }
     
     var subtitle: String? {
-        police.prefecture
+        police.prefecture +
+        police.cityTownVillage
     }
     
     init(police: PoliceBase) {

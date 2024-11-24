@@ -73,7 +73,7 @@ struct MapView: UIViewRepresentable {
                     mapView.mapType = .satellite
                 case .hybrid:
                     mapView.mapType = .hybrid
-                case .satelliteWithLabels:
+                case .satelliteFlyOver:
                     mapView.mapType = .satelliteFlyover
                 }
             }

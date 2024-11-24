@@ -58,7 +58,7 @@ struct MBDShelterView: View {
                     // Header with count and type
                     HStack {
                         Text("\(shelterViewModel.visibleShelterCount)件の指定\(shelterTypeText)")
-                            .font(.system(size: FONT_SIZE.size * 1.25, weight: .bold))
+                            .font(.system(size: FONT_SIZE.size * 1.5, weight: .bold))
                         Spacer()
                     }
                     .padding(.horizontal)

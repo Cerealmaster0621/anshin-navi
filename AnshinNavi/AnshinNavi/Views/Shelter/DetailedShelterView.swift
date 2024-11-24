@@ -78,7 +78,9 @@ struct DetailedShelterView: View {
     private var evacuationCenterTag: some View {
         HStack(spacing: 4) {
             Button(action: {
-                // TODO: Show explanation about evacuation center
+                if let url = URL(string: "https://www.bousai.go.jp/taisaku/hinanbasyo.html") {
+                    UIApplication.shared.open(url)
+                }
             }) {
                 Image(systemName: "questionmark.circle")
                     .font(.system(size: FONT_SIZE.size * 0.875))
@@ -148,7 +150,7 @@ struct DetailedShelterView: View {
                         .font(.system(size: FONT_SIZE.size))
                     Spacer()
                     Image(systemName: "doc.on.clipboard")
-                        .font(.system(size: FONT_SIZE.size * 1.25))
+                        .font(.system(size: FONT_SIZE.size * 1.125))
                         .foregroundColor(.blue)
                 }
             }
@@ -174,7 +176,7 @@ struct DetailedShelterView: View {
                     .font(.system(size: FONT_SIZE.size))
                     Spacer()
                     Image(systemName: "doc.on.clipboard")
-                        .font(.system(size: FONT_SIZE.size * 1.25))
+                        .font(.system(size: FONT_SIZE.size * 1.125))
                         .foregroundColor(.blue)
                 }
             }
@@ -190,9 +192,11 @@ struct DetailedShelterView: View {
                         HStack(spacing: 8) {
                             Image(systemName: feature.iconName)
                                 .foregroundColor(.blue)
-                                .font(.system(size: FONT_SIZE.size))
+                                .font(.system(size: FONT_SIZE.size * 1.125))
+                                .frame(width: FONT_SIZE.size * 1.5)
+                                .alignmentGuide(.leading) { d in d.width / 2 }
                             Text(feature.rawValue)
-                                .font(.system(size: FONT_SIZE.size * 0.875))
+                                .font(.system(size: FONT_SIZE.size))
                             Spacer()
                         }
                         .padding(.vertical, 4)
@@ -207,8 +211,12 @@ struct DetailedShelterView: View {
     
     private var additionalInfoCard: some View {
         InformationCard(title: "additional_info".localized, icon: "info.circle.fill") {
-            Text(shelter.additionalInfo)
-                .font(.system(size: FONT_SIZE.size))
+            ScrollView {
+                Text(shelter.additionalInfo)
+                    .font(.system(size: FONT_SIZE.size))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(maxHeight: FONT_SIZE.size * 8)
         }
     }
     
@@ -300,8 +308,9 @@ private struct InformationCard<Content: View>: View {
             HStack(spacing: 6) {
                 Image(systemName: icon)
                     .foregroundColor(.blue)
+                    .font(.system(size: FONT_SIZE.size * 1.125))
                 Text(title)
-                    .font(.system(size: FONT_SIZE.size * 0.875, weight: .semibold))
+                    .font(.system(size: FONT_SIZE.size * 1.125, weight: .semibold))
             }
             content
         }

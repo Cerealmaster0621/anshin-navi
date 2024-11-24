@@ -55,7 +55,7 @@ struct MBDPoliceView: View {
                     // Header with count and type
                     HStack {
                         Text("\(policeViewModel.visiblePoliceCount)件の\(policeTypeText)")
-                            .font(.system(size: FONT_SIZE.size * 1.25, weight: .bold))
+                            .font(.system(size: FONT_SIZE.size * 1.5, weight: .bold))
                         Spacer()
                     }
                     .padding(.horizontal)
@@ -117,7 +117,7 @@ struct MBDPoliceView: View {
                                             lon2: closestPolice.longitude
                                         )
                                         
-                                        Text("\(closestPolice.prefecture) ･ \(policeViewModel.formatDistance(meters: distance))")
+                                        Text("\(closestPolice.prefecture)\(closestPolice.cityTownVillage) ･ \(policeViewModel.formatDistance(meters: distance))")
                                             .font(.system(size: FONT_SIZE.size * 0.875))
                                             .foregroundColor(Color(.systemGray))
                                     }
@@ -199,7 +199,7 @@ struct MBDPoliceView: View {
                                                     lon2: police.longitude
                                                 )
                                                 
-                                                Text("\(police.prefecture) ･ \(policeViewModel.formatDistance(meters: distance))")
+                                                Text("\(police.prefecture)\(police.cityTownVillage) ･ \(policeViewModel.formatDistance(meters: distance))")
                                                     .font(.system(size: FONT_SIZE.size * 0.875))
                                                     .foregroundColor(Color(.systemGray))
                                             } else {

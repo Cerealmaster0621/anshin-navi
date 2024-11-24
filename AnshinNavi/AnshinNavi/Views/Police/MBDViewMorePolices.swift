@@ -204,7 +204,7 @@ struct MBDViewMorePolices: View {
                                         .multilineTextAlignment(.leading)
                                     
                                     HStack(spacing: 4) {
-                                        Text(police.prefecture)
+                                        Text(police.prefecture + police.cityTownVillage)
                                         
                                         if let userLocation = policeViewModel.userLocation {
                                             Text("･")
