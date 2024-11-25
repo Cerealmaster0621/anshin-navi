@@ -15,6 +15,7 @@ struct MapView: UIViewRepresentable {
     var selectedDetent: PresentationDetent
     @Binding var currentAnnotationType: CurrentAnnotationType
     @Binding var activeSheet: CurrentSheet?
+    @Binding var previousSheet : CurrentSheet?
     @Binding var isTransitioning: Bool
     @Binding var selectedShelterFilterTypes: [ShelterFilterType]
     @Binding var selectedPoliceTypes: [PoliceType]
@@ -24,6 +25,7 @@ struct MapView: UIViewRepresentable {
                    shelterViewModel: shelterViewModel,
                    policeViewModel: policeViewModel,
                    activeSheet: $activeSheet,
+                   previousSheet: $previousSheet,
                    isTransitioning: $isTransitioning,
                    selectedShelterFilterTypes: $selectedShelterFilterTypes,
                    selectedPoliceTypes: $selectedPoliceTypes)
@@ -138,6 +140,7 @@ struct MapView: UIViewRepresentable {
         private var isMapScrolling = false
         private let searchButtonAnimationDuration: TimeInterval = 0.3
         @Binding var activeSheet: CurrentSheet?
+        @Binding var previousSheet: CurrentSheet?
         @Binding var isTransitioning: Bool
         @Binding var selectedShelterFilterTypes: [ShelterFilterType]
         @Binding var selectedPoliceTypes: [PoliceType]
@@ -146,6 +149,7 @@ struct MapView: UIViewRepresentable {
              shelterViewModel: ShelterViewModel,
              policeViewModel: PoliceViewModel,
              activeSheet: Binding<CurrentSheet?>,
+             previousSheet: Binding<CurrentSheet?>,
              isTransitioning: Binding<Bool>,
              selectedShelterFilterTypes: Binding<[ShelterFilterType]>,
              selectedPoliceTypes: Binding<[PoliceType]>) {
@@ -153,6 +157,7 @@ struct MapView: UIViewRepresentable {
             self.shelterViewModel = shelterViewModel
             self.policeViewModel = policeViewModel
             self._activeSheet = activeSheet
+            self._previousSheet = previousSheet
             self._isTransitioning = isTransitioning
             self._selectedShelterFilterTypes = selectedShelterFilterTypes
             self._selectedPoliceTypes = selectedPoliceTypes
@@ -354,6 +359,8 @@ struct MapView: UIViewRepresentable {
         @objc func filterButtonTapped() {
             guard !isTransitioning else { return }
             isTransitioning = true
+            
+            previousSheet = activeSheet
             
             // If filter is already showing, close it and show bottom drawer
             if activeSheet == .filter {

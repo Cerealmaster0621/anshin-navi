@@ -41,6 +41,7 @@ final class MapViewModel: ObservableObject {
             selectedDetent: .custom(MainBottomDrawerView.SmallDetent.self),
             currentAnnotationType: .constant(.police),
             activeSheet: .constant(.bottomDrawer),
+            previousSheet: .constant(.bottomDrawer),
             isTransitioning: .constant(false),
             selectedShelterFilterTypes: .constant([]),
             selectedPoliceTypes: .constant([])
@@ -51,6 +52,7 @@ final class MapViewModel: ObservableObject {
             shelterViewModel: shelterViewModel,
             policeViewModel: policeViewModel,
             activeSheet: .constant(.bottomDrawer),
+            previousSheet: .constant(.bottomDrawer),
             isTransitioning: .constant(false),
             selectedShelterFilterTypes: .constant([]),
             selectedPoliceTypes: .constant([])

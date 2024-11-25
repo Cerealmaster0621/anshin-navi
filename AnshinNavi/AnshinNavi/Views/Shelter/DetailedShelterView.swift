@@ -4,6 +4,7 @@ struct DetailedShelterView: View {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
     let shelter: Shelter
     @Binding var activeSheet: CurrentSheet?
+    @Binding var previousSheet: CurrentSheet?
     @StateObject private var networkReachability = NetworkReachability()
     @State private var showingCoordinatesCopied = false
     @State private var showingAddressCopied = false
@@ -110,7 +111,10 @@ struct DetailedShelterView: View {
                     .font(.system(size: FONT_SIZE.size * 2))
                     .foregroundColor(Color(.systemGray4))
             }
-            Button(action: { activeSheet = .bottomDrawer }) {
+            Button(action: {
+                previousSheet = activeSheet
+                activeSheet = .bottomDrawer
+            }) {
                 Image(systemName: "xmark.circle.fill")
                     .font(.system(size: FONT_SIZE.size * 2))
                     .foregroundColor(Color(.systemGray4))
@@ -124,7 +128,7 @@ struct DetailedShelterView: View {
             if networkReachability.isConnected && shelterViewModel.userLocation != nil {
                 if isCalculatingWalkingTime {
                     walkingTimeLoadingButton
-                } else if let walkingTimeText = walkingTimeText {
+                } else if walkingTimeText != nil {
                     walkingTimeButton
                 }
             }
@@ -292,6 +296,7 @@ struct DetailedShelterView: View {
     
     private var walkingTimeButton: some View {
         Button(action: {
+            previousSheet = activeSheet
             activeSheet = .navigation
         }) {
             HStack {

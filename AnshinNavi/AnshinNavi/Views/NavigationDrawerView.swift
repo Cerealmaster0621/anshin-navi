@@ -19,6 +19,7 @@ struct NavigationDrawerView: View {
     @EnvironmentObject var policeViewModel: PoliceViewModel
     let destinationType: NavigationDestinationType
     @Binding var activeSheet: CurrentSheet?
+    @Binding var previousSheet : CurrentSheet?
     @State private var walkingTimeText: String? = nil
     @State private var distanceText: String? = nil
     
@@ -90,7 +91,8 @@ struct NavigationDrawerView: View {
     
     private var closeButton: some View {
         Button(action: {
-            activeSheet = nil
+            previousSheet = activeSheet
+            activeSheet = previousSheet == .detail ? .detail : .bottomDrawer
         }) {
             Image(systemName: "xmark.circle.fill")
                 .font(.system(size: FONT_SIZE.size * 1.5))

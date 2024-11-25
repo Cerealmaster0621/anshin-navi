@@ -12,6 +12,7 @@ struct DetailedPoliceBaseView: View {
     @EnvironmentObject var policeViewModel: PoliceViewModel
     let policeBase: PoliceBase
     @Binding var activeSheet: CurrentSheet?
+    @Binding var previousSheet: CurrentSheet?
     @StateObject private var networkReachability = NetworkReachability()
     @State private var showingCoordinatesCopied = false
     @State private var showingAddressCopied = false
@@ -102,7 +103,10 @@ struct DetailedPoliceBaseView: View {
                     .font(.system(size: FONT_SIZE.size * 2))
                     .foregroundColor(Color(.systemGray4))
             }
-            Button(action: { activeSheet = .bottomDrawer }) {
+            Button(action: {
+                previousSheet = activeSheet
+                activeSheet = .bottomDrawer
+            }) {
                 Image(systemName: "xmark.circle.fill")
                     .font(.system(size: FONT_SIZE.size * 2))
                     .foregroundColor(Color(.systemGray4))
@@ -186,6 +190,7 @@ struct DetailedPoliceBaseView: View {
     
     private func walkingTimeButton(_ time: String) -> some View {
         Button(action: {
+            previousSheet = activeSheet
             activeSheet = .navigation
         }) {
             HStack {
@@ -301,6 +306,7 @@ struct DetailedPoliceBaseView: View {
     
     private func parentPoliceButton(_ parent: PoliceBase) -> some View {
         Button(action: {
+            previousSheet = activeSheet
             policeViewModel.selectedPoliceStation = parent
         }) {
             HStack {

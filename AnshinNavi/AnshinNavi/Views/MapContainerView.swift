@@ -22,6 +22,7 @@ struct MapContainerView: View {
             MapView(selectedDetent: selectedDetent,
                     currentAnnotationType: $currentAnnotationType,
                     activeSheet: $activeSheet,
+                    previousSheet: $previousSheet,
                     isTransitioning: $isTransitioning,
                     selectedShelterFilterTypes: $selectedShelterFilterTypes,
                     selectedPoliceTypes: $selectedPoliceTypes
@@ -57,12 +58,12 @@ struct MapContainerView: View {
                     //<-----SHELTER DETAIL DRAWER OPENED----->
                     case .shelter:
                         if let shelter = selectedShelter {
-                            DetailedShelterView(shelter: shelter, activeSheet: $activeSheet)
+                            DetailedShelterView(shelter: shelter, activeSheet: $activeSheet, previousSheet: $previousSheet)
                                 .presentationDragIndicator(.visible)
                         }
                     case .police:
                         if let policeBase = selectedPoliceBase {
-                            DetailedPoliceBaseView(policeBase: policeBase, activeSheet: $activeSheet)
+                            DetailedPoliceBaseView(policeBase: policeBase, activeSheet: $activeSheet, previousSheet: $previousSheet)
                                 .presentationDragIndicator(.visible)
                         }
                     case .none:
@@ -86,7 +87,8 @@ struct MapContainerView: View {
                     if let selectedShelter = shelterViewModel.selectedShelter {
                         NavigationDrawerView(
                             destinationType: .shelter(selectedShelter),
-                            activeSheet: $activeSheet
+                            activeSheet: $activeSheet,
+                            previousSheet: $previousSheet
                         )
                         .presentationBackground(.clear)
                         .presentationDragIndicator(.visible)
@@ -96,7 +98,8 @@ struct MapContainerView: View {
                     if let selectedPolice = policeViewModel.selectedPoliceStation {
                         NavigationDrawerView(
                             destinationType: .police(selectedPolice),
-                            activeSheet: $activeSheet
+                            activeSheet: $activeSheet,
+                            previousSheet: $previousSheet
                         )
                         .presentationBackground(.clear)
                         .presentationDragIndicator(.visible)
@@ -107,23 +110,42 @@ struct MapContainerView: View {
                 }
             }
         }
-        .onChange(of: activeSheet) { oldValue in
-            if oldValue != nil {
-                previousSheet = oldValue
-            }
-        }
+    }
+    
+    private func updateSheets(newSheet: CurrentSheet?) {
+        guard !isTransitioning else { return }
+        isTransitioning = true
+        
+        previousSheet = activeSheet  // Store current as previous
+        activeSheet = newSheet      // Update to new sheet
+        
+        isTransitioning = false
     }
     
     private func handleSheetDismissal() {
         guard !isTransitioning else { return }
-        
         isTransitioning = true
-        
+
+        // When a sheet is dismissed, return to bottom drawer
         if activeSheet == nil {
             activeSheet = .bottomDrawer
         }
+        // real prev
+        print("prev prev : ",previousSheet)
+        
+        // Store the current sheet as previous before changing it
+        previousSheet = activeSheet
+        
+        // When a sheet is dismissed, return to bottom drawer
+        if activeSheet == nil {
+            activeSheet = .bottomDrawer
+        }
+        
+        // real act
+        print("aft act : ",activeSheet)
 
-        if previousSheet == .filter, activeSheet != .filter {
+        // Handle filter sheet dismissal
+        if previousSheet == .filter {
             NotificationCenter.default.post(
                 name: Notification.Name("search_region_notification".localized),
                 object: nil
@@ -135,34 +157,32 @@ struct MapContainerView: View {
     
     private func handleShelterSelection(_ shelter: Shelter) {
         guard !isTransitioning else { return }
-        
         isTransitioning = true
+        
         selectedShelter = shelter
         previousDetent = selectedDetent
-        previousSheet = activeSheet
         
+        // Add pin first to ensure map updates
         shelterViewModel.addPinAndCenterCamera(for: shelter)
         
-        if activeSheet != .detail {
-            activeSheet = .detail
-        }
+        previousSheet = activeSheet
+        activeSheet = .detail
         
         isTransitioning = false
     }
-
+    
     private func handlePoliceSelection(_ police: PoliceBase) {
         guard !isTransitioning else { return }
-        
         isTransitioning = true
+        
         selectedPoliceBase = police
         previousDetent = selectedDetent
-        previousSheet = activeSheet
         
+        // Add pin first to ensure map updates
         policeViewModel.addPinAndCenterCamera(for: police)
         
-        if activeSheet != .detail {
-            activeSheet = .detail
-        }
+        previousSheet = activeSheet
+        activeSheet = .detail
         
         isTransitioning = false
     }
