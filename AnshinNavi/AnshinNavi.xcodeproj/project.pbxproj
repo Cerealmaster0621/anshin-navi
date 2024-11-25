@@ -45,6 +45,7 @@
 		B3D664F42CE85AC700B549DA /* MapRightSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D664F32CE85AC700B549DA /* MapRightSideView.swift */; };
 		B3D665112CE88C6300B549DA /* DetailedShelterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D665102CE88C6300B549DA /* DetailedShelterView.swift */; };
 		B3D665132CE890B800B549DA /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D665122CE890B800B549DA /* MapView.swift */; };
+		B3E8D8E92CF484DF004D9D1E /* NavigationDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E8D8E82CF484DF004D9D1E /* NavigationDrawerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -121,6 +122,7 @@
 		B3D664F32CE85AC700B549DA /* MapRightSideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRightSideView.swift; sourceTree = "<group>"; };
 		B3D665102CE88C6300B549DA /* DetailedShelterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedShelterView.swift; sourceTree = "<group>"; };
 		B3D665122CE890B800B549DA /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		B3E8D8E82CF484DF004D9D1E /* NavigationDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDrawerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +234,7 @@
 				B3D664F32CE85AC700B549DA /* MapRightSideView.swift */,
 				B3C01EF52CE984D600FB6E82 /* FilterDrawerView.swift */,
 				B3C01EF32CE8E22B00FB6E82 /* MainBottomDrawerView.swift */,
+				B3E8D8E82CF484DF004D9D1E /* NavigationDrawerView.swift */,
 				B3C01F0A2CEC5EBC00FB6E82 /* MBDAnnotationCardView.swift */,
 				B3C01EFD2CEA320A00FB6E82 /* SettingDrawerView.swift */,
 				B3D665122CE890B800B549DA /* MapView.swift */,
@@ -468,6 +471,7 @@
 				B30332242CF0530700312AF1 /* IsUserAppJapanese.swift in Sources */,
 				B3C01F092CEBA88700FB6E82 /* MBDShelterView.swift in Sources */,
 				B33F832C2CE63DA200D33A0D /* AnshinNaviApp.swift in Sources */,
+				B3E8D8E92CF484DF004D9D1E /* NavigationDrawerView.swift in Sources */,
 				B303321C2CEF285C00312AF1 /* MapPoliceView.swift in Sources */,
 				B303321E2CEF5D8500312AF1 /* DetailedPoliceBaseView.swift in Sources */,
 				B3C01F1A2CECDBED00FB6E82 /* LocalizationHelper.swift in Sources */,

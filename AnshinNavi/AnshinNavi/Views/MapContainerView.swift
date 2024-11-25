@@ -80,6 +80,31 @@ struct MapContainerView: View {
                     selectedPoliceTypes: $selectedPoliceTypes
                 )
                     .presentationDragIndicator(.visible)
+            case .navigation:
+                switch currentAnnotationType {
+                case .shelter:
+                    if let selectedShelter = shelterViewModel.selectedShelter {
+                        NavigationDrawerView(
+                            destinationType: .shelter(selectedShelter),
+                            activeSheet: $activeSheet
+                        )
+                        .presentationBackground(.clear)
+                        .presentationDragIndicator(.visible)
+                        .presentationBackgroundInteraction(.enabled)
+                    }
+                case .police:
+                    if let selectedPolice = policeViewModel.selectedPoliceStation {
+                        NavigationDrawerView(
+                            destinationType: .police(selectedPolice),
+                            activeSheet: $activeSheet
+                        )
+                        .presentationBackground(.clear)
+                        .presentationDragIndicator(.visible)
+                        .presentationBackgroundInteraction(.enabled)
+                    }
+                case .none:
+                    EmptyView()
+                }
             }
         }
         .onChange(of: activeSheet) { oldValue in

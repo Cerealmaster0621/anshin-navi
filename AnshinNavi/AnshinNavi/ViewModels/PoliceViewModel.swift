@@ -187,6 +187,63 @@ final class PoliceViewModel: NSObject, ObservableObject {
             self.selectedPoliceStation = nil
         }
     }
+    
+    /// Calculates walking time to a police station using MapKit routing
+    /// - Parameters:
+    ///   - police: The destination police station
+    ///   - from: Starting location (defaults to user's current location)
+    /// - Returns: Formatted travel time string if route is available, nil otherwise
+    func calculateWalkingTime(to police: PoliceBase, from location: CLLocation? = nil) async -> String? {
+        let startLocation = location ?? userLocation
+        guard let startLocation = startLocation else {
+            return nil
+        }
+        
+        let request = MKDirections.Request()
+        request.transportType = .walking
+        
+        request.source = MKMapItem(placemark: MKPlacemark(
+            coordinate: startLocation.coordinate
+        ))
+        request.destination = MKMapItem(placemark: MKPlacemark(
+            coordinate: CLLocationCoordinate2D(
+                latitude: police.latitude,
+                longitude: police.longitude
+            )
+        ))
+        
+        do {
+            let directions = MKDirections(request: request)
+            let response = try await directions.calculate()
+            
+            if let route = response.routes.first {
+                return formatTravelTime(seconds: route.expectedTravelTime)
+            }
+        } catch {
+            print("Error calculating route: \(error.localizedDescription)")
+        }
+        
+        return nil
+    }
+    
+    /// Formats travel time into a human-readable string
+    /// - Parameter seconds: Travel time in seconds
+    /// - Returns: Formatted string like "5分", "2時間", or "1日"
+    func formatTravelTime(seconds: TimeInterval) -> String {
+        if seconds < 3600 {
+            // Less than 1 hour, show minutes
+            let minutes = Int(ceil(seconds / 60))
+            return "\(minutes)\("minute".localized)"
+        } else if seconds < 86400 {
+            // Less than 1 day, show hours
+            let hours = Int(ceil(seconds / 3600))
+            return "\(hours)\("hour".localized)"
+        } else {
+            // Show days
+            let days = Int(ceil(seconds / 86400))
+            return "\(days)\("day".localized)"
+        }
+    }
 }
 
 // MARK: - Helper Methods

@@ -11,6 +11,12 @@
         }
       }
     },
+    "..." : {
+
+    },
+    "/" : {
+
+    },
     "%@ ･ %@" : {
       "localizations" : {
         "en" : {
@@ -305,6 +311,23 @@
         }
       }
     },
+    "call_police" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "call"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "発信"
+          }
+        }
+      }
+    },
     "cancel" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -410,6 +433,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "データの出典について"
+          }
+        }
+      }
+    },
+    "day" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "day"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日"
+          }
+        }
+      }
+    },
+    "days" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "days"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日"
           }
         }
       }
@@ -744,6 +801,40 @@
         }
       }
     },
+    "hour" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "hour"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "時間"
+          }
+        }
+      }
+    },
+    "hours" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "hours"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "時間"
+          }
+        }
+      }
+    },
     "internal_flooding" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -879,7 +970,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "近くの避難場所および交番などの位置を探すために位置情報へのアクセス必要です。"
+            "value" : "近くの避難場所および交などの位置を探すために位置情報へのアクセス必要です。"
           }
         },
         "ko" : {
@@ -1051,6 +1142,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "最大表示件数"
+          }
+        }
+      }
+    },
+    "minute" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "minute"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分"
+          }
+        }
+      }
+    },
+    "minutes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "minutes"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分"
           }
         }
       }
@@ -1530,6 +1655,40 @@
         }
       }
     },
+    "walking_time_format" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        }
+      }
+    },
+    "walking_time_loading" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculating walking time..."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "所要時間を計算中..."
+          }
+        }
+      }
+    },
     "WHAT_IS_POLICE_FILTER" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1588,6 +1747,9 @@
           }
         }
       }
+    },
+    "まで" : {
+
     },
     "もっと見る" : {
       "localizations" : {
@@ -1690,6 +1852,9 @@
           }
         }
       }
+    },
+    "発信" : {
+
     },
     "絞り込み" : {
       "localizations" : {

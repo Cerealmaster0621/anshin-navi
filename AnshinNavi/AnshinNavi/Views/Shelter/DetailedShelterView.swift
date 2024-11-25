@@ -7,6 +7,8 @@ struct DetailedShelterView: View {
     @StateObject private var networkReachability = NetworkReachability()
     @State private var showingCoordinatesCopied = false
     @State private var showingAddressCopied = false
+    @State private var walkingTimeText: String? = nil
+    @State private var isCalculatingWalkingTime = true
     
     private var shareText: String {
         String(format: "shelter_share_message".localized,
@@ -33,6 +35,11 @@ struct DetailedShelterView: View {
         )
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
+        .task {
+            isCalculatingWalkingTime = true
+            walkingTimeText = await shelterViewModel.calculateWalkingTime(to: shelter)
+            isCalculatingWalkingTime = false
+        }
     }
     
     // MARK: - Header View
@@ -114,6 +121,14 @@ struct DetailedShelterView: View {
     // MARK: - Main Content Views
     private var mainContentView: some View {
         VStack(spacing: 20) {
+            if networkReachability.isConnected && shelterViewModel.userLocation != nil {
+                if isCalculatingWalkingTime {
+                    walkingTimeLoadingButton
+                } else if let walkingTimeText = walkingTimeText {
+                    walkingTimeButton
+                }
+            }
+            
             informationCards
             
             if networkReachability.isConnected {
@@ -257,6 +272,42 @@ struct DetailedShelterView: View {
                 .contentShape(Rectangle())
         }
         .buttonStyle(MapButtonStyle())
+    }
+    
+    private var walkingTimeLoadingButton: some View {
+        HStack {
+            Image(systemName: "figure.walk")
+                .transition(.slide)
+                .animation(.spring(response: 0.6), value: isCalculatingWalkingTime)
+            Text("walking_time_loading".localized)
+                .font(.system(size: FONT_SIZE.size * 1.125, weight: .semibold))
+        }
+        .foregroundColor(.white)
+        .frame(maxWidth: .infinity)
+        .frame(height: 50)
+        .background(Color.green.opacity(0.7))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .shadow(color: Color.green.opacity(0.3), radius: 8, x: 0, y: 2)
+    }
+    
+    private var walkingTimeButton: some View {
+        Button(action: {
+            activeSheet = .navigation
+        }) {
+            HStack {
+                Image(systemName: "figure.walk")
+                    .transition(.slide)
+                    .animation(.spring(response: 0.6), value: walkingTimeText)
+                Text(String(format: "walking_time_format".localized, walkingTimeText ?? ""))
+                    .font(.system(size: FONT_SIZE.size * 1.125, weight: .semibold))
+            }
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(Color.green)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(color: Color.green.opacity(0.3), radius: 8, x: 0, y: 2)
+        }
     }
 }
 

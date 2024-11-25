@@ -15,6 +15,8 @@ struct DetailedPoliceBaseView: View {
     @StateObject private var networkReachability = NetworkReachability()
     @State private var showingCoordinatesCopied = false
     @State private var showingAddressCopied = false
+    @State private var walkingTimeText: String? = nil
+    @State private var isCalculatingWalkingTime = true
     
     private var shareText: String {
         String(format: "police_share_message".localized,
@@ -111,8 +113,8 @@ struct DetailedPoliceBaseView: View {
     // MARK: - Main Content Views
     private var mainContentView: some View {
         VStack(spacing: 20) {
-            if networkReachability.isConnected && !policeBase.phoneNumber.isEmpty && policeBase.phoneNumber != "nan" && policeBase.phoneNumber != "無し" && policeBase.phoneNumber != "なし"{
-                emergencyCallButton
+            if networkReachability.isConnected {
+                actionButtonsRow
             }
             
             informationCards
@@ -125,6 +127,27 @@ struct DetailedPoliceBaseView: View {
                 mapButtons
             }
         }
+        .task {
+            isCalculatingWalkingTime = true
+            walkingTimeText = await policeViewModel.calculateWalkingTime(to: policeBase)
+            isCalculatingWalkingTime = false
+        }
+    }
+    
+    private var actionButtonsRow: some View {
+        HStack(spacing: 12) {
+            if !policeBase.phoneNumber.isEmpty && policeBase.phoneNumber != "nan" && policeBase.phoneNumber != "無し" && policeBase.phoneNumber != "なし" {
+                emergencyCallButton
+            }
+            
+            if policeViewModel.userLocation != nil {
+                if isCalculatingWalkingTime {
+                    walkingTimeLoadingButton
+                } else if let walkingTimeText = walkingTimeText {
+                    walkingTimeButton(walkingTimeText)
+                }
+            }
+        }
     }
     
     private var emergencyCallButton: some View {
@@ -132,9 +155,44 @@ struct DetailedPoliceBaseView: View {
             guard let url = URL(string: "tel://\(policeBase.phoneNumber)") else { return }
             UIApplication.shared.open(url)
         }) {
-            HStack {
+            HStack(spacing: 8) {
                 Image(systemName: "phone.fill")
-                Text(policeBase.phoneNumber)
+                    .font(.system(size: FONT_SIZE.size * 1.125))
+                Text("発信")
+                    .font(.system(size: FONT_SIZE.size * 1.125, weight: .semibold))
+            }
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(Color.blue)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(color: Color.blue.opacity(0.3), radius: 8, x: 0, y: 2)
+        }
+    }
+    
+    private var walkingTimeLoadingButton: some View {
+        HStack {
+            Image(systemName: "figure.walk")
+            Text("walking_time_loading".localized)
+                .font(.system(size: FONT_SIZE.size * 1.125, weight: .semibold))
+        }
+        .foregroundColor(.white)
+        .frame(maxWidth: .infinity)
+        .frame(height: 50)
+        .background(Color.blue.opacity(0.7))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .shadow(color: Color.blue.opacity(0.3), radius: 8, x: 0, y: 2)
+    }
+    
+    private func walkingTimeButton(_ time: String) -> some View {
+        Button(action: {
+            activeSheet = .navigation
+        }) {
+            HStack {
+                Image(systemName: "figure.walk")
+                    .transition(.slide)
+                    .animation(.spring(response: 0.6), value: walkingTimeText)
+                Text(String(format: "walking_time_format".localized, time))
                     .font(.system(size: FONT_SIZE.size * 1.125, weight: .semibold))
             }
             .foregroundColor(.white)

@@ -3,6 +3,7 @@ enum CurrentSheet: Identifiable {
     case detail
     case settings
     case filter
+    case navigation
     
     var id: Int {
         switch self {
@@ -10,6 +11,7 @@ enum CurrentSheet: Identifiable {
         case .detail: return 1
         case .settings: return 2
         case .filter: return 3
+        case .navigation: return 4
         }
     }
 }

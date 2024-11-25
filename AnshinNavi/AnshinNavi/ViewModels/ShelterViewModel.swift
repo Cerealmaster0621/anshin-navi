@@ -328,3 +328,62 @@ extension ShelterViewModel {
         return searchShelters(currentVisibleShelters, keyword: keyword)
     }
 }
+
+extension ShelterViewModel {
+    /// Formats travel time into a human-readable string
+    /// - Parameter seconds: Travel time in seconds
+    /// - Returns: Formatted string like "5 minutes", "2 hours", or "1 day"
+    func formatTravelTime(seconds: TimeInterval) -> String {
+        if seconds < 3600 {
+            // Less than 1 hour, show minutes
+            let minutes = Int(ceil(seconds / 60))
+            return "\(minutes)\("minute".localized)"
+        } else if seconds < 86400 {
+            // Less than 1 day, show hours
+            let hours = Int(ceil(seconds / 3600))
+            return "\(hours)\("hour".localized)"
+        } else {
+            // Show days
+            let days = Int(ceil(seconds / 86400))
+            return "\(days)\("day".localized)"
+        }
+    }
+    
+    /// Calculates walking time to a shelter using MapKit routing
+    /// - Parameters:
+    ///   - shelter: The destination shelter
+    ///   - from: Starting location (defaults to user's current location)
+    /// - Returns: Formatted travel time string if route is available, nil otherwise
+    func calculateWalkingTime(to shelter: Shelter, from location: CLLocation? = nil) async -> String? {
+        let startLocation = location ?? userLocation
+        guard let startLocation = startLocation else {
+            return nil
+        }
+        
+        let request = MKDirections.Request()
+        request.transportType = .walking
+        
+        request.source = MKMapItem(placemark: MKPlacemark(
+            coordinate: startLocation.coordinate
+        ))
+        request.destination = MKMapItem(placemark: MKPlacemark(
+            coordinate: CLLocationCoordinate2D(
+                latitude: shelter.latitude,
+                longitude: shelter.longitude
+            )
+        ))
+        
+        do {
+            let directions = MKDirections(request: request)
+            let response = try await directions.calculate()
+            
+            if let route = response.routes.first {
+                return formatTravelTime(seconds: route.expectedTravelTime)
+            }
+        } catch {
+            print("Error calculating route: \(error.localizedDescription)")
+        }
+        
+        return nil
+    }
+}
