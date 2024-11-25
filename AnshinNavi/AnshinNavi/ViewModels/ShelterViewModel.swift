@@ -339,13 +339,25 @@ extension ShelterViewModel {
             let minutes = Int(ceil(seconds / 60))
             return "\(minutes)\("minute".localized)"
         } else if seconds < 86400 {
-            // Less than 1 day, show hours
-            let hours = Int(ceil(seconds / 3600))
-            return "\(hours)\("hour".localized)"
+            // Less than 1 day, show hours and minutes
+            let hours = Int(seconds / 3600)
+            let remainingMinutes = Int(ceil((seconds.truncatingRemainder(dividingBy: 3600)) / 60))
+            
+            if remainingMinutes == 0 {
+                return "\(hours)\("hour".localized)"
+            } else {
+                return "\(hours)\("hour".localized) \(remainingMinutes)\("minute".localized)"
+            }
         } else {
-            // Show days
-            let days = Int(ceil(seconds / 86400))
-            return "\(days)\("day".localized)"
+            // Show days and hours
+            let days = Int(seconds / 86400)
+            let remainingHours = Int(ceil((seconds.truncatingRemainder(dividingBy: 86400)) / 3600))
+            
+            if remainingHours == 0 {
+                return "\(days)\("day".localized)"
+            } else {
+                return "\(days)\("day".localized) \(remainingHours)\("hour".localized)"
+            }
         }
     }
     

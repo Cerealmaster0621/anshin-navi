@@ -420,7 +420,7 @@ struct MapView: UIViewRepresentable {
             let request = MKDirections.Request()
             request.source = MKMapItem(placemark: MKPlacemark(coordinate: userLocation.coordinate))
             request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destinationCoordinate))
-            request.transportType = .automobile
+            request.transportType = .walking
             
             let directions = MKDirections(request: request)
             directions.calculate { [weak self] response, error in
@@ -453,7 +453,7 @@ struct MapView: UIViewRepresentable {
             let request = MKDirections.Request()
             request.source = MKMapItem(placemark: MKPlacemark(coordinate: userLocation.coordinate))
             request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destinationCoordinate))
-            request.transportType = .automobile
+            request.transportType = .walking
             
             let directions = MKDirections(request: request)
             directions.calculate { [weak self] response, error in
