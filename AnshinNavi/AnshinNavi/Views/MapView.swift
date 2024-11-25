@@ -1,17 +1,19 @@
-//
-//  MapView.swift
-//  AnshinNavi
-//
-//  Created by YoungJune Kang on 2024/11/16.
-//
-
 import SwiftUI
 import MapKit
 import CoreLocation
 
+// Define a RouteViewModel to manage route-related state
+class RouteViewModel: ObservableObject {
+    @Published var destinationCoordinate: CLLocationCoordinate2D?
+    @Published var shouldShowRoute: Bool = false
+    @Published var shouldUpdateRoute: Bool = false
+    @Published var shouldClearRoute: Bool = false
+}
+
 struct MapView: UIViewRepresentable {
     @EnvironmentObject var shelterViewModel: ShelterViewModel
     @EnvironmentObject var policeViewModel: PoliceViewModel
+    @ObservedObject var routeViewModel: RouteViewModel
     var selectedDetent: PresentationDetent
     @Binding var currentAnnotationType: CurrentAnnotationType
     @Binding var activeSheet: CurrentSheet?
@@ -19,16 +21,19 @@ struct MapView: UIViewRepresentable {
     @Binding var isTransitioning: Bool
     @Binding var selectedShelterFilterTypes: [ShelterFilterType]
     @Binding var selectedPoliceTypes: [PoliceType]
-
+    
     func makeCoordinator() -> Coordinator {
-        Coordinator(self, 
-                   shelterViewModel: shelterViewModel,
-                   policeViewModel: policeViewModel,
-                   activeSheet: $activeSheet,
-                   previousSheet: $previousSheet,
-                   isTransitioning: $isTransitioning,
-                   selectedShelterFilterTypes: $selectedShelterFilterTypes,
-                   selectedPoliceTypes: $selectedPoliceTypes)
+        Coordinator(
+            self,
+            shelterViewModel: shelterViewModel,
+            policeViewModel: policeViewModel,
+            routeViewModel: routeViewModel,
+            activeSheet: $activeSheet,
+            previousSheet: $previousSheet,
+            isTransitioning: $isTransitioning,
+            selectedShelterFilterTypes: $selectedShelterFilterTypes,
+            selectedPoliceTypes: $selectedPoliceTypes
+        )
     }
     
     func makeUIView(context: Context) -> MKMapView {
@@ -85,7 +90,21 @@ struct MapView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        context.coordinator.updateSearchButtonPosition(uiView,for: selectedDetent)
+        context.coordinator.updateSearchButtonPosition(uiView, for: selectedDetent)
+        
+        // Handle route updates
+        if routeViewModel.shouldShowRoute, let destination = routeViewModel.destinationCoordinate {
+            context.coordinator.showRoute(to: destination)
+            routeViewModel.shouldShowRoute = false
+        }
+        if routeViewModel.shouldUpdateRoute, let destination = routeViewModel.destinationCoordinate {
+            context.coordinator.updateRoute(to: destination)
+            routeViewModel.shouldUpdateRoute = false
+        }
+        if routeViewModel.shouldClearRoute {
+            context.coordinator.clearRoute()
+            routeViewModel.shouldClearRoute = false
+        }
     }
     
     // MARK: - Configuration Methods
@@ -116,7 +135,7 @@ struct MapView: UIViewRepresentable {
         if currentAnnotationType != .none {
             context.coordinator.filterButton = rightSideView.filterButton
         }
-
+    
         // Let coordinator setup the search button
         context.coordinator.setupSearchButton(on: mapView, for: selectedDetent)
     }
@@ -126,6 +145,7 @@ struct MapView: UIViewRepresentable {
         private let parent: MapView
         var shelterViewModel: ShelterViewModel
         var policeViewModel: PoliceViewModel
+        var routeViewModel: RouteViewModel
         var locationManager: CLLocationManager?
         weak var locationButton: UIButton?
         weak var searchButton: UIButton?
@@ -144,18 +164,23 @@ struct MapView: UIViewRepresentable {
         @Binding var isTransitioning: Bool
         @Binding var selectedShelterFilterTypes: [ShelterFilterType]
         @Binding var selectedPoliceTypes: [PoliceType]
+        var currentRouteOverlay: MKOverlay?
         
-        init(_ parent: MapView, 
-             shelterViewModel: ShelterViewModel,
-             policeViewModel: PoliceViewModel,
-             activeSheet: Binding<CurrentSheet?>,
-             previousSheet: Binding<CurrentSheet?>,
-             isTransitioning: Binding<Bool>,
-             selectedShelterFilterTypes: Binding<[ShelterFilterType]>,
-             selectedPoliceTypes: Binding<[PoliceType]>) {
+        init(
+            _ parent: MapView,
+            shelterViewModel: ShelterViewModel,
+            policeViewModel: PoliceViewModel,
+            routeViewModel: RouteViewModel,
+            activeSheet: Binding<CurrentSheet?>,
+            previousSheet: Binding<CurrentSheet?>,
+            isTransitioning: Binding<Bool>,
+            selectedShelterFilterTypes: Binding<[ShelterFilterType]>,
+            selectedPoliceTypes: Binding<[PoliceType]>
+        ) {
             self.parent = parent
             self.shelterViewModel = shelterViewModel
             self.policeViewModel = policeViewModel
+            self.routeViewModel = routeViewModel
             self._activeSheet = activeSheet
             self._previousSheet = previousSheet
             self._isTransitioning = isTransitioning
@@ -204,9 +229,9 @@ struct MapView: UIViewRepresentable {
             isMapScrolling = true
             searchButtonTimer?.invalidate()
             
-            UIView.animate(withDuration: searchButtonAnimationDuration, 
-                          delay: 0,
-                          options: [.curveEaseOut]) {
+            UIView.animate(withDuration: searchButtonAnimationDuration,
+                           delay: 0,
+                           options: [.curveEaseOut]) {
                 self.searchButton?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
                 self.searchButton?.alpha = 0
             } completion: { _ in
@@ -231,14 +256,25 @@ struct MapView: UIViewRepresentable {
                 self.searchButton?.isHidden = false
                 
                 UIView.animate(withDuration: self.searchButtonAnimationDuration,
-                             delay: 0,
-                             usingSpringWithDamping: 0.8,
-                             initialSpringVelocity: 0.5,
-                             options: [.curveEaseOut]) {
+                               delay: 0,
+                               usingSpringWithDamping: 0.8,
+                               initialSpringVelocity: 0.5,
+                               options: [.curveEaseOut]) {
                     self.searchButton?.transform = .identity
                     self.searchButton?.alpha = 1
                 }
             }
+        }
+        
+        // Handle rendering of route overlay
+        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            if overlay is MKPolyline {
+                let renderer = MKPolylineRenderer(overlay: overlay)
+                renderer.strokeColor = .systemBlue
+                renderer.lineWidth = 5
+                return renderer
+            }
+            return MKOverlayRenderer(overlay: overlay)
         }
         
         // MARK: - CLLocationManagerDelegate Methods
@@ -279,8 +315,8 @@ struct MapView: UIViewRepresentable {
             
             // Handle search button animation
             UIView.animate(withDuration: searchButtonAnimationDuration,
-                          delay: 0,
-                          options: [.curveEaseOut]) {
+                           delay: 0,
+                           options: [.curveEaseOut]) {
                 self.searchButton?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
                 self.searchButton?.alpha = 0
             } completion: { _ in
@@ -296,10 +332,8 @@ struct MapView: UIViewRepresentable {
             }
             
             switch parent.currentAnnotationType {
-            //<-----SHELTER UPDATE----->
             case .shelter:
                 shelterMapHandler.updateAnnotations(on: mapView)
-            //<-----POLICE UPDATE----->
             case .police:
                 policeMapHandler.updateAnnotations(on: mapView)
             case .none:
@@ -311,73 +345,134 @@ struct MapView: UIViewRepresentable {
             guard let mapView = searchButton?.superview as? MKMapView else { return }
             
             UIView.animate(withDuration: searchButtonAnimationDuration,
-                          delay: 0,
-                          options: [.curveEaseOut]) {
+                           delay: 0,
+                           options: [.curveEaseOut]) {
                 self.searchButton?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
                 self.searchButton?.alpha = 0
             } completion: { _ in
                 self.searchButton?.isHidden = true
                 self.searchButton?.transform = .identity
             }
-            switch parent.currentAnnotationType{
-                //<-----SEARCH BUTTON SHELTER ANNOTATION HANDLER----->
-                case .shelter:
-                    searchButtonTimer?.invalidate()
-                    shelterMapHandler.updateAnnotations(on: mapView)
-                //<-----SEARCH BUTTON POLICE ANNOTATION HANDLER----->
-                case .police:
-                    searchButtonTimer?.invalidate()
-                    policeMapHandler.updateAnnotations(on: mapView)
-                case .none:
-                    break
+            switch parent.currentAnnotationType {
+            case .shelter:
+                searchButtonTimer?.invalidate()
+                shelterMapHandler.updateAnnotations(on: mapView)
+            case .police:
+                searchButtonTimer?.invalidate()
+                policeMapHandler.updateAnnotations(on: mapView)
+            case .none:
+                break
             }
         }
-
+        
         @objc func settingButtonTapped() {
             guard !isTransitioning else { return }
             isTransitioning = true
             
-            // If settings is already showing, close it and show bottom drawer
             if activeSheet == .settings {
                 withAnimation {
                     activeSheet = .bottomDrawer
                 }
-            } 
-            // If another sheet is showing, switch to settings
-            else {
+            } else {
                 withAnimation {
                     activeSheet = .settings
                 }
             }
             
-            // Reset transition state after animation completes
             DispatchQueue.main.async {
                 self.isTransitioning = false
             }
         }
-
+        
         @objc func filterButtonTapped() {
             guard !isTransitioning else { return }
             isTransitioning = true
             
             previousSheet = activeSheet
             
-            // If filter is already showing, close it and show bottom drawer
             if activeSheet == .filter {
                 withAnimation {
                     activeSheet = .bottomDrawer
                 }
-            }
-            // If another sheet is showing, switch to filter
-            else {
+            } else {
                 withAnimation {
                     activeSheet = .filter
                 }
             }
             
-            // Reset transition state after animation completes
             DispatchQueue.main.async {
                 self.isTransitioning = false
+            }
+        }
+        
+        // MARK: - Route Functions
+        
+        func showRoute(to destinationCoordinate: CLLocationCoordinate2D) {
+            guard let mapView = self.locationButton?.superview as? MKMapView else { return }
+            guard let userLocation = mapView.userLocation.location else { return }
+            
+            // Remove existing route overlay if any
+            if let overlay = currentRouteOverlay {
+                mapView.removeOverlay(overlay)
+            }
+            
+            // Create the request
+            let request = MKDirections.Request()
+            request.source = MKMapItem(placemark: MKPlacemark(coordinate: userLocation.coordinate))
+            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destinationCoordinate))
+            request.transportType = .automobile
+            
+            let directions = MKDirections(request: request)
+            directions.calculate { [weak self] response, error in
+                guard let self = self, let route = response?.routes.first else {
+                    // Handle error
+                    return
+                }
+                self.currentRouteOverlay = route.polyline
+                mapView.addOverlay(route.polyline)
+                
+                // Adjust the map region to fit the route
+                mapView.setVisibleMapRect(
+                    route.polyline.boundingMapRect,
+                    edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50),
+                    animated: true
+                )
+            }
+        }
+        
+        func updateRoute(to destinationCoordinate: CLLocationCoordinate2D) {
+            guard let mapView = self.locationButton?.superview as? MKMapView else { return }
+            guard let userLocation = mapView.userLocation.location else { return }
+            
+            // Remove existing route overlay if any
+            if let overlay = currentRouteOverlay {
+                mapView.removeOverlay(overlay)
+            }
+            
+            // Create the request
+            let request = MKDirections.Request()
+            request.source = MKMapItem(placemark: MKPlacemark(coordinate: userLocation.coordinate))
+            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destinationCoordinate))
+            request.transportType = .automobile
+            
+            let directions = MKDirections(request: request)
+            directions.calculate { [weak self] response, error in
+                guard let self = self, let route = response?.routes.first else {
+                    // Handle error
+                    return
+                }
+                self.currentRouteOverlay = route.polyline
+                mapView.addOverlay(route.polyline)
+                // Don't adjust the map region
+            }
+        }
+        
+        func clearRoute() {
+            guard let mapView = self.locationButton?.superview as? MKMapView else { return }
+            
+            if let overlay = currentRouteOverlay {
+                mapView.removeOverlay(overlay)
+                currentRouteOverlay = nil
             }
         }
         
@@ -400,54 +495,48 @@ struct MapView: UIViewRepresentable {
             // Update the existing constraint's constant
             searchButtonBottomConstraint?.constant = newSearchButtonPadding
             
-            if shouldHide && !searchButton!.isHidden {
+            if shouldHide && !(searchButton?.isHidden ?? true) {
                 UIView.animate(withDuration: searchButtonAnimationDuration,
-                             delay: 0,
-                             options: [.curveEaseOut]) {
+                               delay: 0,
+                               options: [.curveEaseOut]) {
                     self.searchButton?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
                     self.searchButton?.alpha = 0
-                    self.searchButton?.superview?.layoutIfNeeded() // Animate constraint change
+                    self.searchButton?.superview?.layoutIfNeeded()
                 } completion: { _ in
                     self.searchButton?.isHidden = true
                     self.searchButton?.transform = .identity
                 }
-            } else if !shouldHide && searchButton!.isHidden {
+            } else if !shouldHide && (searchButton?.isHidden ?? false) {
                 self.searchButton?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
                 self.searchButton?.alpha = 0
                 self.searchButton?.isHidden = false
                 
                 UIView.animate(withDuration: self.searchButtonAnimationDuration,
-                             delay: 0,
-                             usingSpringWithDamping: 0.8,
-                             initialSpringVelocity: 0.5,
-                             options: [.curveEaseOut]) {
+                               delay: 0,
+                               usingSpringWithDamping: 0.8,
+                               initialSpringVelocity: 0.5,
+                               options: [.curveEaseOut]) {
                     self.searchButton?.transform = .identity
                     self.searchButton?.alpha = 1
-                    self.searchButton?.superview?.layoutIfNeeded() // Animate constraint change
+                    self.searchButton?.superview?.layoutIfNeeded()
                 }
             } else {
-                // If button is visible and staying visible, just animate the position change
                 UIView.animate(withDuration: 0.3) {
                     self.searchButton?.superview?.layoutIfNeeded()
                 }
             }
         }
         
-        // Clean up timer when coordinator is deallocated
-        deinit {
-            searchButtonTimer?.invalidate()
-        }
-        
         func setupSearchButton(on mapView: MKMapView, for detent: PresentationDetent) {
             let searchButton = UIButton(type: .system)
             searchButton.translatesAutoresizingMaskIntoConstraints = false
             
-            // Configure button using the new configuration API
+            // Configure button
             var config = UIButton.Configuration.plain()
             config.title = "search_this_area".localized
             config.image = UIImage(systemName: "magnifyingglass")
-            config.imagePadding = 8  // Space between icon and text
-            config.imagePlacement = .leading  // Place icon before text
+            config.imagePadding = 8
+            config.imagePlacement = .leading
             config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
             config.background.backgroundColor = .systemBackground
             searchButton.configuration = config
@@ -463,11 +552,9 @@ struct MapView: UIViewRepresentable {
             
             mapView.addSubview(searchButton)
             
-            // Calculate initial padding based on drawer height
             let initialDrawerHeight = MainBottomDrawerView.getCurrentHeight(for: detent)
             let initialSearchButtonPadding: CGFloat = -(initialDrawerHeight + MAIN_DRAWER_SEARCH_BOX_PADDING)
             
-            // Create bottom constraint
             let bottomConstraint = searchButton.bottomAnchor.constraint(
                 equalTo: mapView.safeAreaLayoutGuide.bottomAnchor,
                 constant: initialSearchButtonPadding
@@ -486,7 +573,7 @@ struct MapView: UIViewRepresentable {
     }
 }
 
-// extension for new search when closing filter sheet
+// Extension for new search when closing filter sheet
 extension MapView {
     static let searchRegionNotification = NotificationCenter.default.publisher(
         for: Notification.Name("search_region_notification".localized)

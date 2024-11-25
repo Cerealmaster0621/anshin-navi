@@ -22,11 +22,13 @@ struct AnshinNaviApp: App {
         // Then initialize view models
         let shelterVM = ShelterViewModel()
         let policeVM = PoliceViewModel()
+        let routeViewModel = RouteViewModel()
         _shelterViewModel = StateObject(wrappedValue: shelterVM)
         _policeViewModel = StateObject(wrappedValue: policeVM)
         _mapViewModel = StateObject(wrappedValue: MapViewModel(
             shelterViewModel: shelterVM,
-            policeViewModel: policeVM
+            policeViewModel: policeVM,
+            routeViewModel: routeViewModel
         ))
         
         // Configure default Japanese font for the entire app
