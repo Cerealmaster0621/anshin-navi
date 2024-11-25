@@ -28,6 +28,30 @@ struct AnshinNaviApp: App {
             shelterViewModel: shelterVM,
             policeViewModel: policeVM
         ))
+        
+        // Configure default Japanese font for the entire app
+        if isUserAppJapanese {
+            UIFont.familyNames.forEach { familyName in
+                print(familyName)
+                UIFont.fontNames(forFamilyName: familyName).forEach { fontName in
+                    print("== \(fontName)")
+                }
+            }
+            
+            // Set default font for navigation bars
+            UINavigationBar.appearance().largeTitleTextAttributes = [
+                .font: UIFont(name: "HiraginoSans-W6", size: 34)!
+            ]
+            UINavigationBar.appearance().titleTextAttributes = [
+                .font: UIFont(name: "HiraginoSans-W3", size: 17)!
+            ]
+            
+            // Set default font for all text
+            let fontDescriptor = UIFontDescriptor(name: "HiraginoSans-W3", size: 0)
+            UILabel.appearance().font = UIFont(descriptor: fontDescriptor, size: 0)
+            UITextField.appearance().font = UIFont(descriptor: fontDescriptor, size: 0)
+            UITextView.appearance().font = UIFont(descriptor: fontDescriptor, size: 0)
+        }
     }
     
     private static func loadSavedSettings() {
