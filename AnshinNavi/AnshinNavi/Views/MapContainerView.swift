@@ -114,7 +114,6 @@ struct MapContainerView: View {
                             previousSheet: $previousSheet
                         )
                         .presentationBackground(.clear)
-                        .presentationDragIndicator(.visible)
                         .presentationBackgroundInteraction(.enabled)
                     }
                 case .police:
@@ -125,7 +124,6 @@ struct MapContainerView: View {
                             previousSheet: $previousSheet
                         )
                         .presentationBackground(.clear)
-                        .presentationDragIndicator(.visible)
                         .presentationBackgroundInteraction(.enabled)
                     }
                 case .none:

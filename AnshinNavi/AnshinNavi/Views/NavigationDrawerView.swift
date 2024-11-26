@@ -14,12 +14,28 @@ enum NavigationDestinationType {
     case police(PoliceBase)
 }
 
+extension NavigationDestinationType {
+    var tintColor: Color {
+        switch self {
+        case .shelter:
+            return .green
+        case .police:
+            return .blue
+        }
+    }
+}
+
 struct NavigationDrawerView: View {
     @EnvironmentObject private var shelterViewModel: ShelterViewModel
     @EnvironmentObject private var policeViewModel: PoliceViewModel
     let destinationType: NavigationDestinationType
     @Binding var activeSheet: CurrentSheet?
     @Binding var previousSheet: CurrentSheet?
+    
+    // Add animation states
+    @State private var isLoading = true
+    @State private var showInfo = false
+    @State private var walkingTimeText: String?
     
     private var destinationName: String {
         switch destinationType {
@@ -28,72 +44,105 @@ struct NavigationDrawerView: View {
         }
     }
     
+    private var destinationIcon: String {
+        switch destinationType {
+        case .shelter: return "house.fill"
+        case .police: return "building.columns.fill"
+        }
+    }
+    
     var body: some View {
         NavigationView {
-            VStack(spacing: 6) {
-                headerView
-            }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color(.systemGroupedBackground))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    closeButton
-                }
-            }
-        }
-        .presentationDetents([.height(80)])
-        .presentationDragIndicator(.visible)
-        .task {
-            // Initial calculation of time and distance
-            await updateNavigationInfo()
-        }
-    }
-    
-    private var headerView: some View {
-        VStack(alignment: .center, spacing: 8) {
-            Text(destinationName)
-                .font(.system(size: FONT_SIZE.size * 1.25, weight: .bold))
-                .lineLimit(1)
-                .multilineTextAlignment(.center)
-            
-            HStack(spacing: 4) {
-                Text("まで")
-                    .font(.system(size: FONT_SIZE.size))
-                    .foregroundColor(.secondary)
-                
-                if let distance = calculateDistance() {
-                    Text(distance)
-                        .font(.system(size: FONT_SIZE.size))
-                        .foregroundColor(.secondary)
-                }
-                
-                if let time = walkingTimeText {
-                    Group {
-                        Text("/")
-                        Text(time)
+            VStack(spacing: 0) {
+                // Main content container
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(.systemBackground))
+                    .shadow(radius: 5)
+                    .frame(height: 80)
+                    .overlay {
+                        HStack(spacing: 16) {
+                            // Destination icon with pulsing effect
+                            Image(systemName: destinationIcon)
+                                .font(.system(size: 24))
+                                .foregroundColor(destinationType.tintColor)
+                                .frame(width: 48, height: 48)
+                                .background(
+                                    Circle()
+                                        .fill(destinationType.tintColor.opacity(0.1))
+                                        .overlay(
+                                            Circle()
+                                                .stroke(destinationType.tintColor, lineWidth: 2)
+                                                .scaleEffect(isLoading ? 1.2 : 1.0)
+                                                .opacity(isLoading ? 0 : 1)
+                                                .animation(
+                                                    .easeInOut(duration: 1.0).repeatForever(autoreverses: true),
+                                                    value: isLoading
+                                                )
+                                        )
+                                )
+                            
+                            VStack(alignment: .leading, spacing: 4) {
+                                // Destination name with slide-in animation
+                                Text(destinationName)
+                                    .font(.system(size: FONT_SIZE.size * 1.1, weight: .semibold))
+                                    .lineLimit(1)
+                                    .opacity(showInfo ? 1 : 0)
+                                    .offset(x: showInfo ? 0 : -20)
+                                
+                                // Distance and time info with fade-in animation
+                                HStack(spacing: 8) {
+                                    if let distance = calculateDistance() {
+                                        Label(distance, systemImage: "arrow.forward")
+                                            .foregroundColor(.secondary)
+                                    }
+                                    
+                                    if let time = walkingTimeText {
+                                        Label(time, systemImage: "figure.walk")
+                                            .foregroundColor(.secondary)
+                                    }
+                                }
+                                .font(.system(size: FONT_SIZE.size * 0.9))
+                                .opacity(showInfo ? 1 : 0)
+                                .offset(y: showInfo ? 0 : 10)
+                            }
+                            
+                            Spacer()
+                            
+                            // Close button with rotation animation
+                            Button(action: handleClose) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(.gray)
+                                    .rotationEffect(.degrees(showInfo ? 0 : 90))
+                            }
+                        }
+                        .padding(.horizontal, 16)
                     }
-                    .font(.system(size: FONT_SIZE.size))
-                    .foregroundColor(.secondary)
-                }
+            }
+            .padding(.horizontal)
+            .frame(maxWidth: .infinity)
+            .background(Color.clear)
+        }
+        .presentationDetents([.height(100)])
+        .task {
+            await updateNavigationInfo()
+            withAnimation(.easeOut(duration: 0.3)) {
+                showInfo = true
+                isLoading = false
             }
         }
-        .frame(maxWidth: .infinity, alignment: .center)
     }
     
-    private var closeButton: some View {
-        Button(action: {
+    private func handleClose() {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            showInfo = false
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             previousSheet = activeSheet
             activeSheet = previousSheet == .detail ? .detail : .bottomDrawer
-        }) {
-            Image(systemName: "xmark.circle.fill")
-                .font(.system(size: FONT_SIZE.size * 1.5))
-                .foregroundColor(Color(.systemGray4))
         }
     }
-    
-    @State private var walkingTimeText: String?
     
     private func updateNavigationInfo() async {
         switch destinationType {
