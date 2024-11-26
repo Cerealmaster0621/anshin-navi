@@ -23,6 +23,8 @@ DerivedData/
 *.dSYM
 *.xcarchive
 
+Assets.xcassets/
+
 # Swift Package Manager
 .build/
 Packages/
