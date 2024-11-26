@@ -15,20 +15,16 @@ enum NavigationDestinationType {
 }
 
 struct NavigationDrawerView: View {
-    @EnvironmentObject var shelterViewModel: ShelterViewModel
-    @EnvironmentObject var policeViewModel: PoliceViewModel
+    @EnvironmentObject private var shelterViewModel: ShelterViewModel
+    @EnvironmentObject private var policeViewModel: PoliceViewModel
     let destinationType: NavigationDestinationType
     @Binding var activeSheet: CurrentSheet?
-    @Binding var previousSheet : CurrentSheet?
-    @State private var walkingTimeText: String? = nil
-    @State private var distanceText: String? = nil
+    @Binding var previousSheet: CurrentSheet?
     
     private var destinationName: String {
         switch destinationType {
-        case .shelter(let shelter):
-            return shelter.name
-        case .police(let police):
-            return police.name
+        case .shelter(let shelter): return shelter.name
+        case .police(let police): return police.name
         }
     }
     
@@ -50,6 +46,7 @@ struct NavigationDrawerView: View {
         .presentationDetents([.height(80)])
         .presentationDragIndicator(.visible)
         .task {
+            // Initial calculation of time and distance
             await updateNavigationInfo()
         }
     }
@@ -66,20 +63,16 @@ struct NavigationDrawerView: View {
                     .font(.system(size: FONT_SIZE.size))
                     .foregroundColor(.secondary)
                 
-                Group {
-                    if let distance = distanceText {
-                        Text(distance)
-                    } else {
-                        Text("...")
-                    }
+                if let distance = calculateDistance() {
+                    Text(distance)
+                        .font(.system(size: FONT_SIZE.size))
+                        .foregroundColor(.secondary)
                 }
-                .font(.system(size: FONT_SIZE.size))
-                .foregroundColor(.secondary)
                 
-                if let walkingTime = walkingTimeText {
+                if let time = walkingTimeText {
                     Group {
                         Text("/")
-                        Text(walkingTime)
+                        Text(time)
                     }
                     .font(.system(size: FONT_SIZE.size))
                     .foregroundColor(.secondary)
@@ -100,37 +93,38 @@ struct NavigationDrawerView: View {
         }
     }
     
+    @State private var walkingTimeText: String?
+    
     private func updateNavigationInfo() async {
         switch destinationType {
         case .shelter(let shelter):
-            // Calculate walking time for shelter
             walkingTimeText = await shelterViewModel.calculateWalkingTime(to: shelter)
-            
-            // Calculate distance for shelter
-            if let userLocation = shelterViewModel.userLocation {
-                let distance = shelterViewModel.fastDistance(
-                    lat1: userLocation.coordinate.latitude,
-                    lon1: userLocation.coordinate.longitude,
-                    lat2: shelter.latitude,
-                    lon2: shelter.longitude
-                )
-                distanceText = shelterViewModel.formatDistance(meters: distance)
-            }
+        case .police(let police):
+            walkingTimeText = await policeViewModel.calculateWalkingTime(to: police)
+        }
+    }
+    
+    private func calculateDistance() -> String? {
+        switch destinationType {
+        case .shelter(let shelter):
+            guard let userLocation = shelterViewModel.userLocation else { return nil }
+            let distance = shelterViewModel.fastDistance(
+                lat1: userLocation.coordinate.latitude,
+                lon1: userLocation.coordinate.longitude,
+                lat2: shelter.latitude,
+                lon2: shelter.longitude
+            )
+            return shelterViewModel.formatDistance(meters: distance)
             
         case .police(let police):
-            // Calculate walking time for police
-            walkingTimeText = await policeViewModel.calculateWalkingTime(to: police)
-            
-            // Calculate distance for police
-            if let userLocation = policeViewModel.userLocation {
-                let distance = policeViewModel.fastDistance(
-                    lat1: userLocation.coordinate.latitude,
-                    lon1: userLocation.coordinate.longitude,
-                    lat2: police.latitude,
-                    lon2: police.longitude
-                )
-                distanceText = policeViewModel.formatDistance(meters: distance)
-            }
+            guard let userLocation = policeViewModel.userLocation else { return nil }
+            let distance = policeViewModel.fastDistance(
+                lat1: userLocation.coordinate.latitude,
+                lon1: userLocation.coordinate.longitude,
+                lat2: police.latitude,
+                lon2: police.longitude
+            )
+            return policeViewModel.formatDistance(meters: distance)
         }
     }
 }

@@ -17,6 +17,7 @@ struct MapContainerView: View {
     @State private var selectedShelterFilterTypes: [ShelterFilterType] = []
     @State private var selectedPoliceTypes: [PoliceType] = []
     @StateObject var routeViewModel = RouteViewModel()
+    @State private var navigationUpdateTimer: Timer?
 
     var body: some View {
         ZStack {
@@ -45,6 +46,7 @@ struct MapContainerView: View {
             }
             .onChange(of: activeSheet) { newSheet in
                 updateRouteBasedOnActiveSheet(newSheet)
+                handleNavigationTimer(for: newSheet)
             }
             .onAppear {
                 observeSettingsChanges()
@@ -238,6 +240,19 @@ struct MapContainerView: View {
                     name: Notification.Name("search_region_notification".localized),
                     object: nil
                 )
+            }
+        }
+    }
+    
+    private func handleNavigationTimer(for sheet: CurrentSheet?) {
+        // Clear existing timer
+        navigationUpdateTimer?.invalidate()
+        navigationUpdateTimer = nil
+        
+        // Start new timer if entering navigation
+        if sheet == .navigation {
+            navigationUpdateTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
+                routeViewModel.shouldUpdateRoute = true
             }
         }
     }
