@@ -24,6 +24,11 @@ DerivedData/
 *.xcarchive
 
 Assets.xcassets/
+AnshinNavi.xcodeproj/
+AnshinNaviTests/
+AnshinNaviUITests/
+*.xcstrings
+*.plist
 
 # Swift Package Manager
 .build/
