@@ -1,3 +1,5 @@
+# Data
+
 # Xcode
 .DS_Store
 */.DS_Store
@@ -94,3 +96,26 @@ Package.resolved
 *.generated.swift
 *.xcconfig
 .env.*
+
+# Logo and Assets
+Logo/
+Logos/
+**/Logo/*
+**/Logos/*
+!**/Logo/*.py
+!**/Logos/*.py
+
+# Data directories
+Data/
+Datas/
+RawData/
+RawDatas/
+**/Data/*
+**/Datas/*
+**/RawData/*
+**/RawDatas/*
+!**/Data/*.py
+!**/Datas/*.py
+!**/RawData/*.py
+!**/RawDatas/*.py
+!**/RawDatas/data_tools.py
