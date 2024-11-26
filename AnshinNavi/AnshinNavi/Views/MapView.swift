@@ -113,7 +113,7 @@ struct MapView: UIViewRepresentable {
         mapView.preferredConfiguration = MKStandardMapConfiguration(elevationStyle: .flat, emphasisStyle: .default)
         mapView.showsUserLocation = true
         mapView.showsCompass = false
-        mapView.userTrackingMode = .followWithHeading
+        mapView.userTrackingMode = .none
     }
     
     private func setupLocationServices(_ context: Context) {
@@ -288,13 +288,19 @@ struct MapView: UIViewRepresentable {
         
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
             guard let location = locations.first,
-                  let mapView = locationButton?.superview as? MKMapView,
-                  !isInitialLocationSet else { return }
+                  let mapView = locationButton?.superview as? MKMapView else { return }
             
-            isInitialLocationSet = true
-            updateMapRegion(mapView, coordinate: location.coordinate)
-            
-            manager.stopUpdatingLocation()
+            // Only set initial region without tracking
+            if !isInitialLocationSet {
+                isInitialLocationSet = true
+                let region = MKCoordinateRegion(
+                    center: location.coordinate,
+                    latitudinalMeters: 1000,
+                    longitudinalMeters: 1000
+                )
+                mapView.setRegion(region, animated: false)
+                manager.stopUpdatingLocation()
+            }
         }
         
         func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {

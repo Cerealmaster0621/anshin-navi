@@ -46,6 +46,8 @@
 		B3D665112CE88C6300B549DA /* DetailedShelterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D665102CE88C6300B549DA /* DetailedShelterView.swift */; };
 		B3D665132CE890B800B549DA /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D665122CE890B800B549DA /* MapView.swift */; };
 		B3E8D8E92CF484DF004D9D1E /* NavigationDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E8D8E82CF484DF004D9D1E /* NavigationDrawerView.swift */; };
+		B3E8D8F32CF5D830004D9D1E /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B3E8D8F22CF5D830004D9D1E /* InfoPlist.xcstrings */; };
+		B3E8D8F92CF5EA9F004D9D1E /* LoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E8D8F82CF5EA9F004D9D1E /* LoadingScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -123,6 +125,8 @@
 		B3D665102CE88C6300B549DA /* DetailedShelterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedShelterView.swift; sourceTree = "<group>"; };
 		B3D665122CE890B800B549DA /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		B3E8D8E82CF484DF004D9D1E /* NavigationDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDrawerView.swift; sourceTree = "<group>"; };
+		B3E8D8F22CF5D830004D9D1E /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		B3E8D8F82CF5EA9F004D9D1E /* LoadingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +201,8 @@
 				B33F83312CE63DA300D33A0D /* Assets.xcassets */,
 				B33F83332CE63DA300D33A0D /* Preview Content */,
 				B3C01F172CECDB1C00FB6E82 /* Localizable.xcstrings */,
+				B3E8D8F22CF5D830004D9D1E /* InfoPlist.xcstrings */,
+				B3E8D8F82CF5EA9F004D9D1E /* LoadingScreen.swift */,
 			);
 			path = AnshinNavi;
 			sourceTree = "<group>";
@@ -417,6 +423,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3E8D8F32CF5D830004D9D1E /* InfoPlist.xcstrings in Resources */,
 				B34A2C9F2CE7678800F6ABF0 /* shelters.json in Resources */,
 				B33F83352CE63DA300D33A0D /* Preview Assets.xcassets in Resources */,
 				B3C01F182CECDB1C00FB6E82 /* Localizable.xcstrings in Resources */,
@@ -458,6 +465,7 @@
 				B3C01F132CECBFCB00FB6E82 /* FilterShelterView.swift in Sources */,
 				B3C01F0D2CEC6BDE00FB6E82 /* MBDViewMoreShelters.swift in Sources */,
 				B3C01F152CECC1CA00FB6E82 /* MapShelterView.swift in Sources */,
+				B3E8D8F92CF5EA9F004D9D1E /* LoadingScreen.swift in Sources */,
 				B3C01F0B2CEC5EBC00FB6E82 /* MBDAnnotationCardView.swift in Sources */,
 				B30332152CEF1D8600312AF1 /* Police.swift in Sources */,
 				B3C01EFC2CEA301B00FB6E82 /* CurrentSheet.swift in Sources */,

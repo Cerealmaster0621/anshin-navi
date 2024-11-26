@@ -182,12 +182,6 @@
     "about_difference_link_text" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : " Mehr über den Unterschied zwischen Notunterkünften und Evakuierungszentren..."
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -198,12 +192,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "避難所と指定緊急避難場所の違いについて..."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "대피소와 대피 장소의 차이..."
           }
         }
       }
@@ -231,7 +219,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ADDITIONAL INFORMATION"
+            "value" : "Additional Informations"
           }
         },
         "ja" : {
@@ -248,7 +236,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ADDRESS"
+            "value" : "Address"
           }
         },
         "ja" : {
@@ -279,12 +267,6 @@
     "app_name" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AnshinNavi"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -296,12 +278,6 @@
             "state" : "translated",
             "value" : "安心ナビ"
           }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "일본안심지도"
-          }
         }
       }
     },
@@ -311,7 +287,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "call"
+            "value" : "Call"
           }
         },
         "ja" : {
@@ -325,12 +301,6 @@
     "cancel" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abbrechen"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -342,40 +312,22 @@
             "state" : "translated",
             "value" : "キャンセル"
           }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "취소"
-          }
         }
       }
     },
     "coordinates" : {
-      "extractionState" : "manual",
+      "extractionState" : "stale",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Koordinaten"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "COORDINATES"
+            "value" : "Coordinates"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "座標"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "좌표"
           }
         }
       }
@@ -536,12 +488,6 @@
     "distance" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Entfernung"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -552,12 +498,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "距離"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "거리"
           }
         }
       }
@@ -582,12 +522,6 @@
     "evacuation_area_lowercase" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Notfall-Evakuierungsort"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -598,12 +532,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "避難場所"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "대피 장소"
           }
         }
       }
@@ -920,12 +848,6 @@
     "latitude" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Breitengrad"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -937,27 +859,15 @@
             "state" : "translated",
             "value" : "緯度"
           }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "위도"
-          }
         }
       }
     },
     "location_permission_message" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "AnshinNavi benötigt Zugriff auf Ihren Standort, um nahegelegene Unterkünfte zu finden."
-          }
-        },
         "en" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "AnshinNavi needs access to your location to find nearby shelters and police offices."
           }
         },
@@ -966,24 +876,12 @@
             "state" : "translated",
             "value" : "近くの避難場所および交などの位置を探すために位置情報へのアクセス必要です。"
           }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "주변 대피소및 경찰서를 찾기위해 위치정보 접근권한이 필요합니다."
-          }
         }
       }
     },
     "longitude" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Längengrad"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -994,12 +892,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "経度"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "경도"
           }
         }
       }
@@ -1296,12 +1188,6 @@
     "search_region_notification" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "searchRegion"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1309,12 +1195,6 @@
           }
         },
         "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "searchRegion"
-          }
-        },
-        "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "searchRegion"
@@ -1325,12 +1205,6 @@
     "search_this_area" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diesen Bereich durchsuchen"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1341,12 +1215,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "この地域を検索"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 지역 검색"
           }
         }
       }
@@ -1364,12 +1232,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "設定"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "설정"
           }
         }
       }
@@ -1446,12 +1308,6 @@
       "comment" : "TODO",
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "AnshinNavi zeigt hauptsächlich Daten von ausgewiesenen Notunterkünften an. Durch Aktivierung der Filter werden auch Einrichtungen angezeigt, die als festgelegte Evakuierungszentren registriert sind."
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -1463,24 +1319,12 @@
             "state" : "translated",
             "value" : "安心ナビで表示しているのは主に指定緊急避難場所のデータです。フィルターを有効にすることで、指定避難所に登録されている施設が表示されます。避難所と指定緊急避難場所の違いについて..."
           }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "安心네비에서 보여주는 것은 주로 지정된 대피소 데이터입니다. 필터를 활성화하면 지정된 대피소로도 등록된 시설이 표시됩니다. "
-          }
         }
       }
     },
     "shelter_losercase" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Ausgewiesene Unterkunft"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1491,12 +1335,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "避難所"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "대피소"
           }
         }
       }
@@ -1589,12 +1427,6 @@
     "user_location_unavailable" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Benutzerstandort ist nicht verfügbar."
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1606,12 +1438,6 @@
             "state" : "translated",
             "value" : "位置情報が利用できません。"
           }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "사용자 위치를 사용할 수 없습니다."
-          }
         }
       }
     },
@@ -1620,8 +1446,8 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "view administrating $"
+            "state" : "translated",
+            "value" : "View Assigned %@"
           }
         },
         "ja" : {
@@ -1672,7 +1498,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calculating walking time..."
+            "value" : "calculating walking time..."
           }
         },
         "ja" : {
@@ -1689,7 +1515,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In Japan, Police Offices are divided in to three depends on the work."
+            "value" : "In Japan, police stations are divided into three types based on their purpose: Police Headquarters, Police Stations, and Kōban."
           }
         }
       }
@@ -1759,7 +1585,14 @@
       }
     },
     "国土地理院" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "国土地理院"
+          }
+        }
+      }
     },
     "完了" : {
       "localizations" : {
@@ -1778,7 +1611,14 @@
       }
     },
     "施設種別" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Types of Facilities"
+          }
+        }
+      }
     },
     "検索結果" : {
       "localizations" : {
@@ -1845,14 +1685,21 @@
       }
     },
     "発信" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Call"
+          }
+        }
+      }
     },
     "絞り込み" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "filter"
+            "value" : "Filter"
           }
         },
         "ja" : {
@@ -1869,7 +1716,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "latiutude"
+            "value" : "Latiutude"
           }
         },
         "ja" : {
@@ -1885,7 +1732,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "DISPLAYED FACILITIES"
+            "value" : "Displayed Facilities"
           }
         },
         "ja" : {
@@ -1897,7 +1744,14 @@
       }
     },
     "警察庁" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "警察庁"
+          }
+        }
+      }
     },
     "軽度: %@" : {
       "extractionState" : "stale",
@@ -1905,7 +1759,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "longitude"
+            "value" : "Longitude"
           }
         },
         "ja" : {

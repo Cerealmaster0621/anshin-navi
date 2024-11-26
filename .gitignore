@@ -1,6 +1,8 @@
 # Xcode
 .DS_Store
+*/.DS_Store
 xcuserdata/
+*.xcuserstate
 *.xcscmblueprint
 *.xccheckout
 DerivedData/
@@ -41,36 +43,54 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 fastlane/FastlaneRunner
 
-# Code Injection
-injected_container.swift
-
 # Environment variables
 .env
 .env.*
 
-# SwiftUI Preview Content
-Preview Content/
-
 # Build products
 build/
+DerivedData/
 *.o
 *.LinkFileList
 *.hmap
 
-# Playgrounds
-timeline.xctimeline
-playground.xcworkspace
+# Xcode Project specific
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+
+# SwiftUI Preview Content
+**/Preview Content/
 
 # IDE
 .idea/
 *.swp
 *.swo
+*.swn
+*~
 
-# Raw Data files
-Src/RawDatas/*
-!Src/RawDatas/*.py
-!Src/RawDatas/data_tools.py
+# AppCode
+.idea/
+*.iml
+
+# Obj-C/Swift specific
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+Packages/
+Package.pins
+Package.resolved
+.build/
 
 # Project specific
 *.generated.swift
 *.xcconfig
+.env.*
