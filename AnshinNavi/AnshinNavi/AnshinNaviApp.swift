@@ -14,7 +14,6 @@ struct AnshinNaviApp: App {
     @StateObject private var shelterViewModel: ShelterViewModel
     @StateObject private var policeViewModel: PoliceViewModel
     @StateObject private var mapViewModel: MapViewModel
-    @State private var isLoading = true
     
     init() {
         // First load saved settings
@@ -32,37 +31,37 @@ struct AnshinNaviApp: App {
             routeViewModel: routeViewModel
         ))
         
-        // Configure fonts for the entire app
-        if isUserAppJapanese {
-            // Japanese font configuration
-            UINavigationBar.appearance().largeTitleTextAttributes = [
-                .font: UIFont.systemFont(ofSize: 34, weight: .bold)
-            ]
-            UINavigationBar.appearance().titleTextAttributes = [
-                .font: UIFont.systemFont(ofSize: 17, weight: .regular)
-            ]
-            
-            let font = UIFont.systemFont(ofSize: UIFont.systemFontSize)
-            UILabel.appearance().font = font
-            UITextField.appearance().font = font
-            UITextView.appearance().font = font
-        } else {
-            // English font configuration (SF Pro)
-            UINavigationBar.appearance().largeTitleTextAttributes = [
-                .font: UIFont.systemFont(ofSize: 34, weight: .bold)
-            ]
-            UINavigationBar.appearance().titleTextAttributes = [
-                .font: UIFont.systemFont(ofSize: 17, weight: .semibold)
-            ]
-            
-            let defaultFont = UIFont.systemFont(ofSize: UIFont.systemFontSize, weight: .regular)
-            UILabel.appearance().font = defaultFont
-            UITextField.appearance().font = defaultFont
-            UITextView.appearance().font = defaultFont
-            
-            UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).font = .preferredFont(forTextStyle: .body)
-            UIButton.appearance().titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        }
+//        // Configure fonts for the entire app
+//        if isUserAppJapanese {
+//            // Japanese font configuration
+//            UINavigationBar.appearance().largeTitleTextAttributes = [
+//                .font: UIFont.systemFont(ofSize: 34, weight: .bold)
+//            ]
+//            UINavigationBar.appearance().titleTextAttributes = [
+//                .font: UIFont.systemFont(ofSize: 17, weight: .regular)
+//            ]
+//            
+//            let font = UIFont.systemFont(ofSize: UIFont.systemFontSize)
+//            UILabel.appearance().font = font
+//            UITextField.appearance().font = font
+//            UITextView.appearance().font = font
+//        } else {
+//            // English font configuration (SF Pro)
+//            UINavigationBar.appearance().largeTitleTextAttributes = [
+//                .font: UIFont.systemFont(ofSize: 34, weight: .bold)
+//            ]
+//            UINavigationBar.appearance().titleTextAttributes = [
+//                .font: UIFont.systemFont(ofSize: 17, weight: .semibold)
+//            ]
+//            
+//            let defaultFont = UIFont.systemFont(ofSize: UIFont.systemFontSize, weight: .regular)
+//            UILabel.appearance().font = defaultFont
+//            UITextField.appearance().font = defaultFont
+//            UITextView.appearance().font = defaultFont
+//            
+//            UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).font = .preferredFont(forTextStyle: .body)
+//            UIButton.appearance().titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+//        }
     }
     
     private static func loadSavedSettings() {
@@ -94,24 +93,13 @@ struct AnshinNaviApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                if isLoading {
-                    LoadingView()
-                } else {
                     MapContainerView()
                         .environmentObject(shelterViewModel)
                         .environmentObject(policeViewModel)
                         .environmentObject(mapViewModel)
-                }
             }
-            .onAppear {
-                // Simulate loading or do actual initialization
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    withAnimation {
-                        isLoading = false
-                    }
                 }
             }
         }
-    }
-}
+
 
