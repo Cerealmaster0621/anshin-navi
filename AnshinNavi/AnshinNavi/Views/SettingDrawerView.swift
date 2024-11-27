@@ -422,16 +422,6 @@ struct PrivacyPolicyView: View {
                         .font(.system(size: FONT_SIZE.size))
                         .padding(.leading)
                 }
-                // Contact Section
-                Group {
-                    Text("Contact Us")
-                        .font(.system(size: FONT_SIZE.size * 1.2))
-                        .fontWeight(.bold)
-                        .padding(.top)
-                    
-                    Text("If you have any questions about this Privacy Policy, You can contact us:")
-                        .font(.system(size: FONT_SIZE.size))
-                }
                 
                 // Usage Data Section
                 Group {

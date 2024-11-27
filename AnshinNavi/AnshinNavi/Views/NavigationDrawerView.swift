@@ -37,6 +37,8 @@ struct NavigationDrawerView: View {
     @State private var showInfo = false
     @State private var walkingTimeText: String?
     
+    @State private var updateTimer: Timer?
+    
     private var destinationName: String {
         switch destinationType {
         case .shelter(let shelter): return shelter.name
@@ -130,6 +132,18 @@ struct NavigationDrawerView: View {
                 showInfo = true
                 isLoading = false
             }
+            
+            // Start periodic updates
+            updateTimer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true) { _ in
+                Task {
+                    await updateNavigationInfo()
+                }
+            }
+        }
+        .onDisappear {
+            // Clean up timer when view disappears
+            updateTimer?.invalidate()
+            updateTimer = nil
         }
     }
     
