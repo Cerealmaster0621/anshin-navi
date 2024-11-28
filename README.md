@@ -1,10 +1,14 @@
 <p align="center">
-  <img src="logo32.png" width="100" height="100" alt="AnshinNavi Logo">
+  <img src="Images/logo32.png" width="100" height="100" alt="AnshinNavi Logo">
 </p>
 
 # AnshinNavi (安心ナビ)
 
 AnshinNavi is an iOS application designed to help users quickly locate and navigate to nearby emergency facilities in Japan. The app provides real-time information about evacuation shelters and police stations, making it an essential tool for both residents and visitors during emergencies.
+
+<p align="center">
+  <img src="Images/bg3.png" width="1000" alt="AnshinNavi Screenshot">
+</p>
 
 ## Features
 
@@ -20,6 +24,7 @@ AnshinNavi is an iOS application designed to help users quickly locate and navig
   - Intuitive map interface
   - Easy facility filtering
   - Customizable display settings
+  - Clean, modern design with focus on accessibility
 - **Multilingual Support**:
   - Japanese (日本語)
   - English
