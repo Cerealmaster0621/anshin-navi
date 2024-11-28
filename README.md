@@ -2,9 +2,15 @@
   <img src="Images/logo32.png" width="100" height="100" alt="AnshinNavi Logo">
 </p>
 
+<p align="center">
+  <a href="[YOUR_APP_STORE_URL]">
+    <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;">
+  </a>
+</p>
+
 # AnshinNavi (安心ナビ)
 
-AnshinNavi is an iOS application designed to help users quickly locate and navigate to nearby emergency facilities in Japan. The app provides real-time information about evacuation shelters and police stations, making it an essential tool for both residents and visitors during emergencies.
+AnshinNavi is an open source iOS application designed to help users quickly locate and navigate to nearby emergency facilities in Japan. The app provides real-time information about evacuation shelters and police stations, making it an essential tool for both residents and visitors during emergencies.
 
 <p align="center">
   <img src="Images/bg3.png" width="1000" alt="AnshinNavi Screenshot">
