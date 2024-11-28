@@ -134,7 +134,7 @@ struct NavigationDrawerView: View {
             }
             
             // Start periodic updates
-            updateTimer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true) { _ in
+            updateTimer = Timer.scheduledTimer(withTimeInterval: 20.0, repeats: true) { _ in
                 Task {
                     await updateNavigationInfo()
                 }

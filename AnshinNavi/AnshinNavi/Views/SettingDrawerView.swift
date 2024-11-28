@@ -339,36 +339,36 @@ struct PrivacyPolicyView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 // Title
-                Text("Privacy Policy")
+                Text("プライバシーポリシー")
                     .font(.system(size: FONT_SIZE.size * 1.4))
                     .fontWeight(.bold)
                 
-                Text("Last updated: November 27, 2024")
+                Text("最終更新日: 2024年11月27日")
                     .font(.system(size: FONT_SIZE.size * 0.875))
                     .foregroundColor(.gray)
                 
                 // Introduction
-                Text("This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.")
+                Text("本プライバシーポリシーは、当社のサービスご利用時における個人情報の収集、使用、開示に関する方針を説明し、お客様のプライバシー権利と法的保護についてご案内するものです。")
                     .font(.system(size: FONT_SIZE.size))
                 
-                Text("We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy.")
+                Text("当社は、サービスの提供および改善のためにお客様の個人情報を使用いたします。本サービスをご利用いただくことで、本プライバシーポリシーに従った情報の収集および使用にご同意いただいたものとみなされます。")
                     .font(.system(size: FONT_SIZE.size))
                 
                 // Interpretation and Definitions
                 Group {
-                    Text("Interpretation and Definitions")
+                    Text("解釈および定義")
                         .font(.system(size: FONT_SIZE.size * 1.2))
                         .fontWeight(.bold)
                         .padding(.top)
                     
-                    Text("Interpretation")
+                    Text("解釈")
                         .font(.system(size: FONT_SIZE.size * 1.1))
                         .fontWeight(.semibold)
                     
-                    Text("The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.")
+                    Text("大文字で始まる用語は、以下に定める意味を持ちます。以下の定義は、単数形でも複数形でも同じ意味を持つものとします。")
                         .font(.system(size: FONT_SIZE.size))
                     
-                    Text("Definitions")
+                    Text("定義")
                         .font(.system(size: FONT_SIZE.size * 1.1))
                         .fontWeight(.semibold)
                         .padding(.top)
@@ -376,164 +376,117 @@ struct PrivacyPolicyView: View {
                 
                 // Definitions List
                 VStack(alignment: .leading, spacing: 12) {
-                    definitionItem(term: "Account", definition: "means a unique account created for You to access our Service or parts of our Service.")
-                    definitionItem(term: "Application", definition: "refers to 安心ナビ(Japan Safety Map), the software program provided by the Company.")
-                    definitionItem(term: "Company", definition: "refers to 安心ナビ(Japan Safety Map).")
-                    definitionItem(term: "Country", definition: "refers to: Japan")
-                    definitionItem(term: "Device", definition: "means any device that can access the Service such as a computer, a cellphone or a digital tablet.")
-                    definitionItem(term: "Personal Data", definition: "is any information that relates to an identified or identifiable individual.")
-                    definitionItem(term: "Service", definition: "refers to the Application.")
+                    definitionItem(term: "アカウント", definition: "当社のサービスまたはその一部にアクセスするために作成された固有のアカウントを指します。")
+                    definitionItem(term: "アプリケーション", definition: "安心ナビ(Japan Safety Map)を指し、当社が提供するソフトウェアプログラムです。")
+                    definitionItem(term: "会社", definition: "安心ナビ(Japan Safety Map)を指します。")
+                    definitionItem(term: "国", definition: "日本を指します。")
+                    definitionItem(term: "デバイス", definition: "コンピュータ、携帯電話、タブレットなど、サービスにアクセスできる機器を指します。")
+                    definitionItem(term: "個人情報", definition: "特定の個人を識別できる、または識別可能な個人に関する情報を指します。")
+                    definitionItem(term: "サービス", definition: "本アプリケーションを指します。")
                 }
                 
                 // Data Collection Section
                 Group {
-                    Text("Collecting and Using Your Personal Data")
+                    Text("個人情報の収集および使用")
                         .font(.system(size: FONT_SIZE.size * 1.2))
                         .fontWeight(.bold)
                         .padding(.top)
                     
-                    Text("Types of Data Collected")
+                    Text("収集する情報の種類")
                         .font(.system(size: FONT_SIZE.size * 1.1))
                         .fontWeight(.semibold)
                     
-                    Text("Personal Data")
+                    Text("個人情報")
                         .font(.system(size: FONT_SIZE.size * 1))
                         .fontWeight(.semibold)
                     
-                    Text("While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:")
+                    Text("当社のサービスをご利用いただく際、お客様を識別または連絡可能な個人情報の提供をお願いする場合があります。収集する個人情報には以下が含まれますが、これらに限定されません：")
                         .font(.system(size: FONT_SIZE.size))
                     
-                    Text("• Usage Data")
+                    Text("• 利用データ")
                         .font(.system(size: FONT_SIZE.size))
                         .padding(.leading)
                 }
                 
                 // Location Data Section
                 Group {
-                    Text("Information Collected while Using the Application")
+                    Text("アプリケーション使用時に収集される情報")
                         .font(.system(size: FONT_SIZE.size * 1.1))
                         .fontWeight(.semibold)
                         .padding(.top)
                     
-                    Text("While using Our Application, in order to provide features of Our Application, We may collect, with Your prior permission:")
+                    Text("当社のアプリケーションの機能を提供するため、お客様の事前の許可を得た上で、以下の情報を収集する場合があります：")
                         .font(.system(size: FONT_SIZE.size))
                     
-                    Text("• Information regarding your location")
+                    Text("• 位置情報")
                         .font(.system(size: FONT_SIZE.size))
                         .padding(.leading)
                 }
                 
                 // Usage Data Section
                 Group {
-                    Text("Usage Data")
+                    Text("利用データ")
                         .font(.system(size: FONT_SIZE.size * 1.1))
                         .fontWeight(.semibold)
                         .padding(.top)
                     
-                    Text("Usage Data is collected automatically when using the Service.")
+                    Text("利用データは、サービスの使用時に自動的に収集されます。")
                         .font(.system(size: FONT_SIZE.size))
                     
-                    Text("Usage Data may include information such as Your Device's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.")
-                        .font(.system(size: FONT_SIZE.size))
-                    
-                    Text("When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.")
-                        .font(.system(size: FONT_SIZE.size))
-                }
-                
-                // Use of Personal Data Section
-                Group {
-                    Text("Use of Your Personal Data")
-                        .font(.system(size: FONT_SIZE.size * 1.2))
-                        .fontWeight(.bold)
-                        .padding(.top)
-                    
-                    Text("The Company may use Personal Data for the following purposes:")
-                        .font(.system(size: FONT_SIZE.size))
-                    
-                    VStack(alignment: .leading, spacing: 12) {
-                        bulletPoint("To provide and maintain our Service", "including to monitor the usage of our Service.")
-                        bulletPoint("To manage Your Account", "to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.")
-                        bulletPoint("For the performance of a contract", "the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service.")
-                        bulletPoint("To contact You", "To contact You by email, telephone calls, SMS, or other equivalent forms of electronic communication, such as a mobile application's push notifications regarding updates or informative communications related to the functionalities, products or contracted services, including the security updates, when necessary or reasonable for their implementation.")
-                    }
-                }
-                
-                // Data Sharing Section
-                Group {
-                    Text("We may share Your personal information in the following situations:")
-                        .font(.system(size: FONT_SIZE.size))
-                        .padding(.top)
-                    
-                    VStack(alignment: .leading, spacing: 12) {
-                        bulletPoint("With Service Providers", "We may share Your personal information with Service Providers to monitor and analyze the use of our Service, to contact You.")
-                        bulletPoint("For business transfers", "We may share or transfer Your personal information in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company.")
-                        bulletPoint("With Affiliates", "We may share Your information with Our affiliates, in which case we will require those affiliates to honor this Privacy Policy.")
-                        bulletPoint("With business partners", "We may share Your information with Our business partners to offer You certain products, services or promotions.")
-                        bulletPoint("With other users", "when You share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside.")
-                    }
-                }
-                
-                // Data Retention Section
-                Group {
-                    Text("Retention of Your Personal Data")
-                        .font(.system(size: FONT_SIZE.size * 1.2))
-                        .fontWeight(.bold)
-                        .padding(.top)
-                    
-                    Text("The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with our legal obligations, resolve disputes, and enforce our legal agreements and policies.")
+                    Text("利用データには、お客様のデバイスのIPアドレス、ブラウザの種類、ブラウザのバージョン、閲覧したページ、閲覧日時、滞在時間、固有のデバイス識別子、その他の診断データなどが含まれる場合があります。")
                         .font(.system(size: FONT_SIZE.size))
                 }
                 
                 // Security Section
                 Group {
-                    Text("Security of Your Personal Data")
+                    Text("個人情報のセキュリティ")
                         .font(.system(size: FONT_SIZE.size * 1.2))
                         .fontWeight(.bold)
                         .padding(.top)
                     
-                    Text("The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security.")
+                    Text("お客様の個人情報の安全性は当社にとって重要ですが、インターネットを介した送信方法や電子的保存方法に100%の安全性を保証することはできません。当社は商業的に適切な手段を用いてお客様の個人情報を保護するよう努めておりますが、絶対的な安全性を保証することはできません。")
                         .font(.system(size: FONT_SIZE.size))
                 }
                 
                 // Children's Privacy Section
                 Group {
-                    Text("Children's Privacy")
+                    Text("お子様のプライバシー")
                         .font(.system(size: FONT_SIZE.size * 1.2))
                         .fontWeight(.bold)
                         .padding(.top)
                     
-                    Text("Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If You are a parent or guardian and You are aware that Your child has provided Us with Personal Data, please contact Us.")
-                        .font(.system(size: FONT_SIZE.size))
-                }
-                
-                // Links to Other Websites Section
-                Group {
-                    Text("Links to Other Websites")
-                        .font(.system(size: FONT_SIZE.size * 1.2))
-                        .fontWeight(.bold)
-                        .padding(.top)
-                    
-                    Text("Our Service may contain links to other websites that are not operated by Us. If You click on a third party link, You will be directed to that third party's site. We strongly advise You to review the Privacy Policy of every site You visit.")
+                    Text("当社のサービスは13歳未満のお子様を対象としていません。13歳未満のお子様から意図的に個人情報を収集することはありません。保護者の方で、お子様が当社に個人情報を提供したことにお気づきの場合は、当社までご連絡ください。")
                         .font(.system(size: FONT_SIZE.size))
                 }
                 
                 // Changes to Privacy Policy Section
                 Group {
-                    Text("Changes to this Privacy Policy")
+                    Text("プライバシーポリシーの変更")
                         .font(.system(size: FONT_SIZE.size * 1.2))
                         .fontWeight(.bold)
                         .padding(.top)
                     
-                    Text("We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.")
+                    Text("当社は、必要に応じて本プライバシーポリシーを更新することがあります。変更があった場合は、このページに新しいプライバシーポリシーを掲載いたします。")
                         .font(.system(size: FONT_SIZE.size))
                     
-                    Text("You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.")
+                    Text("定期的に本ページをご確認いただき、変更点をご確認ください。プライバシーポリシーの変更は、このページに掲載された時点で有効となります。")
+                        .font(.system(size: FONT_SIZE.size))
+                }
+                
+                // Contact Section
+                Group {
+                    Text("お問い合わせ")
+                        .font(.system(size: FONT_SIZE.size * 1.2))
+                        .fontWeight(.bold)
+                        .padding(.top)
+                    
+                    Text("本プライバシーポリシーに関するご質問がございましたら、お気軽にお問い合わせください。")
                         .font(.system(size: FONT_SIZE.size))
                 }
             }
             .padding()
         }
-        .navigationTitle("Privacy Policy")
+        .navigationTitle("プライバシーポリシー")
     }
     
     private func definitionItem(term: String, definition: String) -> some View {
@@ -542,18 +495,6 @@ struct PrivacyPolicyView: View {
                 .font(.system(size: FONT_SIZE.size))
                 .fontWeight(.semibold)
             Text(definition)
-                .font(.system(size: FONT_SIZE.size))
-                .foregroundColor(.secondary)
-        }
-        .padding(.leading)
-    }
-    
-    private func bulletPoint(_ title: String, _ description: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.system(size: FONT_SIZE.size))
-                .fontWeight(.semibold)
-            Text(description)
                 .font(.system(size: FONT_SIZE.size))
                 .foregroundColor(.secondary)
         }
