@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://apps.apple.com/us/app/%E5%AE%89%E5%BF%83%E3%83%8A%E3%83%93/id6738698620">
-    <img src="Images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.jpg" alt="Download on the App Store" style="border-radius: 13px; width: 120px; height: 40px;">
+    <img src="Images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917 1.jpg" alt="Download on the App Store">
   </a>
 </p>
 
