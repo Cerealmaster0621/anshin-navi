@@ -9,8 +9,8 @@ struct MapContainerView: View {
     @State private var currentAnnotationType: CurrentAnnotationType = ANNOTATION_TYPE // DEFAULT ANNOTATION
     @State private var selectedShelter: Shelter?
     @State private var selectedPoliceBase: PoliceBase?
-    @State private var selectedDetent: PresentationDetent = .custom(MainBottomDrawerView.SmallDetent.self)
-    @State private var previousDetent: PresentationDetent = .custom(MainBottomDrawerView.SmallDetent.self)
+    @State private var selectedDetent: PresentationDetent = .custom(MainBottomDrawerView.MediumDetent.self)
+    @State private var previousDetent: PresentationDetent = .custom(MainBottomDrawerView.MediumDetent.self)
     @State private var isTransitioning = false
     @State private var activeSheet: CurrentSheet? = .bottomDrawer
     @State private var previousSheet: CurrentSheet? = nil

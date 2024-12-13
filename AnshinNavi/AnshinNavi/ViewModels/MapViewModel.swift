@@ -35,7 +35,7 @@ final class MapViewModel: ObservableObject {
         // Create MapView instance
         let mapViewInstance = MapView(
             routeViewModel: routeViewModel,
-            selectedDetent: .custom(MainBottomDrawerView.SmallDetent.self),
+            selectedDetent: .custom(MainBottomDrawerView.MediumDetent.self),
             currentAnnotationType: .constant(.police),
             activeSheet: .constant(.bottomDrawer),
             previousSheet: .constant(.bottomDrawer),
